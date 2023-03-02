@@ -23,7 +23,6 @@ PINS = [SA_pin, SB_pin, S1_pin, S2_pin]
 CLOSE = 1
 OPEN = 0
 
-# TODO: FInd a better way to model the Modes
 class Modes(enum.Enum):
     Resting = (CLOSE, CLOSE, CLOSE, CLOSE)  # No valves activated
     Purging = (OPEN, OPEN, CLOSE, CLOSE)  # Valve S1 and S2 activated to purge the system
