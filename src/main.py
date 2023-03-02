@@ -23,8 +23,6 @@ PINS = [SA_pin, SB_pin, S1_pin, S2_pin]
 CLOSE = 1
 OPEN = 0
 
-
-# TODO: FIX
 class Modes(enum.Enum):
     """
     Enumeration of the different modes that the system can be IN
