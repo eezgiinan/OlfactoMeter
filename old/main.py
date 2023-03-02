@@ -4,6 +4,12 @@ from tkinter import *
 from tkinter import filedialog
 import pandas as pd
 import enum
+from start_Experiment import *
+from set_mode import *
+from close import *
+from DisplayData import *
+from add_file import *
+
 
 # Connect to the Arduino board via serial port
 port = 'COM4'
@@ -51,7 +57,6 @@ def _init_pins():
 
 
 
-
 # Define a function to handle button clicks and activate the corresponding mode
 def on_button_click(command):
     if command in Modes:
@@ -61,7 +66,6 @@ def on_button_click(command):
         start_Experiment()
     if command == Controls.Stop:
         close()
-
 
 
 
