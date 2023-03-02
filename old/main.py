@@ -50,38 +50,7 @@ def _init_pins():
         pin.write(CLOSE)
 
 
-# Define a function to set the mode and activate the corresponding pins for a certain duration
-def set_mode(mode, duration):
-    # Check if the mode is valid
-    if mode not in Modes:
-        print(f"Invalid mode: {mode}")
-        return
-    # Check if the duration is valid
-    if duration <= 0:
-        print(f"Invalid duration: {duration}")
-        return
-    # Get the pin values for the selected mode
-    valves = mode.value
-    # Activate the corresponding pins for the selected mode
-    for i, valve in enumerate(PINS):
-        valve.mode = pyfirmata.OUTPUT
-        valve.write(valves[i])
-    # Wait for the specified duration
-    time.sleep(duration)
-    # Deactivate all pins
-    for pin in PINS:
-        pin.write(CLOSE)
 
-
-# Define a function to handle the add file button click and select a file from the computer
-def add_file():
-    filename = filedialog.askopenfilename(initialdir="/", title="Select File",
-                                          filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")])
-    if filename:
-        global data
-        data = pd.read_excel(filename)
-        # Update the label to display the name of the selected file
-        file_label.config(text=filename.split("/")[-1])
 
 
 # Define a function to handle button clicks and activate the corresponding mode
@@ -99,9 +68,6 @@ def on_button_click(command):
         close()
 
 
-# Define a function to close the window
-def close():
-    window.destroy()
 
 
 # Create a graphical user interface (GUI) using the Tkinter library
@@ -109,24 +75,6 @@ def close():
 window = Tk()
 window.geometry("600x450")
 
-def DisplayData():
-    # Create a new window
-    data_window = Toplevel(window)
-    data_window.title("Data")
-    data_window.geometry("600x450")
-
-    # Create a text box to display the data
-    data_text = Text(data_window)
-    data_text.pack(fill=BOTH, expand=YES)
-
-    # Check if data exists
-    if 'data' in globals():
-        # Convert data to a string and insert it into the text box
-        data_str = str(data)
-        data_text.insert(END, data_str)
-    else:
-        # If no data exists, display a message in the text box
-        data_text.insert(END, "No data available")
 
 # Create buttons for each mode of operation and associate them with the corresponding function
 buttons = [Button(window, text=x.name.replace('_', ' '), command=lambda: on_button_click(x)) for x in Modes]
@@ -140,7 +88,7 @@ duration_entry = Entry(window, textvariable=duration_var)
 duration_entry.pack(side=TOP)
 
 # Create a button to select a file
-select_file_button = Button(window, text="Add File", command=add_file)
+select_file_button = Button(window, text="Add File", command=add_file())
 select_file_button.pack(side=BOTTOM)
 
 # Create a label to display the name of the selected file
@@ -153,3 +101,4 @@ for b in buttons:
 
 # Start the main event loop for the interface
 window.mainloop()
+
