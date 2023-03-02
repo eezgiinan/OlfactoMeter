@@ -1,6 +1,6 @@
 # -*- encoding:utf-8 -*-
-from core.Controller import Controller
-from core.Core import Core
+from src.core import Controller
+from src.core import Core
 
 """
     Main controller. It will be responsible for program's main screen behavior.

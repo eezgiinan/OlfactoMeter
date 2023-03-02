@@ -1,6 +1,6 @@
-from core.Core import Core
-from models.Customers import Customers
-from core.Controller import Controller
+from src.core import Core
+from src.models import Customers
+from src.core import Controller
 from tkinter import messagebox
 
 """
