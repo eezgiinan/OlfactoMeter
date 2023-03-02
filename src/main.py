@@ -24,6 +24,7 @@ CLOSE = 1
 OPEN = 0
 
 
+# TODO: FIX
 class Modes(enum.Enum):
     Resting = (CLOSE, CLOSE, CLOSE, CLOSE)  # No valves activated
     Purging = (OPEN, OPEN, CLOSE, CLOSE)  # Valve S1 and S2 activated to purge the system
