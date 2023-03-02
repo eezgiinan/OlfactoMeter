@@ -26,6 +26,9 @@ OPEN = 0
 
 # TODO: FIX
 class Modes(enum.Enum):
+    """
+    Enumeration of the different modes that the system can be IN
+    """
     Resting = (CLOSE, CLOSE, CLOSE, CLOSE)  # No valves activated
     Purging = (OPEN, OPEN, CLOSE, CLOSE)  # Valve S1 and S2 activated to purge the system
     Odor_1 = (OPEN, CLOSE, OPEN, CLOSE)  # Valve SB and S1 activated to deliver odor 1
