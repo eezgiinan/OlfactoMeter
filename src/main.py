@@ -103,35 +103,30 @@ def on_button_click(command):
 def close():
     window.destroy()
 
+
 # Create a graphical user interface (GUI) using the Tkinter library
 
 window = Tk()
 window.geometry("600x450")
 
-def show_data():
-        # Create a new window
-        data_window = Toplevel(window)
-        data_window.title("Data")
-        data_window.geometry("600x450")
+def DisplayData():
+    # Create a new window
+    data_window = Toplevel(window)
+    data_window.title("Data")
+    data_window.geometry("600x450")
 
-        # Create a text box to display the data
-        data_text = Text(data_window)
-        data_text.pack(fill=BOTH, expand=YES)
+    # Create a text box to display the data
+    data_text = Text(data_window)
+    data_text.pack(fill=BOTH, expand=YES)
 
-        # Check if data exists
-        if 'data' in globals():
-            # Convert data to a string and insert it into the text box
-            data_str = str(data)
-            data_text.insert(END, data_str)
-        else:
-            # If no data exists, display a message in the text box
-            data_text.insert(END, "No data available")
-
-# Create a label to display the current mode
-current_mode_label = Label(window, text="")
-current_mode_label.pack(side=BOTTOM)
-current_mode_label.config(text=f"")
-
+    # Check if data exists
+    if 'data' in globals():
+        # Convert data to a string and insert it into the text box
+        data_str = str(data)
+        data_text.insert(END, data_str)
+    else:
+        # If no data exists, display a message in the text box
+        data_text.insert(END, "No data available")
 
 # Create buttons for each mode of operation and associate them with the corresponding function
 buttons = [Button(window, text=x.name.replace('_', ' '), command=lambda: on_button_click(x)) for x in Modes]
