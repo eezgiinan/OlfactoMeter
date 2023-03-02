@@ -49,18 +49,13 @@ def _init_pins():
 
 
 
-
 # Define a function to handle button clicks and activate the corresponding mode
 def on_button_click(command):
     if command in Modes:
         duration = duration_var.get()
         set_mode(command, duration)
     if command == Controls.Start:
-        if 'data' not in globals():
-            print("Please select a data file first")
-            return
-        for index, row in data.iterrows():
-            set_mode(Modes[row['mode'].title()], row['duration'])
+        start_Experiment()
     if command == Controls.Stop:
         close()
 

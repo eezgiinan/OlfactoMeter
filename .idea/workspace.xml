@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="04e9407b-c38e-4f40-b562-c9ee0fd387d3" name="Changes" comment="removed unuseful comment">
-      <change afterPath="$PROJECT_DIR$/src/DisplayData" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DisplayData.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/add_file" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/add_file.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/close" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/close.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/set_mode" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/set_mode.py" afterDir="false" />
+    <list default="true" id="04e9407b-c38e-4f40-b562-c9ee0fd387d3" name="Changes" comment="created files for fu,ctions">
+      <change afterPath="$PROJECT_DIR$/src/start_Experiment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
@@ -74,7 +66,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677765178382</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="created files for fu,ctions">
+      <created>1677773401178</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1677773401179</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -103,6 +102,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="removed unuseful comment" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed unuseful comment" />
+    <MESSAGE value="created files for fu,ctions" />
+    <option name="LAST_COMMIT_MESSAGE" value="created files for fu,ctions" />
   </component>
 </project>
