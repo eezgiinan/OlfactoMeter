@@ -70,9 +70,6 @@ def set_mode(mode, duration):
         pin.write(CLOSE)
 
 
-# Read data from the Excel file
-# data = pd.read_excel('/Users/auroredelafouchardiere/PycharmProjects/firmataexcel/venv/experiment_data.xlsx')(where my file is)
-
 # Define a function to handle the add file button click and select a file from the computer
 def add_file():
     filename = filedialog.askopenfilename(initialdir="/", title="Select File",
