@@ -3,7 +3,6 @@ import time
 from tkinter import *
 from tkinter import filedialog
 import pandas as pd
-import signal
 import enum
 
 # Connect to the Arduino board via serial port
