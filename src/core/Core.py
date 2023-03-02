@@ -1,6 +1,6 @@
 import os
 import importlib
-from config import APP_PATH
+from src.config import APP_PATH
 
 """
     Class responsible for opening controllers

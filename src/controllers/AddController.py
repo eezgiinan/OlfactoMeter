@@ -1,7 +1,7 @@
 from tkinter import messagebox
 from tkinter.constants import END
-from models.Customers import Customers
-from core.Controller import Controller
+from src.models import Customers
+from src.core import Controller
 
 """
     Responsible for AddView behavior.
