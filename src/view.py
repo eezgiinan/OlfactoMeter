@@ -7,14 +7,14 @@ class View(ttk.Frame):
         super().__init__(parent)
         self.controller = None
 
-        #creates label for box
+        # creates label for box
         self.label = ttk.Label(self, text='Duration:')
         self.label.grid(row=1, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
-        self.duration_entry = ttk.Entry(self, textvariable=self.duration_var, width=30)
-        self.duration_entry.grid(row=1, column=1, sticky=tk.NSEW)
+        self.duration_box = ttk.Entry(self, textvariable=self.duration_var, width=30)
+        self.duration_box.grid(row=1, column=1, sticky=tk.NSEW)
 
         # creates a button with a label Print on it. When clicked invokes the method print_button_clicked
         self.print_button = ttk.Button(self, text='Print', command=self.print_button_clicked)
@@ -23,7 +23,6 @@ class View(ttk.Frame):
     def print_button_clicked(self):
         print('In the View. Sending', self.duration_var.get())
         self.controller.print(self.duration_var.get())
-
 
     def set_controller(self, controller):
         """
