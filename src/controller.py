@@ -6,3 +6,6 @@ class Controller:
     def print(self, text):
         print('In the controller. Propogating', text)
         self.model.print(text)
+
+    def activate_odor(self, odor_number):
+        self.model.activate(odor_number)

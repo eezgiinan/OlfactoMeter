@@ -9,3 +9,6 @@ class Olfactometer:
 
     def print(self, text):
         print('In the Model. Receiving ', text)
+
+    def activate(self, odor_number):
+        print(f'Odor {odor_number} activated')
