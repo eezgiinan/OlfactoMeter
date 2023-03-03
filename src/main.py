@@ -42,6 +42,9 @@ class Modes(enum.Enum):
 
 
 class Controls(enum.Enum):
+    """
+    DIfferent controls that the user can run
+    """
     Start = 'Start Experiment'
     Stop = 'Stop and Close Experiment'
     DisplayData = 'Display Data'
