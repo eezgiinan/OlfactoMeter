@@ -1,5 +1,5 @@
 # Define a function to be able to select a file from the computer and use it
-
+import pandas as pd
 def add_file():
     filename = filedialog.askopenfilename(initialdir="/", title="Select File",
                                           filetypes=[("Excel files", "*.xlsx"), ("All files", "*.*")])
