@@ -4,15 +4,16 @@ from tkinter import *
 from tkinter import filedialog
 import pandas as pd
 import enum
-from start_Experiment import *
-from set_mode import *
-from close import *
-from DisplayData import *
-from add_file import *
+from enum import Enum
+import start_Experiment
+import set_mode
+import close
+import DisplayData
+import add_file
 
 
 # Connect to the Arduino board via serial port
-port = 'COM4'
+port = '/dev/cu.usbmodem1101'
 board = pyfirmata.Arduino(port)
 
 # Define the pins used to control the scent delivery system
@@ -87,7 +88,7 @@ duration_entry = Entry(window, textvariable=duration_var)
 duration_entry.pack(side=TOP)
 
 # Create a button to select a file
-select_file_button = Button(window, text="Add File", command=add_file())
+select_file_button = Button(window, text="Add File", command=lambda:add_file())
 select_file_button.pack(side=BOTTOM)
 
 # Create a label to display the name of the selected file
