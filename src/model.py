@@ -1,3 +1,5 @@
+import time
+
 import pyfirmata
 
 
@@ -12,3 +14,5 @@ class Olfactometer:
 
     def activate(self, odor_number):
         print(f'Odor {odor_number} activated')
+
+        time.sleep(10)
