@@ -9,7 +9,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.title('Tkinter MVC Demo')
+        self.title('Olfactometer Visual Interface')
         PORT = 5
         # create a model
         model = Olfactometer(PORT)

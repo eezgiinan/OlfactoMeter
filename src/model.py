@@ -12,7 +12,18 @@ class Olfactometer:
     def print(self, text):
         print('In the Model. Receiving ', text)
 
-    def activate(self, odor_number):
+    def activate_odor(self, odor_number):
         print(f'Odor {odor_number} activated')
 
         time.sleep(10)
+
+    def activate_purging(self):
+        print('Purging activated')
+
+        time.sleep(10)
+
+    def activate_resting(self):
+        print('Resting activated')
+
+        time.sleep(10)
+

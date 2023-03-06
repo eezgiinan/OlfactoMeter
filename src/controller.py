@@ -8,4 +8,10 @@ class Controller:
         self.model.print(text)
 
     def activate_odor(self, odor_number):
-        self.model.activate(odor_number)
+        self.model.activate_odor(odor_number)
+
+    def activate_purge(self):
+        self.model.activate_purging()
+
+    def activate_rest(self):
+        self.model.activate_resting()
