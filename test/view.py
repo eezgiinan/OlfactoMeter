@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 from tkinter import ttk
 
@@ -35,7 +36,10 @@ class View(ttk.Frame):
 
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
-        self.controller.activate_odor(self.odor_num_var.get())
+        # Create a new thread (executing unit that can be run in parallel). This in required as the python
+        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+        thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(), ))
+        thread.start()
 
     def print_button_clicked(self):
         print('In the View. Sending', self.duration_var.get())
