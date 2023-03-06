@@ -15,3 +15,9 @@ class Controller:
 
     def activate_rest(self):
         self.model.activate_resting()
+
+    def activate_stop(self):
+        self.model.activate_stop()
+
+    def activate_addfile(self):
+        self.model.activate_file()
