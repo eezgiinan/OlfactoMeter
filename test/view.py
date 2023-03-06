@@ -33,12 +33,36 @@ class View(ttk.Frame):
         # creates a button for odor
         self.odor_button = ttk.Button(self, text='Odor', command=self.odor_button_clicked)
         self.odor_button.grid(row=2, column=2, padx=10)
+        # set the disabled flag
+        #self.odor_button.state(['disabled'])
+
+        # creates a button for purging
+        self.purging_button = ttk.Button(self, text='Purging', command=self.purging_button_clicked)
+        self.purging_button.grid(row=3, column=2, padx=10)
+
+        # creates a button for resting
+        self.resting_button = ttk.Button(self, text='Resting', command=self.resting_button_clicked)
+        self.resting_button.grid(row=4, column=2, padx=10)
 
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(), ))
+        thread.start()
+
+    def purging_button_clicked(self):
+        print('Activating purging')
+        # Create a new thread (executing unit that can be run in parallel). This in required as the python
+        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+        thread = threading.Thread(target=self.controller.activate_purge)
+        thread.start()
+
+    def resting_button_clicked(self):
+        print('Activating resting')
+        # Create a new thread (executing unit that can be run in parallel). This in required as the python
+        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+        thread = threading.Thread(target=self.controller.activate_rest)
         thread.start()
 
     def print_button_clicked(self):
