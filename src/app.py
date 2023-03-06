@@ -10,9 +10,9 @@ class App(tk.Tk):
         super().__init__()
 
         self.title('Tkinter MVC Demo')
-        PORT = 5
+        self.PORT = 5
         # create a model
-        model = Olfactometer(PORT)
+        model = Olfactometer(self.PORT)
 
         # create a view and place it on the root window
         view = View(self)
