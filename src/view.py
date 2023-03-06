@@ -44,6 +44,14 @@ class View(ttk.Frame):
         self.resting_button = ttk.Button(self, text='Resting', command=self.resting_button_clicked)
         self.resting_button.grid(row=4, column=2, padx=10)
 
+        # creates a button for stop
+        self.resting_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
+        self.resting_button.grid(row=5, column=1, padx=10)
+
+        # creates a button for adding an Excel file
+        self.resting_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
+        self.resting_button.grid(row=7, column=1, padx=10)
+
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
@@ -63,6 +71,20 @@ class View(ttk.Frame):
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_rest)
+        thread.start()
+
+    def purge_stop_clicked(self):
+        print('Activating Purge and Stop')
+        # Create a new thread (executing unit that can be run in parallel). This in required as the python
+        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+        thread = threading.Thread(target=self.controller.activate_stop)
+        thread.start()
+
+    def add_file_clicked(self):
+        print('Add an Excel file')
+        # Create a new thread (executing unit that can be run in parallel). This in required as the python
+        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+        thread = threading.Thread(target=self.controller.activate_addfile)
         thread.start()
 
     def print_button_clicked(self):

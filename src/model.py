@@ -27,3 +27,15 @@ class Olfactometer:
 
         time.sleep(10)
 
+    def activate_stop(self):
+        print('Experiment stopped')
+
+        time.sleep(10)
+
+    def activate_file(self):
+        print('File added')
+        time.sleep(10)
+
+
+
+
