@@ -1,7 +1,9 @@
 import time
 
 import pyfirmata
-from pandas import DataFrame
+
+from modes import *
+
 
 class Olfactometer:
     def __init__(self, port):

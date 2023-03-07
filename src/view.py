@@ -100,14 +100,13 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
-
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(),))
         thread.start()
-        if self.odor_num_var==1:
+        if self.odor_num_var == 1:
             self.SA = tk.Button(self, text='SA valve', fg='green')
             self.SA.grid(row=8, column=1, padx=10)
             self.SB = tk.Button(self, text='SB valve', fg='red')
@@ -150,7 +149,6 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
-
     def purging_button_clicked(self):
         print('Activating purging')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
@@ -165,7 +163,6 @@ class View(ttk.Frame):
         self.S1.grid(row=9, column=2, padx=10)
         self.S2 = tk.Button(self, text='S2 valve', fg='red')
         self.S2.grid(row=10, column=2, padx=10)
-
 
     def resting_button_clicked(self):
         print('Activating resting')
@@ -292,62 +289,13 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
 
+
 """ 
 function to use for connecting pins to ovals
- 
+
     def run_command(self)
         mode = # read mode from dialog
         status = Modes[mode].value
         for st, canv in zip(sta, canva)
             canv.color(red-green)
 """
-    def show_error(self, message):
-        """
-        Show an error message
-        :param message:
-        :return:
-        """
-        self.message_label['text'] = message
-        self.message_label['foreground'] = 'red'
-        self.message_label.after(3000, self.hide_message)
-
-    def show_success(self, message):
-        """
-        Show a success message
-        :param message:
-        :return:
-        """
-        self.message_label['text'] = message
-        self.message_label['foreground'] = 'green'
-        self.message_label.after(3000, self.hide_message)
-
-    def hide_message(self):
-        """
-        Hide the message
-        :return:
-        """
-        self.message_label['text'] = ''
-
-    def set_duration(self):
-        if self.controller:
-            self.controller.set_duration(self.duration_var.get())
-            self.countdown_label.configure(text=self.time_string())
-
-    def time_string(self):
-        if self.controller:
-            return time.strftime('%M:%S', time.gmtime(self.controller.get_time()))
-        else:
-            return time.strftime('%M:%S', time.gmtime(0))
-
-    def countdown_update(self):
-        if self.controller:
-            self.controller.time_update()
-
-        self.countdown_label.configure(text=self.time_string())
-
-        # schedule another timer
-        self.countdown_label.after(1000, self.countdown_update)
-
-    def start_countdown(self):
-        if self.controller:
-            self.controller.start_countdown()
