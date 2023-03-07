@@ -1,8 +1,7 @@
 import time
 
 import pyfirmata
-
-from modes import *
+from pandas import DataFrame
 
 
 class Olfactometer:
@@ -18,14 +17,58 @@ class Olfactometer:
 
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
+        self.experiment = None
+
+        # To register the input from duration widget
+        self.duration = '0'
+
+        # Countdown Time Left
+        self.time_left = 0
+
+        # Is the countdown ongoing ?
+        self.ongoing_countdown = False
 
     @property
     def experiment(self):
-        return self._experiment
+        return self.__experiment
 
     @experiment.setter
-    def experiment(self, experiment):
-        self._experiment = experiment
+    def experiment(self, value):
+        self.__experiment = value
+
+    @property
+    def duration(self):
+        return self.__duration
+
+    @duration.setter
+    def duration(self, value):
+        if value.isdigit():
+            self.__duration = int(value)
+        else:
+            raise ValueError(f'Invalid duration {value}')
+
+    @property
+    def time_left(self):
+        return self.__time_left
+
+    @time_left.setter
+    def time_left(self, value):
+        self.__time_left = value
+
+    @property
+    def ongoing_countdown(self):
+        return self.__ongoing_countdown
+
+    @ongoing_countdown.setter
+    def ongoing_countdown(self, value):
+        self.__ongoing_countdown = value
+
+    def time_update(self):
+        if self.ongoing_countdown is True:
+            if self.time_left == 0:
+                self.ongoing_countdown = False
+            else:
+                self.time_left -= 1
 
     def print(self, text):
         print('In the Model. Receiving ', text)
