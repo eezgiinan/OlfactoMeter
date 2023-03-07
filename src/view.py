@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 
 from controller import Controller
+from main import Modes
 
 
 def donothing():
@@ -142,3 +143,13 @@ class View(ttk.Frame):
     def run_experiment(self):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
+
+""" 
+function to use for connecting pins to ovals
+ 
+    def run_command(self)
+        mode = # read mode from dialog
+        status = Modes[mode].value
+        for st, canv in zip(sta, canva)
+            canv.color(red-green)
+"""
