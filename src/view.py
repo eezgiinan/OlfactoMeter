@@ -65,12 +65,42 @@ class View(ttk.Frame):
         self.bar = self.menubar()
         parent.config(menu=self.bar)
 
+        # Creates buttons for valves for displaying state (red is closed and green is open
+        self.SA = tk.Button(self, text='SA valve', fg='red')
+        self.SA.grid(row=8, column=1, padx=10)
+        self.SB = tk.Button(self, text='SB valve', fg='red')
+        self.SB.grid(row=8, column=2, padx=10)
+        self.S1 = tk.Button(self, text='S1 valve', fg='red')
+        self.S1.grid(row=9, column=2, padx=10)
+        self.S2 = tk.Button(self, text='S2 valve', fg='red')
+        self.S2.grid(row=10, column=2, padx=10)
+
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(),))
         thread.start()
+        if self.odor_num_var==1:
+            self.SA = tk.Button(self, text='SA valve', fg='green')
+            self.SA.grid(row=8, column=1, padx=10)
+            self.SB = tk.Button(self, text='SB valve', fg='red')
+            self.SB.grid(row=8, column=2, padx=10)
+            self.S1 = tk.Button(self, text='S1 valve', fg='green')
+            self.S1.grid(row=9, column=2, padx=10)
+            self.S2 = tk.Button(self, text='S2 valve', fg='red')
+            self.S2.grid(row=10, column=2, padx=10)
+        else:
+            self.SA = tk.Button(self, text='SA valve', fg='green')
+            self.SA.grid(row=8, column=1, padx=10)
+            self.SB = tk.Button(self, text='SB valve', fg='red')
+            self.SB.grid(row=8, column=2, padx=10)
+            self.S1 = tk.Button(self, text='S1 valve', fg='red')
+            self.S1.grid(row=9, column=2, padx=10)
+            self.S2 = tk.Button(self, text='S2 valve', fg='green')
+            self.S2.grid(row=10, column=2, padx=10)
+
+
 
     def purging_button_clicked(self):
         print('Activating purging')
@@ -78,6 +108,15 @@ class View(ttk.Frame):
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_purge)
         thread.start()
+        self.SA = tk.Button(self, text='SA valve', fg='green')
+        self.SA.grid(row=8, column=1, padx=10)
+        self.SB = tk.Button(self, text='SB valve', fg='green')
+        self.SB.grid(row=8, column=2, padx=10)
+        self.S1 = tk.Button(self, text='S1 valve', fg='red')
+        self.S1.grid(row=9, column=2, padx=10)
+        self.S2 = tk.Button(self, text='S2 valve', fg='red')
+        self.S2.grid(row=10, column=2, padx=10)
+
 
     def resting_button_clicked(self):
         print('Activating resting')
@@ -85,6 +124,14 @@ class View(ttk.Frame):
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_rest)
         thread.start()
+        self.SA = tk.Button(self, text='SA valve', fg='red')
+        self.SA.grid(row=8, column=1, padx=10)
+        self.SB = tk.Button(self, text='SB valve', fg='red')
+        self.SB.grid(row=8, column=2, padx=10)
+        self.S1 = tk.Button(self, text='S1 valve', fg='red')
+        self.S1.grid(row=9, column=2, padx=10)
+        self.S2 = tk.Button(self, text='S2 valve', fg='red')
+        self.S2.grid(row=10, column=2, padx=10)
 
     def purge_stop_clicked(self):
         print('Activating Purge and Stop')
@@ -128,15 +175,18 @@ class View(ttk.Frame):
         menubar.add_cascade(label="Help", menu=helpmenu)
         return menubar
 
+
     def browse_files(self):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
-                                              filetypes=(("CSV files",
-                                                          "*.csv"),
-                                                         ("all files",
-                                                          "*.*")))
+                                              filetypes=[("excel files",
+                                                          "*.xlsx"),
+                                                         ("CSV files",
+                                                          "*.csv")
+                                                         ])
 
         # Change label contents
+        self.update()
         self.controller.experiment_from_file(filename)
 
     def run_experiment(self):
