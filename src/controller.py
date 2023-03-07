@@ -1,6 +1,11 @@
+import pandas as pd
+
+from model import Olfactometer
+
+
 class Controller:
-    def __init__(self, model, view):
-        self.model = model
+    def __init__(self, model: Olfactometer, view):
+        self.model: Olfactometer = model
         self.view = view
 
     def print(self, text):
@@ -19,5 +24,13 @@ class Controller:
     def activate_stop(self):
         self.model.activate_stop()
 
-    def activate_addfile(self):
-        self.model.activate_file()
+    def experiment_from_file(self, filename: str):
+        if filename.endswith('.csv'):
+            df = pd.read_csv(filename)
+        elif filename.endswith('.xlsx'):
+            df = pd.read_excel(filename)
+        else:
+            raise TypeError('Unsupported File')
+
+        print('Loaded', df.head())
+        self.model.experiment = df
