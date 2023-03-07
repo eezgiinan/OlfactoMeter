@@ -3,13 +3,11 @@ import time
 import pyfirmata
 from pandas import DataFrame
 
-
 class Olfactometer:
     def __init__(self, port):
         self.port = port
         self.board = pyfirmata.Arduino(port)
         print(port)
-        self._experiment = None
         self.SA_pin = self.board.get_pin('d:4:o')
         self.SB_pin = self.board.get_pin('d:5:o')
         self.S1_pin = self.board.get_pin('d:6:o')
@@ -17,6 +15,16 @@ class Olfactometer:
 
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
+        self.experiment = None
+
+        # To register the input from duration widget
+        self.duration = '0'
+
+        # Countdown Time Left
+        self.time_left = 0
+
+        # Is the countdown ongoing ?
+        self.ongoing_countdown = False
         self.experiment = None
 
         # To register the input from duration widget

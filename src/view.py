@@ -224,7 +224,6 @@ class View(ttk.Frame):
         menubar.add_cascade(label="Help", menu=helpmenu)
         return menubar
 
-
     def browse_files(self):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
@@ -288,7 +287,7 @@ class View(ttk.Frame):
     def start_countdown(self):
         if self.controller:
             self.controller.start_countdown()
-    
+
     def run_experiment(self):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
@@ -302,3 +301,53 @@ function to use for connecting pins to ovals
         for st, canv in zip(sta, canva)
             canv.color(red-green)
 """
+    def show_error(self, message):
+        """
+        Show an error message
+        :param message:
+        :return:
+        """
+        self.message_label['text'] = message
+        self.message_label['foreground'] = 'red'
+        self.message_label.after(3000, self.hide_message)
+
+    def show_success(self, message):
+        """
+        Show a success message
+        :param message:
+        :return:
+        """
+        self.message_label['text'] = message
+        self.message_label['foreground'] = 'green'
+        self.message_label.after(3000, self.hide_message)
+
+    def hide_message(self):
+        """
+        Hide the message
+        :return:
+        """
+        self.message_label['text'] = ''
+
+    def set_duration(self):
+        if self.controller:
+            self.controller.set_duration(self.duration_var.get())
+            self.countdown_label.configure(text=self.time_string())
+
+    def time_string(self):
+        if self.controller:
+            return time.strftime('%M:%S', time.gmtime(self.controller.get_time()))
+        else:
+            return time.strftime('%M:%S', time.gmtime(0))
+
+    def countdown_update(self):
+        if self.controller:
+            self.controller.time_update()
+
+        self.countdown_label.configure(text=self.time_string())
+
+        # schedule another timer
+        self.countdown_label.after(1000, self.countdown_update)
+
+    def start_countdown(self):
+        if self.controller:
+            self.controller.start_countdown()
