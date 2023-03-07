@@ -34,3 +34,6 @@ class Controller:
 
         print('Loaded', df.head())
         self.model.experiment = df
+
+    def run_experiment(self):
+        self.model.run_experiment()

@@ -10,7 +10,7 @@ class App(tk.Tk):
         super().__init__()
 
         self.title('Olfactometer Visual Interface')
-        PORT = 5
+        PORT = 'COM4'
         # create a model
         model = Olfactometer(PORT)
 

@@ -41,6 +41,10 @@ class View(ttk.Frame):
         # set the disabled flag
         # self.odor_button.state(['disabled'])
 
+        # Run Experiment button
+        self.run_exp_button = ttk.Button(self, text='Run', command=self.run_experiment)
+        self.run_exp_button.grid(row=6, column=1, padx=10)
+
         # creates a button for purging
         self.purging_button = ttk.Button(self, text='Purging', command=self.purging_button_clicked)
         self.purging_button.grid(row=3, column=2, padx=10)
@@ -134,3 +138,7 @@ class View(ttk.Frame):
 
         # Change label contents
         self.controller.experiment_from_file(filename)
+
+    def run_experiment(self):
+        thread = threading.Thread(target=self.controller.run_experiment)
+        thread.start()
