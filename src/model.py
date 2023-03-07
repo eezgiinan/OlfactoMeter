@@ -50,6 +50,3 @@ class Olfactometer:
                 time.sleep(duration)
 
         print('completed')
-
-
-

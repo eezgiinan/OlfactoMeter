@@ -185,4 +185,3 @@ class View(ttk.Frame):
         self.update()
         self.controller.experiment_from_file(filename)
 
-
