@@ -1,13 +1,18 @@
 import threading
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog
+
+from controller import Controller
+
+
+def donothing():
+    x = 0
 
 
 class View(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
-        self.controller = None
-
+        self.controller: Controller = None
         # creates label for box
         self.label = ttk.Label(self, text='Duration:')
         self.label.grid(row=1, column=0)
@@ -34,7 +39,7 @@ class View(ttk.Frame):
         self.odor_button = ttk.Button(self, text='Odor', command=self.odor_button_clicked)
         self.odor_button.grid(row=2, column=2, padx=10)
         # set the disabled flag
-        #self.odor_button.state(['disabled'])
+        # self.odor_button.state(['disabled'])
 
         # creates a button for purging
         self.purging_button = ttk.Button(self, text='Purging', command=self.purging_button_clicked)
@@ -52,11 +57,15 @@ class View(ttk.Frame):
         self.resting_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
         self.resting_button.grid(row=7, column=1, padx=10)
 
+        # adds the menu
+        self.bar = self.menubar()
+        parent.config(menu=self.bar)
+
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(), ))
+        thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(),))
         thread.start()
 
     def purging_button_clicked(self):
@@ -84,7 +93,7 @@ class View(ttk.Frame):
         print('Add an Excel file')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_addfile)
+        thread = threading.Thread(target=self.controller.experiment_from_file)
         thread.start()
 
     def print_button_clicked(self):
@@ -98,3 +107,30 @@ class View(ttk.Frame):
         :return:
         """
         self.controller = controller
+
+    def menubar(self):
+        menubar = tk.Menu(self)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="New", command=donothing)
+        filemenu.add_command(label="Open", command=self.browse_files)
+        filemenu.add_command(label="Save", command=donothing)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="Help Index", command=donothing)
+        helpmenu.add_command(label="About...", command=donothing)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+        return menubar
+
+    def browse_files(self):
+        filename = filedialog.askopenfilename(initialdir="/",
+                                              title="Select a File",
+                                              filetypes=(("CSV files",
+                                                          "*.csv"),
+                                                         ("all files",
+                                                          "*.*")))
+
+        # Change label contents
+        self.controller.experiment_from_file(filename)
