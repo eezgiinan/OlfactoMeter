@@ -34,3 +34,21 @@ class Controller:
 
         print('Loaded', df.head())
         self.model.experiment = df
+
+    def set_duration(self, duration):
+        try:
+            self.model.duration = duration
+            self.view.show_success(f'Duration set to {duration}s')
+            self.model.time_left = int(duration)
+            self.model.ongoing_countdown = False
+        except ValueError as error:
+            self.view.show_error(error)
+
+    def get_time(self):
+        return self.model.time_left
+
+    def time_update(self):
+        self.model.time_update()
+
+    def start_countdown(self):
+        self.model.ongoing_countdown = True

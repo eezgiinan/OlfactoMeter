@@ -1,6 +1,7 @@
 import threading
 import tkinter as tk
 from tkinter import ttk, filedialog
+import time
 
 from controller import Controller
 
@@ -51,7 +52,7 @@ class View(ttk.Frame):
 
         # creates a button for stop
         self.resting_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.resting_button.grid(row=5, column=1, padx=10)
+        self.resting_button.grid(row=6, column=1, padx=10)
 
         # creates a button for adding an Excel file
         self.resting_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
@@ -70,6 +71,31 @@ class View(ttk.Frame):
         self.S1.grid(row=9, column=2, padx=10)
         self.S2 = tk.Button(self, text='S2 valve', fg='red')
         self.S2.grid(row=10, column=2, padx=10)
+
+        # message
+        self.message_label = ttk.Label(self, text='', foreground='red')
+        self.message_label.grid(row=5, column=1, sticky=tk.W)
+
+        # set duration button
+        self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
+        self.set_duration_button.grid(row=5, column=2, padx=10)
+
+        # start countdown button
+        self.start_countdown_button = ttk.Button(self, text='Start Countdown', command=self.start_countdown)
+        self.start_countdown_button.grid(row=6, column=2, padx=10)
+
+        # countdown label
+        self.countdown_label = ttk.Label(
+            self,
+            text=self.time_string(),
+            font=('Digital-7', 40),
+            background='black',
+            foreground='red')
+
+        self.countdown_label.grid(row=4, column=1, padx=10)
+        # schedule an update every 1 second
+        self.countdown_label.after(1000, self.countdown_update)
+
 
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
@@ -96,6 +122,29 @@ class View(ttk.Frame):
             self.S2 = tk.Button(self, text='S2 valve', fg='green')
             self.S2.grid(row=10, column=2, padx=10)
 
+        # message
+        self.message_label = ttk.Label(self, text='', foreground='red')
+        self.message_label.grid(row=5, column=1, sticky=tk.W)
+
+        # set duration button
+        self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
+        self.set_duration_button.grid(row=5, column=2, padx=10)
+
+        # start countdown button
+        self.start_countdown_button = ttk.Button(self, text='Start Countdown', command=self.start_countdown)
+        self.start_countdown_button.grid(row=6, column=2, padx=10)
+
+        # countdown label
+        self.countdown_label = ttk.Label(
+            self,
+            text=self.time_string(),
+            font=('Digital-7', 40),
+            background='black',
+            foreground='red')
+
+        self.countdown_label.grid(row=4, column=1, padx=10)
+        # schedule an update every 1 second
+        self.countdown_label.after(1000, self.countdown_update)
 
 
     def purging_button_clicked(self):
@@ -185,3 +234,53 @@ class View(ttk.Frame):
         self.update()
         self.controller.experiment_from_file(filename)
 
+    def show_error(self, message):
+        """
+        Show an error message
+        :param message:
+        :return:
+        """
+        self.message_label['text'] = message
+        self.message_label['foreground'] = 'red'
+        self.message_label.after(3000, self.hide_message)
+
+    def show_success(self, message):
+        """
+        Show a success message
+        :param message:
+        :return:
+        """
+        self.message_label['text'] = message
+        self.message_label['foreground'] = 'green'
+        self.message_label.after(3000, self.hide_message)
+
+    def hide_message(self):
+        """
+        Hide the message
+        :return:
+        """
+        self.message_label['text'] = ''
+
+    def set_duration(self):
+        if self.controller:
+            self.controller.set_duration(self.duration_var.get())
+            self.countdown_label.configure(text=self.time_string())
+
+    def time_string(self):
+        if self.controller:
+            return time.strftime('%M:%S', time.gmtime(self.controller.get_time()))
+        else:
+            return time.strftime('%M:%S', time.gmtime(0))
+
+    def countdown_update(self):
+        if self.controller:
+            self.controller.time_update()
+
+        self.countdown_label.configure(text=self.time_string())
+
+        # schedule another timer
+        self.countdown_label.after(1000, self.countdown_update)
+
+    def start_countdown(self):
+        if self.controller:
+            self.controller.start_countdown()
