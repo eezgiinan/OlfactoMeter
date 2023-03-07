@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 
 from controller import Controller
-from main import Modes
 
 
 def donothing():

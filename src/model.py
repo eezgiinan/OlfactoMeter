@@ -54,7 +54,7 @@ class Olfactometer:
         if self.experiment is not None:
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
-                self.set_mode(Modes[mode], duration)
+                self.set_mode(Modes[mode.title()], duration)
                 # time.sleep(duration)
 
         print('completed')
