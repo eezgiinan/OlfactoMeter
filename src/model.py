@@ -43,10 +43,11 @@ class Olfactometer:
         time.sleep(10)
 
 
-    def run_experiment(self, experiment: DataFrame):
-        for mode, duration in zip(experiment['mode'], experiment['duration']):
-            print('Running', mode, duration)
-            time.sleep(duration)
+    def run_experiment(self):
+        if self.experiment:
+            for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
+                print('Running', mode, duration)
+                time.sleep(duration)
 
         print('completed')
 
