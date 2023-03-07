@@ -28,7 +28,7 @@ class Controller:
         if filename.endswith('.csv'):
             df = pd.read_csv(filename)
         elif filename.endswith('.xlsx'):
-            df = pd.read_excel(filename)
+            df = pd.read_excel(filename,engine='openpyxl')
         else:
             raise TypeError('Unsupported File')
 
