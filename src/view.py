@@ -175,8 +175,8 @@ class View(ttk.Frame):
     def browse_files(self):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
-                                              filetypes=[("all files",
-                                                          "."),
+                                              filetypes=[("excel files",
+                                                          "*.xlsx"),
                                                          ("CSV files",
                                                           "*.csv")
                                                          ])
