@@ -7,6 +7,7 @@ from modes import *
 
 class Olfactometer:
     def __init__(self, port):
+        """
         self.port = port
         self.board = pyfirmata.Arduino(port)
         print(port)
@@ -17,6 +18,7 @@ class Olfactometer:
 
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
+        """
         self.experiment = None
 
         # To register the input from duration widget
