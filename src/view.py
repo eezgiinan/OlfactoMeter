@@ -125,30 +125,6 @@ class View(ttk.Frame):
             self.S2 = tk.Button(self, text='S2 valve', fg='green')
             self.S2.grid(row=10, column=2, padx=10)
 
-        # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
-        self.message_label.grid(row=5, column=1, sticky=tk.W)
-
-        # set duration button
-        self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
-        self.set_duration_button.grid(row=5, column=2, padx=10)
-
-        # start countdown button
-        self.start_countdown_button = ttk.Button(self, text='Start Countdown', command=self.start_countdown)
-        self.start_countdown_button.grid(row=6, column=2, padx=10)
-
-        # countdown label
-        self.countdown_label = ttk.Label(
-            self,
-            text=self.time_string(),
-            font=('Digital-7', 40),
-            background='black',
-            foreground='red')
-
-        self.countdown_label.grid(row=4, column=1, padx=10)
-        # schedule an update every 1 second
-        self.countdown_label.after(1000, self.countdown_update)
-
     def purging_button_clicked(self):
         print('Activating purging')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
