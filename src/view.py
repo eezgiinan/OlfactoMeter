@@ -56,7 +56,7 @@ class View(ttk.Frame):
 
         # creates a button for stop
         self.resting_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.resting_button.grid(row=6, column=1, padx=10)
+        self.resting_button.grid(row=7, column=2, padx=10)
 
         # creates a button for adding an Excel file
         self.resting_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
