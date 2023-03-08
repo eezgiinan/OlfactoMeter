@@ -35,9 +35,6 @@ class Olfactometer:
         # Countdown Time Left
         self.time_left = 0
 
-        # Is the countdown ongoing ?
-        self.ongoing_countdown = False
-
     @property
     def experiment(self):
         return self.__experiment

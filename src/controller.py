@@ -9,7 +9,7 @@ class Controller:
         self.view = view
 
     def print(self, text):
-        print('In the controller. Propogating', text)
+        print('In the controller. Propagating', text)
         self.model.print(text)
 
     def activate_odor(self, odor_number):
