@@ -77,29 +77,6 @@ class Olfactometer:
             else:
                 self.time_left -= 1
 
-    def print(self, text):
-        print('In the Model. Receiving ', text)
-
-    def activate_odor(self, odor_number):
-        print(f'Odor {odor_number} activated')
-
-        time.sleep(10)
-        print('IT WORKS!')
-
-    def activate_purging(self):
-        print('Purging activated')
-
-        time.sleep(10)
-
-    def activate_resting(self):
-        print('Resting activated')
-
-        time.sleep(10)
-
-    def activate_stop(self):
-        print('Experiment stopped')
-        time.sleep(10)
-
     def run_experiment(self):
         if self.experiment is not None:
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
@@ -108,15 +85,6 @@ class Olfactometer:
                 # time.sleep(duration)
 
         print('completed')
-
-    def run_manual_experiment(self, mode, duration):
-        if mode in Modes:
-            self.duration = self.controller.set_duration.get()
-            self.set_mode(mode, duration)
-        if command == Controls.Start:
-            start_Experiment()
-        if command == Controls.Stop:
-            close()
 
     # Define a function to set the mode and activate the corresponding pins for a certain duration
     def set_mode(self, mode: Modes, duration):

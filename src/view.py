@@ -15,29 +15,31 @@ class View(ttk.Frame):
         super().__init__(parent)
         self.controller: Controller = None
         # creates label for box
-        self.label = ttk.Label(self, text='Duration:')
-        self.label.grid(row=1, column=0)
+        self.mode = ttk.Label(self, text='Duration:')
+        self.mode.grid(row=1, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
         self.duration_box = ttk.Entry(self, textvariable=self.duration_var, width=30)
         self.duration_box.grid(row=1, column=1, sticky=tk.NSEW)
 
+        """
         # creates a button with a label Print on it. When clicked invokes the method print_button_clicked
         self.print_button = ttk.Button(self, text='Print', command=self.print_button_clicked)
         self.print_button.grid(row=1, column=2, padx=10)
+        """
 
-        # creates label for odor box
-        self.label = ttk.Label(self, text='Odor:')
-        self.label.grid(row=2, column=0)
+        # creates label for mode box
+        self.mode = ttk.Label(self, text='Mode:')
+        self.mode.grid(row=2, column=0)
 
         # creates a text box and saves the number of odor in odor_num_var
-        self.odor_num_var = tk.StringVar()
-        self.odor_num_box = ttk.Entry(self, textvariable=self.odor_num_var, width=30)
-        self.odor_num_box.grid(row=2, column=1, sticky=tk.NSEW)
+        self.mode_var = tk.StringVar()
+        self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
+        self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
 
         # creates a button for odor
-        self.odor_button = ttk.Button(self, text='Odor', command=self.odor_button_clicked)
+        self.odor_button = ttk.Button(self, text='Odor', command=self.run_mode_click)
         self.odor_button.grid(row=2, column=2, padx=10)
         # set the disabled flag
         # self.odor_button.state(['disabled'])
@@ -100,13 +102,13 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
-    def odor_button_clicked(self):
-        print('Activating odor', self.odor_num_var.get())
+    # reads mode and duration values in the text box and activates a thread that executes them
+    def run_mode_click(self):
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(),))
+        thread = threading.Thread(target=self.controller.activate_mode, args=(self.mode_var.get(), self.duration_var.get(), ))
         thread.start()
-        if self.odor_num_var == 1:
+        if self.mode_var == 1:
             self.SA = tk.Button(self, text='SA valve', fg='green')
             self.SA.grid(row=8, column=1, padx=10)
             self.SB = tk.Button(self, text='SB valve', fg='red')
@@ -129,7 +131,7 @@ class View(ttk.Frame):
         print('Activating purging')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_purge)
+        thread = threading.Thread(target=self.controller.activate_mode, args=("Purging", self.duration_var.get(), ))
         thread.start()
         self.SA = tk.Button(self, text='SA valve', fg='green')
         self.SA.grid(row=8, column=1, padx=10)
@@ -144,7 +146,7 @@ class View(ttk.Frame):
         print('Activating resting')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_rest)
+        thread = threading.Thread(target=self.controller.activate_mode)
         thread.start()
         self.SA = tk.Button(self, text='SA valve', fg='red')
         self.SA.grid(row=8, column=1, padx=10)
@@ -154,25 +156,25 @@ class View(ttk.Frame):
         self.S1.grid(row=9, column=2, padx=10)
         self.S2 = tk.Button(self, text='S2 valve', fg='red')
         self.S2.grid(row=10, column=2, padx=10)
-
+    """
     def purge_stop_clicked(self):
         print('Activating Purge and Stop')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_stop)
         thread.start()
-
+    """
     def add_file_clicked(self):
         print('Add an Excel file')
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.experiment_from_file)
         thread.start()
-
+    """
     def print_button_clicked(self):
         print('In the View. Sending', self.duration_var.get())
         self.controller.print(self.duration_var.get())
-
+    """
     def set_controller(self, controller):
         """
         Set the controller
@@ -265,9 +267,6 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
 
-    def run_manual_experiment(self):
-        thread = threading.Thread(target=self.controller.run_manual_experiment)
-        thread.start()
 
 
 
