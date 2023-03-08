@@ -265,6 +265,10 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
 
+    def run_manual_experiment(self):
+        thread = threading.Thread(target=self.controller.run_manual_experiment)
+        thread.start()
+
 
 
 """ 

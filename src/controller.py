@@ -55,3 +55,10 @@ class Controller:
 
     def run_experiment(self):
         self.model.run_experiment()
+
+    def run_manual_experiment(self, duration, odor, purging, resting):
+        self.view.duration_var = duration
+        self.view.odor_num_var = odor
+        self.view.purging_button = purging
+        self.view.resting_button = resting
+        self.model.run_manual_experiment()

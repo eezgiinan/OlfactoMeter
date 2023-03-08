@@ -109,6 +109,15 @@ class Olfactometer:
 
         print('completed')
 
+    def run_manual_experiment(self, mode, duration):
+        if mode in Modes:
+            self.duration = self.controller.set_duration.get()
+            self.set_mode(mode, duration)
+        if command == Controls.Start:
+            start_Experiment()
+        if command == Controls.Stop:
+            close()
+
     # Define a function to set the mode and activate the corresponding pins for a certain duration
     def set_mode(self, mode: Modes, duration):
         # Check if the mode is valid
