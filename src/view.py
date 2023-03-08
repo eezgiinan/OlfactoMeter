@@ -56,7 +56,7 @@ class View(ttk.Frame):
 
         # creates a button for stop
         self.resting_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.resting_button.grid(row=6, column=1, padx=10)
+        self.resting_button.grid(row=11, column=1, padx=10)
 
         # creates a button for adding an Excel file
         self.resting_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
@@ -65,16 +65,6 @@ class View(ttk.Frame):
         # adds the menu
         self.bar = self.menubar()
         parent.config(menu=self.bar)
-
-        # Creates buttons for valves for displaying state (red is closed and green is open
-        self.SA = tk.Button(self, text='SA valve', fg='red')
-        self.SA.grid(row=8, column=1, padx=10)
-        self.SB = tk.Button(self, text='SB valve', fg='red')
-        self.SB.grid(row=8, column=2, padx=10)
-        self.S1 = tk.Button(self, text='S1 valve', fg='red')
-        self.S1.grid(row=9, column=2, padx=10)
-        self.S2 = tk.Button(self, text='S2 valve', fg='red')
-        self.S2.grid(row=10, column=2, padx=10)
 
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
@@ -100,30 +90,23 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
+        #Creates colored circles
+        self.canvas = tk.Canvas(self, width=150, height=250)
+        self.canvas.grid(row=12, column=1, padx=10)
+
+        # Draw 4 circles
+        circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
+        circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
+        circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
+        circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
+
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_odor, args=(self.odor_num_var.get(),))
         thread.start()
-        if self.odor_num_var == 1:
-            self.SA = tk.Button(self, text='SA valve', fg='green')
-            self.SA.grid(row=8, column=1, padx=10)
-            self.SB = tk.Button(self, text='SB valve', fg='red')
-            self.SB.grid(row=8, column=2, padx=10)
-            self.S1 = tk.Button(self, text='S1 valve', fg='green')
-            self.S1.grid(row=9, column=2, padx=10)
-            self.S2 = tk.Button(self, text='S2 valve', fg='red')
-            self.S2.grid(row=10, column=2, padx=10)
-        else:
-            self.SA = tk.Button(self, text='SA valve', fg='green')
-            self.SA.grid(row=8, column=1, padx=10)
-            self.SB = tk.Button(self, text='SB valve', fg='red')
-            self.SB.grid(row=8, column=2, padx=10)
-            self.S1 = tk.Button(self, text='S1 valve', fg='red')
-            self.S1.grid(row=9, column=2, padx=10)
-            self.S2 = tk.Button(self, text='S2 valve', fg='green')
-            self.S2.grid(row=10, column=2, padx=10)
+
 
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
@@ -155,14 +138,7 @@ class View(ttk.Frame):
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_purge)
         thread.start()
-        self.SA = tk.Button(self, text='SA valve', fg='green')
-        self.SA.grid(row=8, column=1, padx=10)
-        self.SB = tk.Button(self, text='SB valve', fg='green')
-        self.SB.grid(row=8, column=2, padx=10)
-        self.S1 = tk.Button(self, text='S1 valve', fg='red')
-        self.S1.grid(row=9, column=2, padx=10)
-        self.S2 = tk.Button(self, text='S2 valve', fg='red')
-        self.S2.grid(row=10, column=2, padx=10)
+
 
     def resting_button_clicked(self):
         print('Activating resting')
@@ -170,14 +146,7 @@ class View(ttk.Frame):
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_rest)
         thread.start()
-        self.SA = tk.Button(self, text='SA valve', fg='red')
-        self.SA.grid(row=8, column=1, padx=10)
-        self.SB = tk.Button(self, text='SB valve', fg='red')
-        self.SB.grid(row=8, column=2, padx=10)
-        self.S1 = tk.Button(self, text='S1 valve', fg='red')
-        self.S1.grid(row=9, column=2, padx=10)
-        self.S2 = tk.Button(self, text='S2 valve', fg='red')
-        self.S2.grid(row=10, column=2, padx=10)
+
 
     def purge_stop_clicked(self):
         print('Activating Purge and Stop')
@@ -288,6 +257,28 @@ class View(ttk.Frame):
     def run_experiment(self):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
+
+    def change_color(self, mode):
+        if mode == 'resting':
+            self.canvas.itemconfig(self.circle1, fill='red')
+            self.canvas.itemconfig(self.circle2, fill='red')
+            self.canvas.itemconfig(self.circle3, fill='red')
+            self.canvas.itemconfig(self.circle4, fill='red')
+        elif mode == 'purging':
+            self.canvas.itemconfig(self.circle1, fill='green')
+            self.canvas.itemconfig(self.circle2, fill='green')
+            self.canvas.itemconfig(self.circle3, fill='red')
+            self.canvas.itemconfig(self.circle4, fill='red')
+        elif mode == 'odor_1':
+            self.canvas.itemconfig(self.circle1, fill='green')
+            self.canvas.itemconfig(self.circle2, fill='red')
+            self.canvas.itemconfig(self.circle3, fill='green')
+            self.canvas.itemconfig(self.circle4, fill='red')
+        elif mode == 'odor_2':
+            self.canvas.itemconfig(self.circle1, fill='green')
+            self.canvas.itemconfig(self.circle2, fill='red')
+            self.canvas.itemconfig(self.circle3, fill='red')
+            self.canvas.itemconfig(self.circle4, fill='green')
 
 
 """ 
