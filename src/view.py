@@ -266,6 +266,7 @@ class View(ttk.Frame):
         thread.start()
 
 
+
 """ 
 function to use for connecting pins to ovals
 
