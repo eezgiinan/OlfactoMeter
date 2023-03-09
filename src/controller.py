@@ -13,7 +13,7 @@ class Controller:
         print('In the controller. Propagating', text)
         self.model.print(text)
     """
-# Activates the mode received from the view
+    # Activates the mode received from the view
     def activate_mode(self, mode, duration):
         mode = Modes[mode.title()]
         duration = int(duration)
@@ -29,6 +29,8 @@ class Controller:
 
         print('Loaded', df.head())
         self.model.experiment = df
+
+    def activate_drop_down(self):
 
     def set_duration(self, duration):
         try:

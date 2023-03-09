@@ -69,7 +69,7 @@ class View(ttk.Frame):
         parent.config(menu=self.bar)
 
         # drop down menu for mode selection
-        self.combo = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"])
+        self.combo = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"], command=self.drop_down_click)
         self.combo.grid(row=2, column=1, padx=10)
 
         # message
@@ -131,12 +131,16 @@ class View(ttk.Frame):
         self.countdown_label.after(1000, self.countdown_update)
 
     def odor_button_clicked(self):
-        print('Activating odor', self.odor_num_var.get())
+        print('Activating odor', self.mode_var.get())
     # reads mode and duration values in the text box and activates a thread that executes them
     def run_mode_click(self):
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_mode, args=(self.mode_var.get(), self.duration_var.get(), ))
+        thread.start()
+
+    def drop_down_click(self):
+        thread = threading.Thread(target=self.controller.activate_drop_down, args=(self.mode_var.get(), self.duration_var.get(),))
         thread.start()
 
     def purging_button_clicked(self):
