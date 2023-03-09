@@ -39,13 +39,13 @@ class View(ttk.Frame):
         self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
 
         # creates a button for odor
-        self.odor_button = ttk.Button(self, text='Odor', command=self.run_mode_click)
+        self.odor_button = ttk.Button(self, text='Run manual', command=self.run_mode_click)
         self.odor_button.grid(row=2, column=2, padx=10)
         # set the disabled flag
         # self.odor_button.state(['disabled'])
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self, text='Run', command=self.run_experiment)
+        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
         # creates a button for purging
@@ -55,11 +55,11 @@ class View(ttk.Frame):
         # creates a button for resting
         self.resting_button = ttk.Button(self, text='Resting', command=self.resting_button_clicked)
         self.resting_button.grid(row=4, column=2, padx=10)
-
+        """
         # creates a button for stop
         self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
         self.stop_button.grid(row=7, column=2, padx=10)
-
+        """
         # creates a button for adding an Excel file
         self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
         self.file_button.grid(row=7, column=1, padx=10)
