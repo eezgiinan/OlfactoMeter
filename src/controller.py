@@ -30,9 +30,6 @@ class Controller:
         print('Loaded', df.head())
         self.model.experiment = df
 
-    def activate_drop_down(self, mode):
-        self.model.drop_down(mode)
-
     def set_duration(self, duration):
         try:
             self.model.duration = duration

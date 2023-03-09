@@ -4,6 +4,7 @@ from tkinter import ttk, filedialog
 import time
 
 from controller import Controller
+from modes import Modes
 
 
 def donothing():
@@ -69,10 +70,13 @@ class View(ttk.Frame):
         parent.config(menu=self.bar)
 
         # drop down menu for mode selection
-        self.drop = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"])
+        self.drop_var = tk.StringVar()
+        self.drop = ttk.Combobox(state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
         self.drop.grid(row=2, column=1, padx=10)
 
-        self.drop.bind('<<ComboboxSelected>>', self.drop_down_click())
+        # drop down button
+        self.drop_button = ttk.Button(self, text='Run drop down', command=self.drop_down_click)
+        self.drop_button.grid(row=2, column=2, padx=10)
 
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
@@ -137,13 +141,12 @@ class View(ttk.Frame):
 
     # reads mode and duration values in the text box and activates a thread that executes them
     def run_mode_click(self):
-        # Create a new thread (executing unit that can be run in parallel). This in required as the python
-        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_mode, args=(self.mode_var.get(), self.duration_var.get(), ))
         thread.start()
 
     def drop_down_click(self):
-        thread = threading.Thread(target=self.controller.activate_drop_down, args=(self.drop.get(), ))
+        print('Activating drop down', self.drop_var.get())
+        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(), ))
         thread.start()
 
     def purging_button_clicked(self):
