@@ -51,8 +51,10 @@ class Controller:
     def run_experiment(self):
         self.model.run_experiment()
 
-    def change_color(self):
-        self.model.change_color()
+    def get_mode(self, mode, duration):
+        mode = Modes[mode.title()]
+        duration = int(duration)
+        self.model.get_mode(mode)
     """
     def run_manual_experiment(self, duration, odor, purging, resting):
         self.view.duration_var = duration

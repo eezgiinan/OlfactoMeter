@@ -33,7 +33,7 @@ class View(ttk.Frame):
         self.mode = ttk.Label(self, text='Mode:')
         self.mode.grid(row=2, column=0)
 
-        # creates a text box and saves the number of odor in odor_num_var
+        # creates a text box and saves the mode in mode_num_var
         self.mode_var = tk.StringVar()
         self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
         self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
@@ -131,7 +131,7 @@ class View(ttk.Frame):
         self.countdown_label.after(1000, self.countdown_update)
 
     def odor_button_clicked(self):
-        print('Activating odor', self.odor_num_var.get())
+        print('Activating odor', self.mode_var.get())
     # reads mode and duration values in the text box and activates a thread that executes them
     def run_mode_click(self):
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
@@ -265,9 +265,33 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
 
-    def change_color(self):
-        thread = threading.Thread(target=self.controller.change_color,  args=(self.mode.get(), ))
+    def get_mode(self):
+        thread = threading.Thread(target=self.controller.get_mode, args=(self.mode_var.get(), self.duration_var.get()))
         thread.start()
+
+    def color_change(self, mode,duration):
+        if self.controller:
+            self.controller.get_mode(self.mode_var.get())
+            if {mode} == 'Resting':
+                self.canvas.itemconfig(self.circle1, fill='red')
+                self.canvas.itemconfig(self.circle2, fill='red')
+                self.canvas.itemconfig(self.circle3, fill='red')
+                self.canvas.itemconfig(self.circle4, fill='red')
+            elif mode == 'Purging':
+                self.canvas.itemconfig(self.circle1, fill='green')
+                self.canvas.itemconfig(self.circle2, fill='green')
+                self.canvas.itemconfig(self.circle3, fill='red')
+                self.canvas.itemconfig(self.circle4, fill='red')
+            elif mode == 'Odor_1':
+                self.canvas.itemconfig(self.circle1, fill='green')
+                self.canvas.itemconfig(self.circle2, fill='red')
+                self.canvas.itemconfig(self.circle3, fill='green')
+                self.canvas.itemconfig(self.circle4, fill='red')
+            elif mode == 'Odor_2':
+                self.canvas.itemconfig(self.circle1, fill='green')
+                self.canvas.itemconfig(self.circle2, fill='red')
+                self.canvas.itemconfig(self.circle3, fill='red')
+                self.canvas.itemconfig(self.circle4, fill='green')
 
 
 
