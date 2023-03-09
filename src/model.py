@@ -86,6 +86,10 @@ class Olfactometer:
 
         print('completed')
 
+    def drop_down(self, mode, duration):
+        if self.experiment is not None:
+            self.set_mode(Modes[mode.title()], duration)
+
     # Define a function to set the mode and activate the corresponding pins for a certain duration
     def set_mode(self, mode: Modes, duration):
         # Check if the mode is valid

@@ -15,7 +15,7 @@ class View(ttk.Frame):
         super().__init__(parent)
         self.controller: Controller = None
         # creates label for box
-        self.mode = ttk.Label(self, text='Duration:')
+        self.mode = ttk.Label(self, text='Select the duration:')
         self.mode.grid(row=1, column=0)
 
         # creates a text box and saves the value of the box in duration_var
@@ -30,7 +30,7 @@ class View(ttk.Frame):
         """
 
         # creates label for mode box
-        self.mode = ttk.Label(self, text='Mode:')
+        self.mode = ttk.Label(self, text='Select the mode:')
         self.mode.grid(row=2, column=0)
 
         # creates a text box and saves the number of odor in odor_num_var
@@ -69,8 +69,10 @@ class View(ttk.Frame):
         parent.config(menu=self.bar)
 
         # drop down menu for mode selection
-        self.combo = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"], command=self.drop_down_click)
-        self.combo.grid(row=2, column=1, padx=10)
+        self.drop = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"])
+        self.drop.grid(row=2, column=1, padx=10)
+
+        self.drop.bind('<<ComboboxSelected>>', self.drop_down_click())
 
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
@@ -96,7 +98,7 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
-        #Creates colored circles
+        # Creates colored circles
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=12, column=1, padx=10)
 
@@ -132,6 +134,7 @@ class View(ttk.Frame):
 
     def odor_button_clicked(self):
         print('Activating odor', self.mode_var.get())
+
     # reads mode and duration values in the text box and activates a thread that executes them
     def run_mode_click(self):
         # Create a new thread (executing unit that can be run in parallel). This in required as the python
@@ -140,7 +143,7 @@ class View(ttk.Frame):
         thread.start()
 
     def drop_down_click(self):
-        thread = threading.Thread(target=self.controller.activate_drop_down, args=(self.mode_var.get(), self.duration_var.get(),))
+        thread = threading.Thread(target=self.controller.activate_drop_down, args=(self.drop.get(), ))
         thread.start()
 
     def purging_button_clicked(self):
@@ -149,7 +152,6 @@ class View(ttk.Frame):
         # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
         thread = threading.Thread(target=self.controller.activate_mode, args=("Purging", self.duration_var.get(), ))
         thread.start()
-
 
     def resting_button_clicked(self):
         print('Activating resting')
