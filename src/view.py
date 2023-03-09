@@ -68,6 +68,10 @@ class View(ttk.Frame):
         self.bar = self.menubar()
         parent.config(menu=self.bar)
 
+        # drop down menu for mode selection
+        self.combo = ttk.Combobox(state="readonly", values=["Resting", "Purging", "Odor_1", "Odor_2"])
+        self.combo.grid(row=2, column=1, padx=10)
+
         # Creates buttons for valves for displaying state (red is closed and green is open
         self.SA = tk.Button(self, text='SA valve', fg='red')
         self.SA.grid(row=8, column=1, padx=10)
