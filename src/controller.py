@@ -55,3 +55,6 @@ class Controller:
 
     def run_experiment(self):
         self.model.run_experiment()
+
+    def change_color(self):
+        self.model.change_color()

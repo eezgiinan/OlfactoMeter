@@ -91,14 +91,14 @@ class View(ttk.Frame):
         self.countdown_label.after(1000, self.countdown_update)
 
         #Creates colored circles
-        self.canvas = tk.Canvas(self, width=150, height=250)
+        self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=12, column=1, padx=10)
 
         # Draw 4 circles
-        circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
-        circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
-        circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
-        circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
+        self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
+        self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
+        self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
+        self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
 
     def odor_button_clicked(self):
         print('Activating odor', self.odor_num_var.get())
@@ -258,27 +258,10 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
 
-    def change_color(self, mode):
-        if mode == 'resting':
-            self.canvas.itemconfig(self.circle1, fill='red')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'purging':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='green')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'odor_1':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='green')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'odor_2':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='green')
+    def change_color(self):
+        thread = threading.Thread(target=self.controller.change_color,  args=(self.mode.get(), ))
+        thread.start()
+
 
 
 """ 
