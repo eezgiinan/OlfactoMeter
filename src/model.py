@@ -35,9 +35,6 @@ class Olfactometer:
         # Countdown Time Left
         self.time_left = 0
 
-        # Is the countdown ongoing ?
-        self.ongoing_countdown = False
-
     @property
     def experiment(self):
         return self.__experiment
@@ -79,30 +76,6 @@ class Olfactometer:
                 self.ongoing_countdown = False
             else:
                 self.time_left -= 1
-
-    def print(self, text):
-        print('In the Model. Receiving ', text)
-
-    def activate_odor(self, odor_number):
-        print(f'Odor {odor_number} activated')
-
-        time.sleep(10)
-        print('IT WORKS!')
-
-    def activate_purging(self):
-        print('Purging activated')
-
-        time.sleep(10)
-
-    def activate_resting(self):
-        print('Resting activated')
-
-        time.sleep(10)
-
-    def activate_stop(self):
-        print('Experiment stopped')
-        time.sleep(10)
-
 
     def run_experiment(self):
         if self.experiment is not None:

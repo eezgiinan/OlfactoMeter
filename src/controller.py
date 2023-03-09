@@ -1,5 +1,5 @@
 import pandas as pd
-
+from modes import Modes
 from model import Olfactometer
 
 
@@ -8,21 +8,16 @@ class Controller:
         self.model: Olfactometer = model
         self.view = view
 
+    """
     def print(self, text):
-        print('In the controller. Propogating', text)
+        print('In the controller. Propagating', text)
         self.model.print(text)
-
-    def activate_odor(self, odor_number):
-        self.model.activate_odor(odor_number)
-
-    def activate_purge(self):
-        self.model.activate_purging()
-
-    def activate_rest(self):
-        self.model.activate_resting()
-
-    def activate_stop(self):
-        self.model.activate_stop()
+    """
+# Activates the mode received from the view
+    def activate_mode(self, mode, duration):
+        mode = Modes[mode.title()]
+        duration = int(duration)
+        self.model.set_mode(mode, duration)
 
     def experiment_from_file(self, filename: str):
         if filename.endswith('.csv'):
@@ -58,3 +53,11 @@ class Controller:
 
     def change_color(self):
         self.model.change_color()
+    """
+    def run_manual_experiment(self, duration, odor, purging, resting):
+        self.view.duration_var = duration
+        self.view.mode_var = odor
+        self.view.purging_button = purging
+        self.view.resting_button = resting
+        self.model.run_manual_experiment()
+    """
