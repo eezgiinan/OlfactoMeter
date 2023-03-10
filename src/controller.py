@@ -55,6 +55,7 @@ class Controller:
         mode = Modes[mode.title()]
         duration = int(duration)
         self.model.get_mode(mode)
+
     """
     def run_manual_experiment(self, duration, odor, purging, resting):
         self.view.duration_var = duration
