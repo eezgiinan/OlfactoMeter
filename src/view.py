@@ -58,7 +58,7 @@ class View(ttk.Frame):
         self.drop.grid(row=2, column=6, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self, text='Run drop down', command=self.drop_down_click)
+        self.drop_button = ttk.Button(self, text='Run', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # message
