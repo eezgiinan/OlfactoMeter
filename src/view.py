@@ -54,7 +54,7 @@ class View(ttk.Frame):
 
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
-        self.drop = ttk.Combobox(state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
+        self.drop = ttk.Combobox(parent, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
         self.drop.grid(row=2, column=6, padx=10)
 
         # drop down button
