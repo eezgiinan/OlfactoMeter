@@ -28,16 +28,16 @@ class View(ttk.Frame):
         self.mode = ttk.Label(self, text='Select the mode:')
         self.mode.grid(row=2, column=0, padx=10)
 
+        # Run Experiment button
+        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
+        self.run_exp_button.grid(row=6, column=1, padx=10)
+
         """
         # creates a text box and saves the mode in mode_var.
         Keeping it here in case we cannot solve the drop-down box issue
         self.mode_var = tk.StringVar()
         self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
         self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
-        
-        # Run Experiment button
-        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
-        self.run_exp_button.grid(row=6, column=1, padx=10)
         
         # creates a button for stop
         self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
