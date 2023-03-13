@@ -9,7 +9,7 @@ class Controller:
         self.view = view
 
     def print(self, text):
-        print('In the controller. Propogating', text)
+        print('In the controller. Propagating', text)
         self.model.print(text)
 
     def activate_odor(self, odor_number):
@@ -28,7 +28,7 @@ class Controller:
         if filename.endswith('.csv'):
             df = pd.read_csv(filename)
         elif filename.endswith('.xlsx'):
-            df = pd.read_excel(filename,engine='openpyxl')
+            df = pd.read_excel(filename, engine='openpyxl')
         else:
             raise TypeError('Unsupported File')
 
@@ -52,3 +52,6 @@ class Controller:
 
     def start_countdown(self):
         self.model.ongoing_countdown = True
+
+    def run_experiment(self):
+        self.model.run_experiment()

@@ -1,14 +1,24 @@
 import time
 
 import pyfirmata
-from pandas import DataFrame
+
+from modes import *
 
 
 class Olfactometer:
     def __init__(self, port):
+        """
         self.port = port
-        # board = pyfirmata.Arduino(port)
+        self.board = pyfirmata.Arduino(port)
         print(port)
+        self.SA_pin = self.board.get_pin('d:4:o')
+        self.SB_pin = self.board.get_pin('d:5:o')
+        self.S1_pin = self.board.get_pin('d:6:o')
+        self.S2_pin = self.board.get_pin('d:7:o')
+
+        self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
+        self._init_pins()
+        """
         self.experiment = None
 
         # To register the input from duration widget
@@ -19,6 +29,13 @@ class Olfactometer:
 
         # Is the countdown ongoing ?
         self.ongoing_countdown = False
+        self.experiment = None
+
+        # To register the input from duration widget
+        self.duration = '0'
+
+        # Countdown Time Left
+        self.time_left = 0
 
     @property
     def experiment(self):
@@ -87,9 +104,37 @@ class Olfactometer:
 
 
     def run_experiment(self):
-        if self.experiment:
+        if self.experiment is not None:
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
-                time.sleep(duration)
+                self.set_mode(Modes[mode.title()], duration)
+                # time.sleep(duration)
 
         print('completed')
+
+    # Define a function to set the mode and activate the corresponding pins for a certain duration
+    def set_mode(self, mode: Modes, duration):
+        # Check if the mode is valid
+        if mode not in Modes:
+            print(f"Invalid mode: {mode}")
+            return
+        # Check if the duration is valid
+        if duration <= 0:
+            print(f"Invalid duration: {duration}")
+            return
+        # Get the pin values for the selected mode
+        valves = mode.value
+        # Activate the corresponding pins for the selected mode
+        for i, valve in enumerate(self.PINS):
+            valve.mode = pyfirmata.OUTPUT
+            valve.write(valves[i])
+        # Wait for the specified duration
+        time.sleep(duration)
+        # Deactivate all pins
+        for pin in self.PINS:
+            pin.write(CLOSE)
+
+    def _init_pins(self):
+        for pin in self.PINS:
+            pin.mode = pyfirmata.OUTPUT
+            pin.write(CLOSE)
