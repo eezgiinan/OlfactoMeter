@@ -75,10 +75,6 @@ class View(ttk.Frame):
         self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
         self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
 
-        # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
-        self.message_label.grid(row=5, column=1, sticky=tk.W)
-
         # set duration button
         self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
         self.set_duration_button.grid(row=14, column=2, padx=10)
@@ -98,6 +94,23 @@ class View(ttk.Frame):
         self.countdown_label.grid(row=15, column=1, padx=10)
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
+
+        # Label to see current state
+        self.current_state_label = ttk.Label(self, text=self.current_state())
+        self.current_state_label.grid(row=3, column=1)
+        self.current_state_label.after(1, self.state_update)
+
+    def current_state(self):
+        if self.controller:
+            return self.controller.get_current_state()
+        else:
+            return 'No controller'
+
+    def state_update(self):
+        self.current_state_label.configure(text=self.current_state())
+
+        # schedule another timer
+        self.current_state_label.after(1, self.state_update)
 
     # reads mode and duration values in the text box and activates a thread that executes them
     def drop_down_click(self):

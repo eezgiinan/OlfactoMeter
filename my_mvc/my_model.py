@@ -1,20 +1,25 @@
 import time
 import pyfirmata
 from my_modes import *
+from olfactometer_machine import *
 
 
 class Olfactometer:
     def __init__(self, port):
         self.port = port
+
+        """
         self.board = pyfirmata.Arduino(port)
         print(port)
         self.SA_pin = self.board.get_pin('d:4:o')
         self.SB_pin = self.board.get_pin('d:5:o')
         self.S1_pin = self.board.get_pin('d:6:o')
         self.S2_pin = self.board.get_pin('d:7:o')
-
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
+        
+
         self._init_pins()
+        """
         self.experiment = None
 
         # To register the input from duration widget
@@ -32,6 +37,8 @@ class Olfactometer:
 
         # Countdown Time Left
         self.time_left = 0
+
+        self.odor_machine = OlfactometerMachine()
 
     @property
     def experiment(self):
@@ -84,6 +91,7 @@ class Olfactometer:
 
         print('completed')
 
+    """
     # Given a mode and a duration, activates the pin on Arduino specific to the mode passed as input
     def set_mode(self, mode: Modes, duration):
         # Check if the mode is valid
@@ -110,6 +118,7 @@ class Olfactometer:
         for pin in self.PINS:
             pin.mode = pyfirmata.OUTPUT
             pin.write(CLOSE)
+    """
 
     def change_color(self, mode):
         if mode == 'resting':

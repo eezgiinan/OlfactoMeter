@@ -42,6 +42,9 @@ class Controller:
     def get_time(self):
         return self.model.time_left
 
+    def get_current_state(self):
+        return self.model.odor_machine.current_state.name
+
     def time_update(self):
         self.model.time_update()
 
