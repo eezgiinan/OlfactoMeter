@@ -55,7 +55,7 @@ class View(ttk.Frame):
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
         self.drop = ttk.Combobox(self, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
-        self.drop.grid(row=2, column=6, padx=10)
+        self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
         self.drop_button = ttk.Button(self, text='Run drop down', command=self.drop_down_click)
@@ -115,6 +115,7 @@ class View(ttk.Frame):
         print('Activating drop down', self.drop_var.get())
         thread = threading.Thread(target=self.controller.activate_mode_new, args=(self.drop_var.get(), self.duration_var.get(), ))
         thread.start()
+        self.status_update()
 
     """
     def purge_stop_clicked(self):

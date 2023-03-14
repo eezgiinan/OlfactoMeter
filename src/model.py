@@ -18,7 +18,7 @@ class Olfactometer:
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
         self.experiment = None
-        self.is_running = 0
+        self.is_running = False
 
         # To register the input from duration widget
         self.duration = '0'
@@ -35,10 +35,14 @@ class Olfactometer:
 
     @experiment.setter
     def experiment(self, value):
-        if self.is_running:
-            print('Unable to overwrite the experiment, stop and then set new experiment')
-        else:
-            self.__experiment = value
+        self.__experiment = value
+
+    """
+    if self.is_running is True:
+        print('Unable to overwrite the experiment, stop and then set new experiment')
+    else:
+        self.__experiment = value
+    """
 
     @property
     def duration(self):
@@ -76,12 +80,12 @@ class Olfactometer:
 
     def run_experiment(self):
         if self.experiment is not None:
-            self.is_running = 1
+            self.is_running = True
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)
                 # time.sleep(duration)
-            self.is_running = 0
+            self.is_running = False
         print('completed')
 
     # Given a mode and a duration, activates the pin on Arduino specific to the mode passed as input
