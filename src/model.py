@@ -18,6 +18,7 @@ class Olfactometer:
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
         self.experiment = None
+        self.is_running = 0
 
         # To register the input from duration widget
         self.duration = '0'
@@ -27,13 +28,6 @@ class Olfactometer:
 
         # Is the countdown ongoing ?
         self.ongoing_countdown = False
-        self.experiment = None
-
-        # To register the input from duration widget
-        self.duration = '0'
-
-        # Countdown Time Left
-        self.time_left = 0
 
     @property
     def experiment(self):
@@ -41,7 +35,10 @@ class Olfactometer:
 
     @experiment.setter
     def experiment(self, value):
-        self.__experiment = value
+        if self.is_running:
+            print('Unable to overwrite the experiment, stop and then set new experiment')
+        else:
+            self.__experiment = value
 
     @property
     def duration(self):
@@ -79,11 +76,12 @@ class Olfactometer:
 
     def run_experiment(self):
         if self.experiment is not None:
+            self.is_running = 1
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)
                 # time.sleep(duration)
-
+            self.is_running = 0
         print('completed')
 
     # Given a mode and a duration, activates the pin on Arduino specific to the mode passed as input
@@ -113,6 +111,14 @@ class Olfactometer:
             pin.mode = pyfirmata.OUTPUT
             pin.write(CLOSE)
 
+    def get_status(self):
+        status = []
+        for pin in self.PINS:
+            status.append(pin.read())   # Reads the status of the pin, and saves the value in the status list
+
+        return status
+
+    """
     def change_color(self, mode):
         if mode == 'resting':
             self.canvas.itemconfig(self.circle1, fill='red')
@@ -134,3 +140,4 @@ class Olfactometer:
             self.canvas.itemconfig(self.circle2, fill='red')
             self.canvas.itemconfig(self.circle3, fill='red')
             self.canvas.itemconfig(self.circle4, fill='green')
+    """
