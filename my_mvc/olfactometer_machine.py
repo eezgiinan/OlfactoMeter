@@ -1,6 +1,7 @@
 from statemachine import StateMachine, State
 from my_modes import Odors
 
+
 class OlfactometerMachine(StateMachine):
     """Olfactometer Project State Machine"""
 #    [State(name=odor, value=odor.index(odor) + 3) for odor in odor_names]
