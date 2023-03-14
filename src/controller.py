@@ -19,6 +19,11 @@ class Controller:
         duration = int(duration)
         self.model.set_mode(mode, duration)
 
+    def activate_mode_new(self, mode, duration):
+        experiment = pd.DataFrame([(mode, int(duration))], columns=['mode', 'duration'])
+        self.model.experiment = experiment
+        self.run_experiment()
+
     def experiment_from_file(self, filename: str):
         if filename.endswith('.csv'):
             df = pd.read_csv(filename)
@@ -49,18 +54,11 @@ class Controller:
         self.model.ongoing_countdown = True
 
     def run_experiment(self):
-        self.model.run_experiment()
+        if not self.model.is_running:
+            self.model.run_experiment()
+        else:
+            print('Unable to run, already running! Stop and purge before running again')
 
-    def get_mode(self, mode, duration):
-        mode = Modes[mode.title()]
-        duration = int(duration)
-        self.model.get_mode(mode)
+    def get_status(self):
+        return self.model.is_running, self.model.get_status()
 
-    """
-    def run_manual_experiment(self, duration, odor, purging, resting):
-        self.view.duration_var = duration
-        self.view.mode_var = odor
-        self.view.purging_button = purging
-        self.view.resting_button = resting
-        self.model.run_manual_experiment()
-    """
