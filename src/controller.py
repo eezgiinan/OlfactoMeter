@@ -8,7 +8,7 @@ class Controller:
         self.model: Olfactometer = model
         self.view = view
 
-    # Activates the mode received from the view
+# Activates the mode received from the view
     def activate_mode(self, mode, duration):
         mode = Modes[mode.title()]
         duration = int(duration)

@@ -69,17 +69,13 @@ class View(ttk.Frame):
         self.canvas = tk.Canvas(self, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
-        """
-        # Draw 4 circles
-        self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
-        self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
-        self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
-        self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
-        """
-
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(85, 25, 125, 65), self.canvas.create_oval(145, 25, 185, 65)]
+        self.labels= self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
         for oval in self.ovals:
             self.canvas.itemconfig(oval, fill="yellow")
 
