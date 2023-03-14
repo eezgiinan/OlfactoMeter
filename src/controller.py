@@ -8,11 +8,6 @@ class Controller:
         self.model: Olfactometer = model
         self.view = view
 
-    """
-    def print(self, text):
-        print('In the controller. Propagating', text)
-        self.model.print(text)
-    """
 # Activates the mode received from the view
     def activate_mode(self, mode, duration):
         mode = Modes[mode.title()]
