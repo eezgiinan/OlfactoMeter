@@ -28,16 +28,16 @@ class View(ttk.Frame):
         self.mode = ttk.Label(self, text='Select the mode:')
         self.mode.grid(row=2, column=0, padx=10)
 
+        # Run Experiment button
+        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
+        self.run_exp_button.grid(row=6, column=1, padx=10)
+
         """
         # creates a text box and saves the mode in mode_var.
         Keeping it here in case we cannot solve the drop-down box issue
         self.mode_var = tk.StringVar()
         self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
         self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
-        
-        # Run Experiment button
-        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
-        self.run_exp_button.grid(row=6, column=1, padx=10)
         
         # creates a button for stop
         self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
@@ -54,8 +54,8 @@ class View(ttk.Frame):
 
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
-        self.drop = ttk.Combobox(state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
-        self.drop.grid(row=2, column=6, padx=10)
+        self.drop = ttk.Combobox(self, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
+        self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
         self.drop_button = ttk.Button(self, text='Run', command=self.drop_down_click)
@@ -69,11 +69,22 @@ class View(ttk.Frame):
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=17, column=2, padx=10)
 
+        """
         # Draw 4 circles
         self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
         self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
         self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
         self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
+        """
+
+        # draw an Oval in the canvas
+        self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
+                      self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
+        for oval in self.ovals:
+            self.canvas.itemconfig(oval, fill="yellow")
+
+        # create assignment to status
+        self.color_map = {0: 'green', 1: 'red'}
 
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
@@ -102,8 +113,9 @@ class View(ttk.Frame):
     # reads mode and duration values in the text box and activates a thread that executes them
     def drop_down_click(self):
         print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(), ))
+        thread = threading.Thread(target=self.controller.activate_mode_new, args=(self.drop_var.get(), self.duration_var.get(), ))
         thread.start()
+        self.status_update()
 
     """
     def purge_stop_clicked(self):
@@ -212,14 +224,27 @@ class View(ttk.Frame):
     def run_experiment(self):
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
+        self.status_update()
 
+    """
     def change_color(self):
         thread = threading.Thread(target=self.controller.change_color,  args=(self.mode.get(), ))
         thread.start()
+    """
 
+    def status_update(self):
+        is_running, pins_status = self.controller.get_status()
+        # is_running: Whether we are currently executing an experiment (binary) or not
+        # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
+        print('Running', is_running)
+        print('Status', pins_status)
+        for i in range(len(pins_status)):
+            self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
 
-
-
+        if is_running:
+            self.after(1000, self.status_update)
+        else:
+            print('Completed')
 
 """ 
 function to use for connecting pins to ovals
