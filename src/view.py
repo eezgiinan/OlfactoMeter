@@ -69,14 +69,6 @@ class View(ttk.Frame):
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=17, column=2, padx=10)
 
-        """
-        # Draw 4 circles
-        self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
-        self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
-        self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
-        self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
-        """
-
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
