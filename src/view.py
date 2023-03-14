@@ -15,21 +15,33 @@ class View(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.controller: Controller = None
+
+        #creates frame
+
+        self.frame1 = tk.Frame(self, width=200, height=400, bg='SteelBlue2')
+        self.frame1.grid(row=1, sticky="ew", padx=5)
+
+        self.frame2 = tk.Frame(self, width=200, height=200, bg='SteelBlue3')
+        self.frame2.grid(row=3, sticky="nsew", padx=10)
+
+        self.frame3 = tk.Frame(self, width=200, height=200, bg='SteelBlue4')
+        self.frame3.grid(row=5, sticky="ew", padx=10)
+
         # creates label for box
-        self.mode = ttk.Label(self, text='Select the duration:')
+        self.mode = ttk.Label(self.frame1, text='Select the duration:')
         self.mode.grid(row=1, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
-        self.duration_box = ttk.Entry(self, textvariable=self.duration_var, width=30)
+        self.duration_box = ttk.Entry(self.frame1, textvariable=self.duration_var, width=30)
         self.duration_box.grid(row=1, column=1)
 
         # creates label for mode box
-        self.mode = ttk.Label(self, text='Select the mode:')
+        self.mode = ttk.Label(self.frame1, text='Select the mode:')
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
+        self.run_exp_button = ttk.Button(self.frame2, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
         """
@@ -54,11 +66,11 @@ class View(ttk.Frame):
 
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
-        self.drop = ttk.Combobox(self, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
+        self.drop = ttk.Combobox(self.frame1, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self, text='Run', command=self.drop_down_click)
+        self.drop_button = ttk.Button(self.frame2, text='Run', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # message
@@ -66,18 +78,25 @@ class View(ttk.Frame):
         self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # Creates colored circles
-        self.canvas = tk.Canvas(self, width=210, height=140)
+        self.canvas = tk.Canvas(self.frame3, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(85, 25, 125, 65), self.canvas.create_oval(145, 25, 185, 65)]
+        for oval in self.ovals:
+            self.canvas.itemconfig(oval, fill="yellow")
+
+        # create the labels for the ovals
         self.labels= self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
-        for oval in self.ovals:
-            self.canvas.itemconfig(oval, fill="yellow")
+
+        # create separations in  the window
+        #self.separator = ttk.Separator(self, orient='vertical')
+        #self.separator.place(relx=0.47, rely=0, relwidth=0.2, relheight=1)
+
 
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
