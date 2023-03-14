@@ -66,7 +66,7 @@ class View(ttk.Frame):
         self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # Creates colored circles
-        self.canvas = tk.Canvas(self, width=100, height=250)
+        self.canvas = tk.Canvas(self, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
         """
@@ -79,7 +79,7 @@ class View(ttk.Frame):
 
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
-                      self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
+                      self.canvas.create_oval(85, 25, 125, 65), self.canvas.create_oval(145, 25, 185, 65)]
         for oval in self.ovals:
             self.canvas.itemconfig(oval, fill="yellow")
 
