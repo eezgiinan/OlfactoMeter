@@ -1,6 +1,6 @@
 import pandas as pd
-from modes import Modes
-from model import Olfactometer
+from my_modes import Modes
+from my_model import Olfactometer
 
 
 class Controller:

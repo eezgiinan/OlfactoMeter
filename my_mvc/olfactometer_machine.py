@@ -1,13 +1,4 @@
 from statemachine import StateMachine, State
-import enum
-
-
-class Odors(enum.Enum):
-    """
-    Different odors that the user can use
-    """
-    Odor_1 = 'Mint'
-    Odor_2 = 'Almond'
 
 
 class OlfactometerMachine(StateMachine):

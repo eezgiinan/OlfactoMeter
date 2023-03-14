@@ -1,8 +1,6 @@
 import time
-
 import pyfirmata
-
-from modes import *
+from my_modes import *
 
 
 class Olfactometer:
