@@ -72,6 +72,10 @@ class View(ttk.Frame):
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
+        self.labels= self.canvas.create_text(10, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(10, 10, text="SB valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(10, 10, text="S1 valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(10, 10, text="S2 valve", anchor='nw', fill="black")
         for oval in self.ovals:
             self.canvas.itemconfig(oval, fill="yellow")
 
