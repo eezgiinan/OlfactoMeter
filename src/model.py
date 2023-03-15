@@ -17,8 +17,8 @@ class Olfactometer:
 
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
+        self.is_running = 0
         self.experiment = None
-        self.is_running = False
 
         # To register the input from duration widget
         self.duration = '0'
@@ -35,15 +35,12 @@ class Olfactometer:
 
     @experiment.setter
     def experiment(self, value):
-        self.__experiment = value
+        if self.is_running is 1:
+            print('Unable to overwrite the experiment, stop and then set new experiment')
+        else:
+            self.__experiment = value
 
-    """
-    if self.is_running is True:
-        print('Unable to overwrite the experiment, stop and then set new experiment')
-    else:
-        self.__experiment = value
-    """
-
+    # self.__experiment = value
     @property
     def duration(self):
         return self.__duration
