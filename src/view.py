@@ -18,22 +18,25 @@ class View(ttk.Frame):
 
         #creates frame
 
-        self.frame1 = tk.Frame(self, width=200, height=400, bg='SteelBlue2')
-        self.frame1.grid(row=1, sticky="ew", padx=5)
+        self.frame1 = tk.Frame(self, width=300, height=400, bg='blue')
+        self.frame1.grid(row=1, sticky="nw", padx=10, pady=10)
 
-        self.frame2 = tk.Frame(self, width=200, height=200, bg='SteelBlue3')
-        self.frame2.grid(row=3, sticky="nsew", padx=10)
+        self.frame2 = tk.Frame(self, width=200, height=200, bg='SteelBlue1')
+        self.frame2.grid(row=1, sticky="ew", padx=10, pady=10)
 
-        self.frame3 = tk.Frame(self, width=200, height=200, bg='SteelBlue4')
-        self.frame3.grid(row=5, sticky="ew", padx=10)
+        self.frame3 = tk.Frame(self, width=200, height=200, bg='SteelBlue3')
+        self.frame3.grid(row=3, sticky="ew", padx=10, pady=10)
+
+        self.frame4 = tk.Frame(self, width=200, height=600, bg='SteelBlue4')
+        self.frame4.grid(row=1, column=3, sticky="nw", padx=10, pady=10)
 
         # creates label for box
-        self.mode = ttk.Label(self.frame1, text='Select the duration:')
+        self.mode = tk.Label(self.frame3, text='Select the duration:')
         self.mode.grid(row=1, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
-        self.duration_box = ttk.Entry(self.frame1, textvariable=self.duration_var, width=30)
+        self.duration_box = ttk.Entry(self.frame3, textvariable=self.duration_var, width=30)
         self.duration_box.grid(row=1, column=1)
 
         # creates label for mode box
@@ -41,7 +44,7 @@ class View(ttk.Frame):
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self.frame2, text='Run file', command=self.run_experiment)
+        self.run_exp_button = ttk.Button(self.frame3, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
         """
@@ -70,15 +73,15 @@ class View(ttk.Frame):
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self.frame2, text='Run', command=self.drop_down_click)
+        self.drop_button = ttk.Button(self.frame3, text='Run', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
+        self.message_label = ttk.Label(self.frame4, text='', foreground='blue')
         self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # Creates colored circles
-        self.canvas = tk.Canvas(self.frame3, width=210, height=140)
+        self.canvas = tk.Canvas(self.frame4, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
         # draw an Oval in the canvas
@@ -97,25 +100,21 @@ class View(ttk.Frame):
         #self.separator = ttk.Separator(self, orient='vertical')
         #self.separator.place(relx=0.47, rely=0, relwidth=0.2, relheight=1)
 
-
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
 
-        # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
-        self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # set duration button
-        self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
+        self.set_duration_button = ttk.Button(self.frame4, text='Set Duration', command=self.set_duration)
         self.set_duration_button.grid(row=14, column=2, padx=10)
 
         # start countdown button
-        self.start_countdown_button = ttk.Button(self, text='Start Countdown', command=self.start_countdown)
+        self.start_countdown_button = ttk.Button(self.frame4, text='Start Countdown', command=self.start_countdown)
         self.start_countdown_button.grid(row=15, column=2, padx=10)
 
         # countdown label
         self.countdown_label = ttk.Label(
-            self,
+            self.frame4,
             text=self.time_string(),
             font=('Digital-7', 40),
             background='black',
