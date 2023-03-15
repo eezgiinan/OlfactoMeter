@@ -18,26 +18,43 @@ class View(ttk.Frame):
 
         #creates frame
 
-        self.frame1 = tk.Frame(self, width=300, height=400, bg='blue')
-        self.frame1.grid(row=1, sticky="nw", padx=10, pady=10)
+        self.frame1 = tk.Frame(self, width=300, height=400, bg='#DDA0DD', borderwidth=2, relief="ridge")
+        self.frame1.grid(row=1, column=1, sticky="nw", padx=10, pady=0)
 
-        self.frame2 = tk.Frame(self, width=200, height=200, bg='SteelBlue1')
-        self.frame2.grid(row=1, sticky="ew", padx=10, pady=10)
+        self.frame2 = tk.Frame(self, width=200, height=100, bg='#E6E6FA', borderwidth=2, relief="ridge")
+        self.frame2.grid(row=1, column=1, sticky="ew", padx=10, pady=10)
 
-        self.frame3 = tk.Frame(self, width=200, height=200, bg='SteelBlue3')
-        self.frame3.grid(row=3, sticky="ew", padx=10, pady=10)
+        self.frame3 = tk.Frame(self, width=200, height=200, bg='#B0E0E6', borderwidth=2, relief="ridge")
+        self.frame3.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
 
-        self.frame4 = tk.Frame(self, width=200, height=600, bg='SteelBlue4')
-        self.frame4.grid(row=1, column=3, sticky="nw", padx=10, pady=10)
+        self.frame4 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
+        self.frame4.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
+
+        # creates title for frame1
+        self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD',  font=("Arial bold",16))
+        self.mode.grid(row = 0, sticky = "ew")
+
+        # creates title for frame2
+        self.mode = tk.Label(self.frame2, text='Excel control', bg='#E6E6FA', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+        # creates title for frame3
+        self.mode = tk.Label(self.frame3, text='Run', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+        # creates title for frame4
+        self.mode = tk.Label(self.frame4, text='Feedback', bg='#B2DF9B', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
 
         # creates label for box
         self.mode = tk.Label(self.frame3, text='Select the duration:')
-        self.mode.grid(row=1, column=0)
+        self.mode.grid(row=2, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
         self.duration_box = ttk.Entry(self.frame3, textvariable=self.duration_var, width=30)
-        self.duration_box.grid(row=1, column=1)
+        self.duration_box.grid(row=2, column=1)
 
         # creates label for mode box
         self.mode = ttk.Label(self.frame1, text='Select the mode:')
@@ -77,7 +94,7 @@ class View(ttk.Frame):
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # message
-        self.message_label = ttk.Label(self.frame4, text='', foreground='blue')
+        self.message_label = ttk.Label(self.frame4, text='', background='#B2DF9B', foreground='blue')
         self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # Creates colored circles
