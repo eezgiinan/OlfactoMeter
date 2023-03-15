@@ -1,5 +1,5 @@
 import pandas as pd
-from modes import Modes
+
 from model import Olfactometer
 
 
@@ -8,18 +8,20 @@ class Controller:
         self.model: Olfactometer = model
         self.view = view
 
-    # Activates the mode received from the view
     def activate_mode(self, mode, duration):
-        mode = Modes[mode.title()]
-        duration = int(duration)
-        self.model.set_mode(mode, duration)
-
-    def activate_mode_new(self, mode, duration):
+        """
+        Creates an experiment (DataFrame) from the mode and duration given as an input from the UI.
+        Sets the experiment in the model and runs it.
+        """
         experiment = pd.DataFrame([(mode, int(duration))], columns=['mode', 'duration'])
+        # We call the setter. This is how it would look like in Java: this.model.set_experiment(experiment).
         self.model.experiment = experiment
         self.run_experiment()
 
     def experiment_from_file(self, filename: str):
+        """
+        Reads an experiment file (.csv or .xlsx) as a DataFrame and saves it in the model.
+        """
         if filename.endswith('.csv'):
             df = pd.read_csv(filename)
         elif filename.endswith('.xlsx'):
@@ -49,11 +51,17 @@ class Controller:
         self.model.ongoing_countdown = True
 
     def run_experiment(self):
+        """
+        Checks if the model is running, if it doesn't it runs the experiment.
+        """
         if not self.model.is_running:
             self.model.run_experiment()
         else:
             print('Unable to run, already running! Stop and purge before running again')
 
     def get_status(self):
+        """
+        Returns the status of the model.
+        """
         return self.model.is_running, self.model.get_status()
 

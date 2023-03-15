@@ -32,16 +32,6 @@ class View(ttk.Frame):
         self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
-        """ 
-        # creates a button for stop
-        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.stop_button.grid(row=7, column=2, padx=10)
-        
-        # creates a button for adding an Excel file
-        self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
-        self.file_button.grid(row=7, column=1, padx=10)
-        """
-
         # adds the menu
         self.bar = self.menubar()
         parent.config(menu=self.bar)
@@ -54,10 +44,6 @@ class View(ttk.Frame):
         # drop down button
         self.drop_button = ttk.Button(self, text='Run drop down', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
-
-        # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
-        self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # Creates colored circles
         self.canvas = tk.Canvas(self, width=100, height=250)
@@ -96,38 +82,25 @@ class View(ttk.Frame):
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
 
-    # reads mode and duration values in the text box and activates a thread that executes them
     def drop_down_click(self):
+        """
+        Reads the mode and duration values in the text box and activates a thread that executes them
+        """
         print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode_new, args=(self.drop_var.get(), self.duration_var.get(), ))
+        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(),))
         thread.start()
         self.status_update()
 
-    """
-    def purge_stop_clicked(self):
-        print('Activating Purge and Stop')
-        # Create a new thread (executing unit that can be run in parallel). This in required as the python
-        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_stop)
-        thread.start()
-    
-    def add_file_clicked(self):
-        print('Add an Excel file')
-        # Create a new thread (executing unit that can be run in parallel). This in required as the python
-        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.experiment_from_file)
-        thread.start()
-    """
-
     def set_controller(self, controller):
         """
-        Set the controller
-        :param controller:
-        :return:
+        Sets the controller
         """
         self.controller = controller
 
     def menubar(self):
+        """
+        Creates the menubar for file selection.
+        """
         menubar = tk.Menu(self)
         filemenu = tk.Menu(menubar, tearoff=0)
         filemenu.add_command(label="New", command=donothing)
@@ -158,9 +131,7 @@ class View(ttk.Frame):
 
     def show_error(self, message):
         """
-        Show an error message
-        :param message:
-        :return:
+        Shows an error message
         """
         self.message_label['text'] = message
         self.message_label['foreground'] = 'red'
@@ -168,9 +139,7 @@ class View(ttk.Frame):
 
     def show_success(self, message):
         """
-        Show a success message
-        :param message:
-        :return:
+        Shows a success message
         """
         self.message_label['text'] = message
         self.message_label['foreground'] = 'green'
@@ -178,8 +147,7 @@ class View(ttk.Frame):
 
     def hide_message(self):
         """
-        Hide the message
-        :return:
+        Hides the message
         """
         self.message_label['text'] = ''
 
@@ -208,11 +176,18 @@ class View(ttk.Frame):
             self.controller.start_countdown()
 
     def run_experiment(self):
+        """
+        Creates a thread that runs the experiment and calls the status_update method.
+        """
         thread = threading.Thread(target=self.controller.run_experiment)
         thread.start()
         self.status_update()
 
     def status_update(self):
+        """
+        Reads the status from controller and assigns them to is_running and pins_status. Then it creates correspondence
+        between the created ovals and pins_status using color_map. Then it repeats itself every 1 second using after().
+        """
         is_running, pins_status = self.controller.get_status()
         # is_running: Whether we are currently executing an experiment (binary) or not
         # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
@@ -225,3 +200,29 @@ class View(ttk.Frame):
             self.after(1000, self.status_update)
         else:
             print('Completed')
+
+        """ 
+        # creates a button for stop
+        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
+        self.stop_button.grid(row=7, column=2, padx=10)
+
+        # creates a button for adding an Excel file
+        self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
+        self.file_button.grid(row=7, column=1, padx=10)
+        """
+
+        """
+        def purge_stop_clicked(self):
+            print('Activating Purge and Stop')
+            # Create a new thread (executing unit that can be run in parallel). This in required as the python
+            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+            thread = threading.Thread(target=self.controller.activate_stop)
+            thread.start()
+
+        def add_file_clicked(self):
+            print('Add an Excel file')
+            # Create a new thread (executing unit that can be run in parallel). This in required as the python
+            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+            thread = threading.Thread(target=self.controller.experiment_from_file)
+            thread.start()
+        """
