@@ -18,10 +18,10 @@ class View(ttk.Frame):
 
         #creates frame
 
-        self.frame1 = tk.Frame(self, width=300, height=400, bg='#DDA0DD', borderwidth=2, relief="ridge")
-        self.frame1.grid(row=1, column=1, sticky="nw", padx=10, pady=0)
+        self.frame1 = tk.Frame(self, width=200, height=200, bg='#DDA0DD', borderwidth=2, relief="ridge")
+        self.frame1.grid(row=1, column=1, sticky="n", padx=10, pady=10)
 
-        self.frame2 = tk.Frame(self, width=200, height=100, bg='#E6E6FA', borderwidth=2, relief="ridge")
+        self.frame2 = tk.Frame(self, width=200, height=200, bg='#E6E6FA', borderwidth=2, relief="ridge")
         self.frame2.grid(row=1, column=1, sticky="ew", padx=10, pady=10)
 
         self.frame3 = tk.Frame(self, width=200, height=200, bg='#B0E0E6', borderwidth=2, relief="ridge")
