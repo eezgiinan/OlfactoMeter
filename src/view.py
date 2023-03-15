@@ -212,12 +212,6 @@ class View(ttk.Frame):
         thread.start()
         self.status_update()
 
-    """
-    def change_color(self):
-        thread = threading.Thread(target=self.controller.change_color,  args=(self.mode.get(), ))
-        thread.start()
-    """
-
     def status_update(self):
         is_running, pins_status = self.controller.get_status()
         # is_running: Whether we are currently executing an experiment (binary) or not
