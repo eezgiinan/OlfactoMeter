@@ -1,5 +1,7 @@
 from statemachine import StateMachine, State
 from my_modes import Odors
+import threading
+import my_model
 
 
 class OlfactometerMachine(StateMachine):

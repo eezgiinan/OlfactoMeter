@@ -39,6 +39,8 @@ class Olfactometer:
         self.time_left = 0
 
         self.odor_machine = OlfactometerMachine()
+        self.current_state = 'not_initiated'
+
 
     @property
     def experiment(self):
@@ -91,8 +93,7 @@ class Olfactometer:
 
         print('completed')
 
-    """
-    # Given a mode and a duration, activates the pin on Arduino specific to the mode passed as input
+    # Given a mode and a duration, activates the pin on Arduino specific to the mode passed as inpuT
     def set_mode(self, mode: Modes, duration):
         # Check if the mode is valid
         if mode not in Modes:
@@ -118,7 +119,7 @@ class Olfactometer:
         for pin in self.PINS:
             pin.mode = pyfirmata.OUTPUT
             pin.write(CLOSE)
-    """
+
 
     def change_color(self, mode):
         if mode == 'resting':

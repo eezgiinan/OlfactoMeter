@@ -1,4 +1,5 @@
 import enum
+import threading
 
 print([s for s in range(1, 10+1)])
 
@@ -26,4 +27,26 @@ class Odors(enum.Enum):
 
 
 print(Odors.Odor_1)
+
+
+
+FLAG = 'False'
+
+
+def hello():
+    print("hello, world")
+
+
+t = threading.Timer(1, hello)
+t.start()  # after 30 seconds, "hello, world" will be printed
+
+print(FLAG)
+
+
+a = 1
+
+
+def changing_a(a):
+    a = 2
+    return a
 
