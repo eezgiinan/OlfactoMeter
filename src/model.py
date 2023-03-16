@@ -20,7 +20,7 @@ class Olfactometer:
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
         self.is_running = 0
-        self.stop = Event() # for the stop button
+        self.stop_event = None
         self.experiment: DataFrame = None
         self.total_duration = 0
 
@@ -95,11 +95,12 @@ class Olfactometer:
         """
         if self.experiment is not None:
             self.is_running = True
-            self.total_duration = sum(self.experiment['duration']) # added new for calculating the sum of duration, can be connected with countdown
+            self.total_duration = sum(self.experiment['duration']) # Added new for calculating the sum of duration, can be connected with countdown
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)
-                # time.sleep(duration)
+                if self.stop_event.is_set():
+                    break
             self.is_running = False
         print('completed')
 
@@ -122,7 +123,8 @@ class Olfactometer:
             valve.mode = pyfirmata.OUTPUT
             valve.write(valves[i])
         # Wait for the specified duration
-        time.sleep(duration)
+        while not self.stop_event.is_set():
+            self.stop_event.wait(duration)
         # Deactivate all pins
         for pin in self.PINS:
             pin.write(CLOSE)

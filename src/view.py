@@ -1,6 +1,6 @@
 import threading
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 import time
 
 from controller import Controller
@@ -32,6 +32,9 @@ class View(ttk.Frame):
         self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
+        # Event thread for the stop button
+        self.stop_event = threading.Event()
+
         # adds the menu
         self.bar = self.menubar()
         parent.config(menu=self.bar)
@@ -45,7 +48,11 @@ class View(ttk.Frame):
         self.drop_button = ttk.Button(self, text='Run drop down', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
-        # Creates colored circles
+        # creates a button for stop
+        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.stop_experiment)
+        self.stop_button.grid(row=7, column=2, padx=10)
+
+        # creates colored circles
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=17, column=2, padx=10)
 
@@ -87,7 +94,7 @@ class View(ttk.Frame):
         Reads the mode and duration values in the text box and activates a thread that executes them
         """
         print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(),))
+        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(), self.stop_event, ))
         thread.start()
         self.status_update()
 
@@ -179,9 +186,20 @@ class View(ttk.Frame):
         """
         Creates a thread that runs the experiment and calls the status_update method.
         """
-        thread = threading.Thread(target=self.controller.run_experiment)
+        thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
         thread.start()
         self.status_update()
+
+    def stop_experiment(self):
+        self.show_warn(title='Experiment stopped', message='Experiment has been stopped, activating purging')
+        self.stop_event.set()
+        self.stop_event.clear()
+        thread = threading.Thread(target=self.controller.clean)
+        thread.start()
+        self.status_update()
+
+    def show_warn(self, title, message):
+        messagebox.showwarning(title=title, message=message)
 
     def status_update(self):
         """
@@ -202,10 +220,6 @@ class View(ttk.Frame):
             print('Completed')
 
         """ 
-        # creates a button for stop
-        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.stop_button.grid(row=7, column=2, padx=10)
-
         # creates a button for adding an Excel file
         self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
         self.file_button.grid(row=7, column=1, padx=10)
