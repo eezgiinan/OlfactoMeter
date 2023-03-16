@@ -1,4 +1,5 @@
 import time
+from threading import Event
 
 import pyfirmata
 from pandas import DataFrame
@@ -19,6 +20,7 @@ class Olfactometer:
         self.PINS = [self.SA_pin, self.SB_pin, self.S1_pin, self.S2_pin]
         self._init_pins()
         self.is_running = 0
+        self.stop = Event() # for the stop button
         self.experiment: DataFrame = None
         self.total_duration = 0
 
