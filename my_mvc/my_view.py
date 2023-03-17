@@ -3,8 +3,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import time
 
-from controller import Controller
-from modes import Modes
+from my_controller import Controller
+from my_modes import Modes
 
 
 def donothing():
