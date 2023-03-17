@@ -32,13 +32,7 @@ class View(ttk.Frame):
         self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
-        """
-        # creates a text box and saves the mode in mode_var.
-        Keeping it here in case we cannot solve the drop-down box issue
-        self.mode_var = tk.StringVar()
-        self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
-        self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
-        
+        """ 
         # creates a button for stop
         self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
         self.stop_button.grid(row=7, column=2, padx=10)
@@ -68,14 +62,6 @@ class View(ttk.Frame):
         # Creates colored circles
         self.canvas = tk.Canvas(self, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
-
-        """
-        # Draw 4 circles
-        self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
-        self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
-        self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
-        self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
-        """
 
         # draw an Oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
@@ -245,13 +231,3 @@ class View(ttk.Frame):
             self.after(1000, self.status_update)
         else:
             print('Completed')
-
-""" 
-function to use for connecting pins to ovals
-
-    def run_command(self)
-        mode = # read mode from dialog
-        status = Modes[mode].value
-        for st, canv in zip(sta, canva)
-            canv.color(red-green)
-"""

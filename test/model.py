@@ -123,27 +123,3 @@ class Olfactometer:
             status.append(pin.read())   # Reads the status of the pin, and saves the value in the status list
 
         return status
-
-    """
-    def change_color(self, mode):
-        if mode == 'resting':
-            self.canvas.itemconfig(self.circle1, fill='red')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'purging':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='green')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'odor_1':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='green')
-            self.canvas.itemconfig(self.circle4, fill='red')
-        elif mode == 'odor_2':
-            self.canvas.itemconfig(self.circle1, fill='green')
-            self.canvas.itemconfig(self.circle2, fill='red')
-            self.canvas.itemconfig(self.circle3, fill='red')
-            self.canvas.itemconfig(self.circle4, fill='green')
-    """
