@@ -48,13 +48,13 @@ class View(ttk.Frame):
 
 
         # creates label for box
-        self.mode = tk.Label(self.frame3, text='Select the duration:')
-        self.mode.grid(row=2, column=0)
+        self.mode = tk.Label(self.frame1, text='Select the duration:')
+        self.mode.grid(row=3, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
-        self.duration_box = ttk.Entry(self.frame3, textvariable=self.duration_var, width=30)
-        self.duration_box.grid(row=2, column=1)
+        self.duration_box = ttk.Entry(self.frame1, textvariable=self.duration_var, width=30)
+        self.duration_box.grid(row=3, column=1)
 
         # creates label for mode box
         self.mode = ttk.Label(self.frame1, text='Select the mode:')
