@@ -186,6 +186,7 @@ class View(ttk.Frame):
         """
         Creates a thread that runs the experiment and calls the status_update method.
         """
+        # self.stop_event.clear()
         thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
         thread.start()
         self.status_update()

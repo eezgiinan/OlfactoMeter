@@ -46,7 +46,7 @@ class Olfactometer:
         """
         Setter for the experiment. There is a check to avoid changing the experiment while running.
         """
-        if self.is_running is 1:
+        if self.is_running:
             print('Unable to overwrite the experiment, stop and then set new experiment')
         else:
             self.__experiment = value
@@ -100,6 +100,7 @@ class Olfactometer:
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)
                 if self.stop_event.is_set():
+                    self.is_running = False
                     break
             self.is_running = False
         print('completed')
@@ -123,8 +124,10 @@ class Olfactometer:
             valve.mode = pyfirmata.OUTPUT
             valve.write(valves[i])
         # Wait for the specified duration
-        while not self.stop_event.is_set():
+        completed = False
+        while not self.stop_event.is_set() and not completed:
             self.stop_event.wait(duration)
+            completed = True
         # Deactivate all pins
         for pin in self.PINS:
             pin.write(CLOSE)
