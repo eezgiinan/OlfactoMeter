@@ -5,6 +5,7 @@ import enum
 CLOSE = 1
 OPEN = 0
 
+
 class Modes(enum.Enum):
     """
     Enumeration of the different modes that the system can be IN

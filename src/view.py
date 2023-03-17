@@ -7,7 +7,7 @@ from controller import Controller
 from modes import Modes
 
 
-def donothing():
+def do_nothing():
     x = 0
 
 
@@ -110,16 +110,16 @@ class View(ttk.Frame):
         """
         menubar = tk.Menu(self)
         filemenu = tk.Menu(menubar, tearoff=0)
-        filemenu.add_command(label="New", command=donothing)
+        filemenu.add_command(label="New", command=do_nothing)
         filemenu.add_command(label="Open", command=self.browse_files)
-        filemenu.add_command(label="Save", command=donothing)
+        filemenu.add_command(label="Save", command=do_nothing)
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=self.quit)
         menubar.add_cascade(label="File", menu=filemenu)
 
         helpmenu = tk.Menu(menubar, tearoff=0)
-        helpmenu.add_command(label="Help Index", command=donothing)
-        helpmenu.add_command(label="About...", command=donothing)
+        helpmenu.add_command(label="Help Index", command=do_nothing)
+        helpmenu.add_command(label="About...", command=do_nothing)
         menubar.add_cascade(label="Help", menu=helpmenu)
         return menubar
 
