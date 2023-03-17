@@ -1,20 +1,20 @@
-from src.core import Core
-from src.models import Customers
-from src.core import Controller
+from mess.src.core import Core, Controller
+from mess.src.models import Customers
 from tkinter import messagebox
 
 """
-    Responsible for ShowTreeView behavior.
+    Responsible for ShowView behavior.
 """
 
 
-class ShowTreeController(Controller):
+class ShowController(Controller):
     # -----------------------------------------------------------------------
     #        Constructor
     # -----------------------------------------------------------------------
     def __init__(self):
         self.customers = Customers()
-        self.showView = self.loadView("showTree")
+        self.showView = self.loadView("show")
+        self.core = Core()
 
     # -----------------------------------------------------------------------
     #        Methods
@@ -35,7 +35,7 @@ class ShowTreeController(Controller):
 
     def btnEdit(self, id_customer):
         customer = self.customers.get(id_customer)
-        c = Core.openController("edit")
+        c = self.core.openController("edit")
         c.main(customer, self.showView)
 
     """

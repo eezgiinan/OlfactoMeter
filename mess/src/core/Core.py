@@ -1,6 +1,6 @@
 import os
 import importlib
-from src.config import APP_PATH
+from mess.src.config import APP_PATH
 
 """
     Class responsible for opening controllers

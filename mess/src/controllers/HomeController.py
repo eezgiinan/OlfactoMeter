@@ -1,6 +1,5 @@
 # -*- encoding:utf-8 -*-
-from src.core import Controller
-from src.core import Core
+from mess.src.core import Core, Controller
 
 """
     Main controller. It will be responsible for program's main screen behavior.
