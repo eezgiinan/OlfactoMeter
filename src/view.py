@@ -191,7 +191,7 @@ class View(ttk.Frame):
         self.status_update()
 
     def stop_experiment(self):
-        self.show_warn(title='Experiment stopped', message='Experiment has been stopped, activating purging')
+        self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
         self.stop_event.clear()
         thread = threading.Thread(target=self.controller.clean)
@@ -199,7 +199,7 @@ class View(ttk.Frame):
         self.status_update()
 
     def show_warn(self, title, message):
-        messagebox.showwarning(title=title, message=message)
+        messagebox.askyesnocancel(title=title, message=message)
 
     def status_update(self):
         """

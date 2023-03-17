@@ -71,5 +71,5 @@ class Controller:
         """
         After stopping activates purging in the model
         """
-        self.model.set_mode(Modes.Purging, 10)
+        self.model.set_mode(Modes.Purging, 5)
 
