@@ -1,4 +1,5 @@
 import time
+import datetime
 from threading import Event
 
 import pyfirmata
@@ -23,6 +24,9 @@ class Olfactometer:
         self.stop_event = None
         self.experiment: DataFrame = None
         self.total_duration = 0
+
+        self.start_time = None
+        self.end_time = None
 
         # To register the input from duration widget
         self.duration = '0'
@@ -94,8 +98,10 @@ class Olfactometer:
         For each instruction in the experiment a method (set_mode) to execute the instruction in Arduino is called.
         """
         if self.experiment is not None:
+            self.start_time = datetime.datetime.now()
             self.is_running = True
             self.total_duration = sum(self.experiment['duration']) # Added new for calculating the sum of duration, can be connected with countdown
+            self.end_time = self.start_time + datetime.timedelta(seconds=self.total_duration)
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)

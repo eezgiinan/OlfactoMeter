@@ -56,6 +56,14 @@ class View(ttk.Frame):
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=17, column=2, padx=10)
 
+        # progress bar
+        self.pb = ttk.Progressbar(self, orient='horizontal', mode='determinate', length=200)
+        self.pb.grid(row=1, column=3, columnspan=2)
+
+        # progress bar label
+        self.pb_label = ttk.Label(self)
+        self.pb_label.grid(row=2, column=3, columnspan=2)
+
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
@@ -207,11 +215,15 @@ class View(ttk.Frame):
         Reads the status from controller and assigns them to is_running and pins_status. Then it creates correspondence
         between the created ovals and pins_status using color_map. Then it repeats itself every 1 second using after().
         """
-        is_running, pins_status = self.controller.get_status()
+        is_running, pins_status, percent_completed, elapsed, total_duration = self.controller.get_status()
         # is_running: Whether we are currently executing an experiment (binary) or not
         # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
         print('Running', is_running)
         print('Status', pins_status)
+        self.pb['value'] = percent_completed
+        self.pb_label['text'] = f"Elapsed {elapsed} seconds out of {total_duration} seconds"
+        # self.pb['value'] = percent_completed
+        # self.pb_label['text'] = elapsed, total_duration
         for i in range(len(pins_status)):
             self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
 

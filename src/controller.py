@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 
 from model import Olfactometer
@@ -65,7 +67,10 @@ class Controller:
         """
         Returns the status of the model.
         """
-        return self.model.is_running, self.model.get_status()
+        elapsed = datetime.datetime.now() - self.model.start_time
+        percent_completed = elapsed.total_seconds() / self.model.total_duration * 100
+        countdown = self.model.total_duration - elapsed.total_seconds()
+        return self.model.is_running, self.model.get_status(), percent_completed, int(elapsed.total_seconds()), self.model.total_duration
 
     def clean(self):
         """
@@ -73,7 +78,7 @@ class Controller:
         """
         self.model.is_running = False
         self.model.stop_event.clear()
-        experiment = pd.DataFrame([(Modes.Purging.name, 7)], columns=['mode', 'duration'])
+        experiment = pd.DataFrame([(Modes.Purging.name, 10)], columns=['mode', 'duration'])
         # We call the setter. This is how it would look like in Java: this.model.set_experiment(experiment).
         self.model.experiment = experiment
         self.run_experiment(self.model.stop_event)
