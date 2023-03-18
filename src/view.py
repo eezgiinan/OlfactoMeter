@@ -222,8 +222,6 @@ class View(ttk.Frame):
         print('Status', pins_status)
         self.pb['value'] = percent_completed
         self.pb_label['text'] = f"Elapsed {elapsed} seconds out of {total_duration} seconds"
-        # self.pb['value'] = percent_completed
-        # self.pb_label['text'] = elapsed, total_duration
         for i in range(len(pins_status)):
             self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
 
