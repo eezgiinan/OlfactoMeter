@@ -72,6 +72,7 @@ class Controller:
         After stopping activates purging in the model
         """
         self.model.is_running = False
+        self.model.stop_event.clear()
         experiment = pd.DataFrame([(Modes.Purging.name, 7)], columns=['mode', 'duration'])
         # We call the setter. This is how it would look like in Java: this.model.set_experiment(experiment).
         self.model.experiment = experiment

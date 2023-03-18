@@ -56,7 +56,7 @@ class View(ttk.Frame):
         self.canvas = tk.Canvas(self, width=100, height=250)
         self.canvas.grid(row=17, column=2, padx=10)
 
-        # draw an Oval in the canvas
+        # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
         for oval in self.ovals:
@@ -194,7 +194,7 @@ class View(ttk.Frame):
     def stop_experiment(self):
         self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
-        self.stop_event.clear()
+        # CLEAR
         thread = threading.Thread(target=self.controller.clean)
         thread.start()
         self.status_update()

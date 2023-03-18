@@ -124,10 +124,7 @@ class Olfactometer:
             valve.mode = pyfirmata.OUTPUT
             valve.write(valves[i])
         # Wait for the specified duration
-        completed = False
-        while not self.stop_event.is_set() and not completed:
-            self.stop_event.wait(duration)
-            completed = True
+        self.stop_event.wait(duration)  # equivalent to time.sleep but able to be stopped when the stop_event is set.
         # Deactivate all pins
         for pin in self.PINS:
             pin.write(CLOSE)
