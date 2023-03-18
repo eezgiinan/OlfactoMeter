@@ -194,7 +194,6 @@ class View(ttk.Frame):
         """
         Creates a thread that runs the experiment and calls the status_update method.
         """
-        # self.stop_event.clear()
         thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
         thread.start()
         self.status_update()
@@ -202,7 +201,6 @@ class View(ttk.Frame):
     def stop_experiment(self):
         self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
-        # CLEAR
         thread = threading.Thread(target=self.controller.clean)
         thread.start()
         self.status_update()
@@ -215,7 +213,8 @@ class View(ttk.Frame):
         Reads the status from controller and assigns them to is_running and pins_status. Then it creates correspondence
         between the created ovals and pins_status using color_map. Then it repeats itself every 1 second using after().
         """
-        is_running, pins_status, percent_completed, elapsed, total_duration = self.controller.get_status()
+        is_running, pins_status = self.controller.get_status()
+        percent_completed, elapsed, total_duration = self.controller.get_progress()
         # is_running: Whether we are currently executing an experiment (binary) or not
         # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
         print('Running', is_running)

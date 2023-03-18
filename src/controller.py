@@ -67,10 +67,12 @@ class Controller:
         """
         Returns the status of the model.
         """
+        return self.model.is_running, self.model.get_status()
+
+    def get_progress(self):
         elapsed = datetime.datetime.now() - self.model.start_time
         percent_completed = elapsed.total_seconds() / self.model.total_duration * 100
-        countdown = self.model.total_duration - elapsed.total_seconds()
-        return self.model.is_running, self.model.get_status(), percent_completed, int(elapsed.total_seconds()), self.model.total_duration
+        return percent_completed, int(elapsed.total_seconds()), self.model.total_duration
 
     def clean(self):
         """
