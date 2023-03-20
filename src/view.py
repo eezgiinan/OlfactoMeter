@@ -1,6 +1,6 @@
 import threading
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 import time
 
 from controller import Controller
@@ -32,21 +32,8 @@ class View(ttk.Frame):
         self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
-        """
-        # creates a text box and saves the mode in mode_var.
-        Keeping it here in case we cannot solve the drop-down box issue
-        self.mode_var = tk.StringVar()
-        self.mode_box = ttk.Entry(self, textvariable=self.mode_var, width=30)
-        self.mode_box.grid(row=2, column=1, sticky=tk.NSEW)
-        
-        # creates a button for stop
-        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.purge_stop_clicked)
-        self.stop_button.grid(row=7, column=2, padx=10)
-        
-        # creates a button for adding an Excel file
-        self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
-        self.file_button.grid(row=7, column=1, padx=10)
-        """
+        # Event thread for the stop button
+        self.stop_event = threading.Event()
 
         # adds the menu
         self.bar = self.menubar()
@@ -61,23 +48,23 @@ class View(ttk.Frame):
         self.drop_button = ttk.Button(self, text='Run', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
-        # message
-        self.message_label = ttk.Label(self, text='', foreground='red')
-        self.message_label.grid(row=5, column=1, sticky=tk.W)
+        # creates a button for stop
+        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.stop_experiment)
+        self.stop_button.grid(row=7, column=2, padx=10)
 
         # Creates colored circles
         self.canvas = tk.Canvas(self, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
-        """
-        # Draw 4 circles
-        self.circle1 = self.canvas.create_oval(25, 25, 65, 65, fill='red')
-        self.circle2 = self.canvas.create_oval(25, 75, 65, 115, fill='red')
-        self.circle3 = self.canvas.create_oval(25, 125, 65, 165, fill='red')
-        self.circle4 = self.canvas.create_oval(25, 175, 65, 215, fill='red')
-        """
+        # progress bar
+        self.pb = ttk.Progressbar(self, orient='horizontal', mode='determinate', length=200)
+        self.pb.grid(row=1, column=3, columnspan=2)
 
-        # draw an Oval in the canvas
+        # progress bar label
+        self.pb_label = ttk.Label(self)
+        self.pb_label.grid(row=2, column=3, columnspan=2)
+
+        # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(85, 25, 125, 65), self.canvas.create_oval(145, 25, 185, 65)]
         for oval in self.ovals:
@@ -86,6 +73,7 @@ class View(ttk.Frame):
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
 
+        """
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
         self.message_label.grid(row=5, column=1, sticky=tk.W)
@@ -109,39 +97,27 @@ class View(ttk.Frame):
         self.countdown_label.grid(row=15, column=1, padx=10)
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
+    """
 
-    # reads mode and duration values in the text box and activates a thread that executes them
     def drop_down_click(self):
+        """
+        Reads the mode and duration values in the text box and activates a thread that executes them
+        """
         print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode_new, args=(self.drop_var.get(), self.duration_var.get(), ))
+        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(), self.stop_event, ))
         thread.start()
         self.status_update()
 
-    """
-    def purge_stop_clicked(self):
-        print('Activating Purge and Stop')
-        # Create a new thread (executing unit that can be run in parallel). This in required as the python
-        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.activate_stop)
-        thread.start()
-    
-    def add_file_clicked(self):
-        print('Add an Excel file')
-        # Create a new thread (executing unit that can be run in parallel). This in required as the python
-        # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-        thread = threading.Thread(target=self.controller.experiment_from_file)
-        thread.start()
-    """
-
     def set_controller(self, controller):
         """
-        Set the controller
-        :param controller:
-        :return:
+        Sets the controller
         """
         self.controller = controller
 
     def menubar(self):
+        """
+        Creates the menubar for file selection.
+        """
         menubar = tk.Menu(self)
         filemenu = tk.Menu(menubar, tearoff=0)
         filemenu.add_command(label="New", command=donothing)
@@ -170,31 +146,21 @@ class View(ttk.Frame):
         self.update()
         self.controller.experiment_from_file(filename)
 
+    """
     def show_error(self, message):
-        """
-        Show an error message
-        :param message:
-        :return:
-        """
+        
         self.message_label['text'] = message
         self.message_label['foreground'] = 'red'
         self.message_label.after(3000, self.hide_message)
 
     def show_success(self, message):
-        """
-        Show a success message
-        :param message:
-        :return:
-        """
+       
         self.message_label['text'] = message
         self.message_label['foreground'] = 'green'
         self.message_label.after(3000, self.hide_message)
 
     def hide_message(self):
-        """
-        Hide the message
-        :return:
-        """
+     
         self.message_label['text'] = ''
 
     def set_duration(self):
@@ -220,24 +186,41 @@ class View(ttk.Frame):
     def start_countdown(self):
         if self.controller:
             self.controller.start_countdown()
+            
+    """
 
     def run_experiment(self):
-        thread = threading.Thread(target=self.controller.run_experiment)
+        """
+        Creates a thread that runs the experiment and calls the status_update method.
+        """
+        thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
         thread.start()
         self.status_update()
 
-    """
-    def change_color(self):
-        thread = threading.Thread(target=self.controller.change_color,  args=(self.mode.get(), ))
+    def stop_experiment(self):
+        self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
+        self.stop_event.set()
+        time.sleep(1)
+        thread = threading.Thread(target=self.controller.clean)
         thread.start()
-    """
+        self.status_update()
+
+    def show_warn(self, title, message):
+        messagebox.askyesnocancel(title=title, message=message)
 
     def status_update(self):
+        """
+        Reads the status from controller and assigns them to is_running and pins_status. Then it creates correspondence
+        between the created ovals and pins_status using color_map. Then it repeats itself every 1 second using after().
+        """
         is_running, pins_status = self.controller.get_status()
+        percent_completed, elapsed, total_duration = self.controller.get_progress()
         # is_running: Whether we are currently executing an experiment (binary) or not
         # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
         print('Running', is_running)
         print('Status', pins_status)
+        self.pb['value'] = percent_completed
+        self.pb_label['text'] = f"Elapsed {elapsed} seconds out of {total_duration} seconds"
         for i in range(len(pins_status)):
             self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
 
@@ -246,12 +229,24 @@ class View(ttk.Frame):
         else:
             print('Completed')
 
-""" 
-function to use for connecting pins to ovals
+        """ 
+        # creates a button for adding an Excel file
+        self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
+        self.file_button.grid(row=7, column=1, padx=10)
+        """
 
-    def run_command(self)
-        mode = # read mode from dialog
-        status = Modes[mode].value
-        for st, canv in zip(sta, canva)
-            canv.color(red-green)
-"""
+        """
+        def purge_stop_clicked(self):
+            print('Activating Purge and Stop')
+            # Create a new thread (executing unit that can be run in parallel). This in required as the python
+            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+            thread = threading.Thread(target=self.controller.activate_stop)
+            thread.start()
+
+        def add_file_clicked(self):
+            print('Add an Excel file')
+            # Create a new thread (executing unit that can be run in parallel). This in required as the python
+            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+            thread = threading.Thread(target=self.controller.experiment_from_file)
+            thread.start()
+        """
