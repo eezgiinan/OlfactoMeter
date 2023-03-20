@@ -15,21 +15,53 @@ class View(ttk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.controller: Controller = None
+
+        #creates frame
+
+        self.frame1 = tk.Frame(self, width=200, height=200, bg='#DDA0DD', borderwidth=2, relief="ridge")
+        self.frame1.grid(row=1, column=1, sticky="n", padx=10, pady=10)
+
+        self.frame2 = tk.Frame(self, width=200, height=200, bg='#E6E6FA', borderwidth=2, relief="ridge")
+        self.frame2.grid(row=1, column=1, sticky="ew", padx=10, pady=10)
+
+        self.frame3 = tk.Frame(self, width=200, height=200, bg='#B0E0E6', borderwidth=2, relief="ridge")
+        self.frame3.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
+
+        self.frame4 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
+        self.frame4.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
+
+        # creates title for frame1
+        self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD',  font=("Arial bold",16))
+        self.mode.grid(row = 0, sticky = "ew")
+
+        # creates title for frame2
+        self.mode = tk.Label(self.frame2, text='Excel control', bg='#E6E6FA', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+        # creates title for frame3
+        self.mode = tk.Label(self.frame3, text='Run', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+        # creates title for frame4
+        self.mode = tk.Label(self.frame4, text='Feedback', bg='#B2DF9B', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+
         # creates label for box
-        self.mode = ttk.Label(self, text='Select the duration:')
-        self.mode.grid(row=1, column=0)
+        self.mode = tk.Label(self.frame1, text='Select the duration:')
+        self.mode.grid(row=3, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
-        self.duration_box = ttk.Entry(self, textvariable=self.duration_var, width=30)
-        self.duration_box.grid(row=1, column=1)
+        self.duration_box = ttk.Entry(self.frame1, textvariable=self.duration_var, width=30)
+        self.duration_box.grid(row=3, column=1)
 
         # creates label for mode box
-        self.mode = ttk.Label(self, text='Select the mode:')
+        self.mode = ttk.Label(self.frame1, text='Select the mode:')
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self, text='Run file', command=self.run_experiment)
+        self.run_exp_button = ttk.Button(self.frame3, text='Run file', command=self.run_experiment)
         self.run_exp_button.grid(row=6, column=1, padx=10)
 
         # Event thread for the stop button
@@ -41,11 +73,11 @@ class View(ttk.Frame):
 
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
-        self.drop = ttk.Combobox(self, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
+        self.drop = ttk.Combobox(self.frame1, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self, text='Run', command=self.drop_down_click)
+        self.drop_button = ttk.Button(self.frame3, text='Run', command=self.drop_down_click)
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # creates a button for stop
@@ -53,7 +85,7 @@ class View(ttk.Frame):
         self.stop_button.grid(row=7, column=2, padx=10)
 
         # Creates colored circles
-        self.canvas = tk.Canvas(self, width=210, height=140)
+        self.canvas = tk.Canvas(self.frame4, width=210, height=140)
         self.canvas.grid(row=17, column=2, padx=10)
 
         # progress bar
@@ -70,6 +102,16 @@ class View(ttk.Frame):
         for oval in self.ovals:
             self.canvas.itemconfig(oval, fill="yellow")
 
+        # create the labels for the ovals
+        self.labels= self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
+
+        # create separations in  the window
+        #self.separator = ttk.Separator(self, orient='vertical')
+        #self.separator.place(relx=0.47, rely=0, relwidth=0.2, relheight=1)
+
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
 
@@ -79,16 +121,16 @@ class View(ttk.Frame):
         self.message_label.grid(row=5, column=1, sticky=tk.W)
 
         # set duration button
-        self.set_duration_button = ttk.Button(self, text='Set Duration', command=self.set_duration)
+        self.set_duration_button = ttk.Button(self.frame4, text='Set Duration', command=self.set_duration)
         self.set_duration_button.grid(row=14, column=2, padx=10)
 
         # start countdown button
-        self.start_countdown_button = ttk.Button(self, text='Start Countdown', command=self.start_countdown)
+        self.start_countdown_button = ttk.Button(self.frame4, text='Start Countdown', command=self.start_countdown)
         self.start_countdown_button.grid(row=15, column=2, padx=10)
 
         # countdown label
         self.countdown_label = ttk.Label(
-            self,
+            self.frame4,
             text=self.time_string(),
             font=('Digital-7', 40),
             background='black',
@@ -249,4 +291,13 @@ class View(ttk.Frame):
             # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
             thread = threading.Thread(target=self.controller.experiment_from_file)
             thread.start()
+        """
+        """ 
+        function to use for connecting pins to ovals
+
+            def run_command(self)
+                mode = # read mode from dialog
+                status = Modes[mode].value
+                for st, canv in zip(sta, canva)
+                    canv.color(red-green)
         """
