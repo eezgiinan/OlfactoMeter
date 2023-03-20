@@ -90,11 +90,11 @@ class View(ttk.Frame):
 
         # progress bar
         self.pb = ttk.Progressbar(self.frame4, orient='horizontal', mode='determinate', length=200)
-        self.pb.grid(row=1, column=3, columnspan=2)
+        self.pb.grid(row=2, column=3, columnspan=4)
 
         # progress bar label
-        self.pb_label = ttk.Label(self)
-        self.pb_label.grid(row=2, column=3, columnspan=2)
+        self.pb_label = ttk.Label(self.frame4)
+        self.pb_label.grid(row=3, column=3, columnspan=4)
 
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
