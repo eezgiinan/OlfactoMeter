@@ -81,7 +81,7 @@ class View(ttk.Frame):
         self.drop_button.grid(row=8, column=1, padx=10)
 
         # creates a button for stop
-        self.stop_button = tk.Button(self, text='Purge and Stop', fg='red', command=self.stop_experiment)
+        self.stop_button = tk.Button(self.frame3, text='Purge and Stop', fg='red', command=self.stop_experiment)
         self.stop_button.grid(row=7, column=2, padx=10)
 
         # Creates colored circles
@@ -89,7 +89,7 @@ class View(ttk.Frame):
         self.canvas.grid(row=17, column=2, padx=10)
 
         # progress bar
-        self.pb = ttk.Progressbar(self, orient='horizontal', mode='determinate', length=200)
+        self.pb = ttk.Progressbar(self.frame4, orient='horizontal', mode='determinate', length=200)
         self.pb.grid(row=1, column=3, columnspan=2)
 
         # progress bar label
