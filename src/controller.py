@@ -44,6 +44,7 @@ class Controller:
         except ValueError as error:
             self.view.show_error(error)
 
+    """
     def get_time(self):
         return self.model.time_left
 
@@ -52,6 +53,7 @@ class Controller:
 
     def start_countdown(self):
         self.model.ongoing_countdown = True
+    """
 
     def run_experiment(self, event):
         """

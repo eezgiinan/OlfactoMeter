@@ -73,6 +73,7 @@ class View(ttk.Frame):
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
 
+        """
         # message
         self.message_label = ttk.Label(self, text='', foreground='red')
         self.message_label.grid(row=5, column=1, sticky=tk.W)
@@ -96,6 +97,7 @@ class View(ttk.Frame):
         self.countdown_label.grid(row=15, column=1, padx=10)
         # schedule an update every 1 second
         self.countdown_label.after(1000, self.countdown_update)
+    """
 
     def drop_down_click(self):
         """
@@ -144,26 +146,21 @@ class View(ttk.Frame):
         self.update()
         self.controller.experiment_from_file(filename)
 
+    """
     def show_error(self, message):
-        """
-        Shows an error message
-        """
+        
         self.message_label['text'] = message
         self.message_label['foreground'] = 'red'
         self.message_label.after(3000, self.hide_message)
 
     def show_success(self, message):
-        """
-        Shows a success message
-        """
+       
         self.message_label['text'] = message
         self.message_label['foreground'] = 'green'
         self.message_label.after(3000, self.hide_message)
 
     def hide_message(self):
-        """
-        Hides the message
-        """
+     
         self.message_label['text'] = ''
 
     def set_duration(self):
@@ -189,6 +186,8 @@ class View(ttk.Frame):
     def start_countdown(self):
         if self.controller:
             self.controller.start_countdown()
+            
+    """
 
     def run_experiment(self):
         """

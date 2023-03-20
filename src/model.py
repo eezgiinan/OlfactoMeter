@@ -32,10 +32,10 @@ class Olfactometer:
         self.duration = '0'
 
         # Countdown Time Left
-        self.time_left = 0
+        # self.time_left = 0
 
         # Is the countdown ongoing ?
-        self.ongoing_countdown = False
+        # self.ongoing_countdown = False
 
     @property
     def experiment(self):
@@ -67,6 +67,7 @@ class Olfactometer:
         else:
             raise ValueError(f'Invalid duration {value}')
 
+    """
     @property
     def time_left(self):
         return self.__time_left
@@ -88,7 +89,8 @@ class Olfactometer:
             if self.time_left == 0:
                 self.ongoing_countdown = False
             else:
-                self.time_left -= 1
+                self.time_left -= 1            
+    """
 
     def run_experiment(self):
         """
