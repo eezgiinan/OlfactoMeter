@@ -39,7 +39,7 @@ class View(ttk.Frame):
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame3
-        self.mode = tk.Label(self.frame3, text='Run', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode = tk.Label(self.frame3, text='STOP', bg='#B0E0E6', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame4
@@ -61,8 +61,8 @@ class View(ttk.Frame):
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self.frame3, text='Run file', command=self.run_experiment)
-        self.run_exp_button.grid(row=6, column=1, padx=10)
+        self.run_exp_button = ttk.Button(self.frame2, text='Run file', command=self.run_experiment)
+        self.run_exp_button.grid(row=3, column=1, padx=10)
 
         # Event thread for the stop button
         self.stop_event = threading.Event()
@@ -77,8 +77,8 @@ class View(ttk.Frame):
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self.frame3, text='Run', command=self.drop_down_click)
-        self.drop_button.grid(row=8, column=1, padx=10)
+        self.drop_button = ttk.Button(self.frame1, text='Run', command=self.drop_down_click)
+        self.drop_button.grid(row=3, column=1, padx=10)
 
         # creates a button for stop
         self.stop_button = tk.Button(self.frame3, text='Purge and Stop', fg='red', command=self.stop_experiment)
