@@ -22,10 +22,10 @@ class View(ttk.Frame):
         self.frame1.grid(row=1, column=1, sticky="n", padx=10, pady=10)
 
         self.frame2 = tk.Frame(self, width=200, height=200, bg='#E6E6FA', borderwidth=2, relief="ridge")
-        self.frame2.grid(row=1, column=1, sticky="ew", padx=10, pady=10)
+        self.frame2.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
 
         self.frame3 = tk.Frame(self, width=200, height=200, bg='#B0E0E6', borderwidth=2, relief="ridge")
-        self.frame3.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
+        self.frame3.grid(row=3, column=1, sticky="ew", padx=10, pady=10)
 
         self.frame4 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
         self.frame4.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
@@ -78,7 +78,7 @@ class View(ttk.Frame):
 
         # drop down button
         self.drop_button = ttk.Button(self.frame1, text='Run', command=self.drop_down_click)
-        self.drop_button.grid(row=3, column=1, padx=10)
+        self.drop_button.grid(row=4, column=0, padx=10)
 
         # creates a button for stop
         self.stop_button = tk.Button(self.frame3, text='Purge and Stop', fg='red', command=self.stop_experiment)
@@ -86,15 +86,15 @@ class View(ttk.Frame):
 
         # Creates colored circles
         self.canvas = tk.Canvas(self.frame4, width=210, height=140)
-        self.canvas.grid(row=17, column=2, padx=10)
+        self.canvas.grid(row=1, column=2, padx=10)
 
         # progress bar
         self.pb = ttk.Progressbar(self.frame4, orient='horizontal', mode='determinate', length=200)
-        self.pb.grid(row=2, column=3, columnspan=4)
+        self.pb.grid(row=3, column=2, columnspan=4)
 
         # progress bar label
         self.pb_label = ttk.Label(self.frame4)
-        self.pb_label.grid(row=3, column=3, columnspan=4)
+        self.pb_label.grid(row=4, column=2, columnspan=4)
 
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
