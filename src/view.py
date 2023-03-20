@@ -201,6 +201,7 @@ class View(ttk.Frame):
     def stop_experiment(self):
         self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
+        time.sleep(1)
         thread = threading.Thread(target=self.controller.clean)
         thread.start()
         self.status_update()
