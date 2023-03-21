@@ -164,7 +164,9 @@ class View(ttk.Frame):
         self.file_button.grid(row=2, column=1, padx=10)
 
     def save_names(self):
-        with open('my_names.txt', 'w') as file:
+        filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
+                                                filetypes=(("text files", "*.txt"), ("all files", "*.*")))
+        with open(filename, 'w') as file:
             file.write(self.odor1_box.get() + '\n')
             file.write(self.odor2_box.get() + '\n')
             file.write(self.mouse_box.get() + '\n')
