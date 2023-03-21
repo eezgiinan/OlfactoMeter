@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 
 from model import Olfactometer
@@ -42,6 +44,7 @@ class Controller:
         except ValueError as error:
             self.view.show_error(error)
 
+    """
     def get_time(self):
         return self.model.time_left
 
@@ -50,6 +53,7 @@ class Controller:
 
     def start_countdown(self):
         self.model.ongoing_countdown = True
+    """
 
     def run_experiment(self, event):
         """
@@ -67,9 +71,19 @@ class Controller:
         """
         return self.model.is_running, self.model.get_status()
 
+    def get_progress(self):
+        elapsed = datetime.datetime.now() - self.model.start_time
+        percent_completed = elapsed.total_seconds() / self.model.total_duration * 100
+        return percent_completed, int(elapsed.total_seconds()), self.model.total_duration
+
     def clean(self):
         """
         After stopping activates purging in the model
         """
-        self.model.set_mode(Modes.Purging, 5)
-
+        self.model.is_running = False
+        self.model.stop_event.clear()
+        experiment = pd.DataFrame([(Modes.Purging.name, 10)], columns=['mode', 'duration'])
+        # We call the setter. This is how it would look like in Java: this.model.set_experiment(experiment).
+        self.model.experiment = experiment
+        self.run_experiment(self.model.stop_event)
+        self.view.status_update()
