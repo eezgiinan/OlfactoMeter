@@ -2,9 +2,14 @@ import threading
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import time
+import matplotlib
+import csv
 
 from controller import Controller
 from modes import Modes
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+from time import strftime
 
 
 def donothing():
@@ -163,6 +168,26 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
+        x = ['Col A', 'Col B', 'Col C']
+
+        y = [50, 20, 80]
+
+        fig = plt.figure(figsize=(4, 5))
+        plt.bar(x=x, height=y)
+
+        # You can make your x axis labels vertical using the rotation
+        plt.xticks(x, rotation=90)
+
+        # specify the window as master
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.draw()
+        canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
+
+        # navigation toolbar
+        toolbarFrame = tk.Frame(master=self)
+        toolbarFrame.grid(row=2, column=3)
+        toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+
     def save_names(self):
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
                                                 filetypes=(("text files", "*.txt"), ("all files", "*.*")))
@@ -248,6 +273,24 @@ class View(ttk.Frame):
             self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
 
         if is_running:
+            timing = int(time.time() - self.controller.get_start_time())
+            if pins_status[0] == 1:
+                state = 'resting'
+            else:
+                if pins_status[1] == 0:
+                    state = 'purging'
+                else:
+                    if pins_status[2] == 0:
+                        state = 'odor_1'
+                    else:
+                        state = 'odor_2'
+
+            with open('data.csv', 'a', newline='') as csvfile:
+                fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writerow({fieldnames[0]: timing, fieldnames[1]: state, fieldnames[2]: pins_status[0],
+                                 fieldnames[3]: pins_status[1], fieldnames[4]: pins_status[2],
+                                 fieldnames[5]: pins_status[3]})
             self.after(1000, self.status_update)
         else:
             print('Completed')
