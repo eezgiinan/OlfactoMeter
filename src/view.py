@@ -127,10 +127,10 @@ class View(ttk.Frame):
         self.mode.grid(row=3, column=0)
 
         # creates a text box for odors name and saves the name in odor_name
-        self.odor1_name = tk.StringVar()
+        self.odor1_name = tk.StringVar(value='unknown_odor1')
         self.odor1_box = ttk.Entry(self.frame5, textvariable=self.odor1_name, width=30)
         self.odor1_box.grid(row=2, column=1)
-        self.odor2_name = tk.StringVar()
+        self.odor2_name = tk.StringVar(value='unknown_odor2')
         self.odor2_box = ttk.Entry(self.frame5, textvariable=self.odor2_name, width=30)
         self.odor2_box.grid(row=3, column=1)
 
@@ -138,7 +138,7 @@ class View(ttk.Frame):
         self.mode = tk.Label(self.frame5, text='Mouse n°:', bg='#B0E0E6')
         self.mode.grid(row=4, column=0)
         # creates a text box for mouse number and saves the name in mouse_nb
-        self.mouse_nb = tk.StringVar()
+        self.mouse_nb = tk.StringVar(value='mouse_unknown')
         self.mouse_box = ttk.Entry(self.frame5, textvariable=self.mouse_nb, width=30)
         self.mouse_box.grid(row=4, column=1)
 
@@ -147,17 +147,40 @@ class View(ttk.Frame):
         self.mode.grid(row=5, column=0)
 
         # creates a text box for protocol used and saves the name in protocol
-        self.protocol = tk.StringVar()
+        self.protocol = tk.StringVar(value='unknown_protocol')
         self.protocol_box = ttk.Entry(self.frame5, textvariable=self.protocol, width=30)
         self.protocol_box.grid(row=5, column=1)
 
         # creates a button for saving
-        self.file_button = ttk.Button(self.frame5, text='Save')
+        self.file_button = ttk.Button(self.frame5, text='Save', command=self.save_names)
         self.file_button.grid(row=6, column=1)
+
+        # creates a button for using a previous setup
+        self.file_button = ttk.Button(self.frame5, text='Previous Setup', command=self.browse_setup)
+        self.file_button.grid(row=6, column=0)
 
         # creates a button for adding an Excel file
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
+
+    def save_names(self):
+        with open('my_names.txt', 'w') as file:
+            file.write(self.odor1_box.get() + '\n')
+            file.write(self.odor2_box.get() + '\n')
+            file.write(self.mouse_box.get() + '\n')
+            file.write(self.protocol_box.get() + '\n')
+
+    def browse_setup(self):
+        filename = filedialog.askopenfilename(initialdir="/",
+                                              title="Select a File",
+                                              filetypes=[("text files",
+                                                          "*.txt")])
+        with open(filename, 'r') as file:
+            lines = [line.rstrip() for line in file]
+            self.odor1_name.set(lines[0])
+            self.odor2_name.set(lines[1])
+            self.mouse_nb.set(lines[2])
+            self.protocol.set(lines[3])
 
     def drop_down_click(self):
         """
