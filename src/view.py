@@ -24,11 +24,14 @@ class View(ttk.Frame):
         self.frame2 = tk.Frame(self, width=200, height=200, bg='#E6E6FA', borderwidth=2, relief="ridge")
         self.frame2.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
 
-        self.frame3 = tk.Frame(self, width=200, height=200, bg='#B0E0E6', borderwidth=2, relief="ridge")
+        self.frame3 = tk.Frame(self, width=200, height=200, bg='#FFC0CB', borderwidth=2, relief="ridge")
         self.frame3.grid(row=3, column=1, sticky="ew", padx=10, pady=10)
 
         self.frame4 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
-        self.frame4.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
+        self.frame4.grid(row=2, column=2, sticky="n", padx=10, pady=10)
+
+        self.frame5 = tk.Frame(self, width=200, height=600, bg='#B0E0E6', borderwidth=2, relief="ridge")
+        self.frame5.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
 
         # creates title for frame1
         self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD',  font=("Arial bold",16))
@@ -39,16 +42,19 @@ class View(ttk.Frame):
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame3
-        self.mode = tk.Label(self.frame3, text='STOP', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode = tk.Label(self.frame3, text='STOP', bg='#FFC0CB', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame4
         self.mode = tk.Label(self.frame4, text='Feedback', bg='#B2DF9B', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
+        # creates title for frame5
+        self.mode = tk.Label(self.frame5, text='Informations ', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
 
         # creates label for box
-        self.mode = tk.Label(self.frame1, text='Select the duration:')
+        self.mode = tk.Label(self.frame1, text='Select the duration:',bg='#DDA0DD')
         self.mode.grid(row=3, column=0)
 
         # creates a text box and saves the value of the box in duration_var
@@ -57,7 +63,7 @@ class View(ttk.Frame):
         self.duration_box.grid(row=3, column=1)
 
         # creates label for mode box
-        self.mode = ttk.Label(self.frame1, text='Select the mode:')
+        self.mode = tk.Label(self.frame1, text='Select the mode:',bg='#DDA0DD')
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
@@ -78,11 +84,11 @@ class View(ttk.Frame):
 
         # drop down button
         self.drop_button = ttk.Button(self.frame1, text='Run', command=self.drop_down_click)
-        self.drop_button.grid(row=4, column=0, padx=10)
+        self.drop_button.grid(row=4, column=1, padx=10)
 
         # creates a button for stop
         self.stop_button = tk.Button(self.frame3, text='Purge and Stop', fg='red', command=self.stop_experiment)
-        self.stop_button.grid(row=7, column=2, padx=10)
+        self.stop_button.grid(row=2, column=1, padx=10)
 
         # Creates colored circles
         self.canvas = tk.Canvas(self.frame4, width=210, height=140)
@@ -90,11 +96,11 @@ class View(ttk.Frame):
 
         # progress bar
         self.pb = ttk.Progressbar(self.frame4, orient='horizontal', mode='determinate', length=200)
-        self.pb.grid(row=3, column=2, columnspan=4)
+        self.pb.grid(row=3, column=2, columnspan=4, padx=10, pady=10)
 
         # progress bar label
-        self.pb_label = ttk.Label(self.frame4)
-        self.pb_label.grid(row=4, column=2, columnspan=4)
+        self.pb_label = tk.Label(self.frame4, bg='#B2DF9B', font=("Arial bold", 13))
+        self.pb_label.grid(row=4, column=2, columnspan=4, padx=10, pady=10)
 
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
@@ -108,12 +114,55 @@ class View(ttk.Frame):
         self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
 
+        # creates label for explanation of the valves
+        self.mode = tk.Label(self.frame4, text='SA+SB -> Purging mode', bg='#B2DF9B')
+        self.mode.grid(row=1, column=0, sticky="n")
+        self.mode = tk.Label(self.frame4, text='SA+S1 -> odor 1 ', bg='#B2DF9B')
+        self.mode.grid(row=1, column=0)
+        self.mode = tk.Label(self.frame4, text='SA+S2 -> odor 2 ', bg='#B2DF9B')
+        self.mode.grid(row=1, column=0,sticky="s")
+
         # create separations in  the window
         #self.separator = ttk.Separator(self, orient='vertical')
         #self.separator.place(relx=0.47, rely=0, relwidth=0.2, relheight=1)
 
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
+
+        # creates label for the odors name
+        self.mode = tk.Label(self.frame5, text='Odor 1 :', bg='#B0E0E6')
+        self.mode.grid(row=2, column=0)
+        self.mode = tk.Label(self.frame5, text='Odor 2 :', bg='#B0E0E6')
+        self.mode.grid(row=3, column=0)
+
+        # creates a text box for odors name and saves the name in odor_name
+        self.odor1_name = tk.StringVar()
+        self.odor1_box = ttk.Entry(self.frame5, textvariable=self.odor1_name, width=30)
+        self.odor1_box.grid(row=2, column=1)
+        self.odor2_name = tk.StringVar()
+        self.odor2_box = ttk.Entry(self.frame5, textvariable=self.odor2_name, width=30)
+        self.odor2_box.grid(row=3, column=1)
+
+        # creates label for mouse number
+        self.mode = tk.Label(self.frame5, text='Mouse n°:', bg='#B0E0E6')
+        self.mode.grid(row=4, column=0)
+        # creates a text box for mouse number and saves the name in mouse_nb
+        self.mouse_nb = tk.StringVar()
+        self.mouse_box = ttk.Entry(self.frame5, textvariable=self.mouse_nb, width=30)
+        self.mouse_box.grid(row=4, column=1)
+
+        # creates label for protocol used
+        self.mode = tk.Label(self.frame5, text='Protocol used : ', bg='#B0E0E6')
+        self.mode.grid(row=5, column=0)
+        # creates a text box for protocol used and saves the name in protocol
+        self.protocol = tk.StringVar()
+        self.protocol_box = ttk.Entry(self.frame5, textvariable=self.protocol, width=30)
+        self.protocol_box.grid(row=5, column=1)
+
+        # creates a button for adding an Excel file
+        self.file_button = ttk.Button(self.frame2, text='Add file') #, command=self.add_file_clicked)
+        self.file_button.grid(row=2, column=1, padx=10)
+
 
         """
         # message
@@ -271,11 +320,16 @@ class View(ttk.Frame):
         else:
             print('Completed')
 
-        """ 
-        # creates a button for adding an Excel file
-        self.file_button = tk.Button(self, text='Add file', fg='green', command=self.add_file_clicked)
-        self.file_button.grid(row=7, column=1, padx=10)
-        """
+        def add_file_clicked(self):
+            print('Add an Excel file')
+            # Create a new thread (executing unit that can be run in parallel). This in required as the python
+            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
+            thread = threading.Thread(target=self.controller.experiment_from_file)
+            thread.start()
+
+
+
+
 
         """
         def purge_stop_clicked(self):
@@ -285,12 +339,7 @@ class View(ttk.Frame):
             thread = threading.Thread(target=self.controller.activate_stop)
             thread.start()
 
-        def add_file_clicked(self):
-            print('Add an Excel file')
-            # Create a new thread (executing unit that can be run in parallel). This in required as the python
-            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-            thread = threading.Thread(target=self.controller.experiment_from_file)
-            thread.start()
+        
         """
         """ 
         function to use for connecting pins to ovals
