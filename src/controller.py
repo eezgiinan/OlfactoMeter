@@ -25,7 +25,6 @@ class Controller:
         """
         Reads an experiment file (.csv or .xlsx) as a DataFrame and saves it in the model.
         """
-        filedisplay = None
         if filename.endswith('.csv'):
             df = pd.read_csv(filename)
         elif filename.endswith('.xlsx'):
@@ -34,8 +33,6 @@ class Controller:
             raise TypeError('Unsupported File')
 
         print('Loaded', df.head())
-        filedisplay = filedisplay.split('/')[len(filedisplay.split('/')) - 1]
-        return filedisplay
         self.model.experiment = df
 
     def set_duration(self, duration):

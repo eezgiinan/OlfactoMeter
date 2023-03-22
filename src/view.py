@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk, filedialog, messagebox
 import time
 
@@ -67,7 +68,6 @@ class View(ttk.Frame):
         # selected file label
         self.file_label = ttk.Label(self, text='Please choose a file')
         self.file_label.grid(row=5, column=2)
-        self.file_label['text'] = self.controller.experiment_from_file()
 
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
@@ -150,6 +150,7 @@ class View(ttk.Frame):
         # Change label contents
         self.update()
         self.controller.experiment_from_file(filename)
+        self.file_label["text"] = Path(filename).name
 
     """
     def show_error(self, message):
