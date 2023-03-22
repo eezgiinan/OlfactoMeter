@@ -64,6 +64,11 @@ class View(ttk.Frame):
         self.pb_label = ttk.Label(self)
         self.pb_label.grid(row=2, column=3, columnspan=2)
 
+        # selected file label
+        self.file_label = ttk.Label(self, text='Please choose a file')
+        self.file_label.grid(row=5, column=2)
+        self.file_label['text'] = self.controller.experiment_from_file()
+
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(25, 125, 65, 165), self.canvas.create_oval(25, 175, 65, 215)]
