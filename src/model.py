@@ -111,6 +111,7 @@ class Olfactometer:
         """
         if self.experiment is not None:
             self.start_time = datetime.datetime.now()
+            self.t0 = time.time()
             self.is_running = True
             self.total_duration = sum(self.experiment['duration']) # Added new for calculating the sum of duration, can be connected with countdown
             self.end_time = self.start_time + datetime.timedelta(seconds=self.total_duration)

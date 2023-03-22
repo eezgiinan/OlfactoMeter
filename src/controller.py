@@ -65,7 +65,6 @@ class Controller:
         if not self.model.is_running:
             self.model.stop_event = event
             self.model.run_experiment()
-            self.model.t0 = time.time()
         else:
             self.view.show_warn('Ongoing experiment', 'Unable to run, already running! Stop and purge before running again')
 

@@ -188,6 +188,8 @@ class View(ttk.Frame):
         toolbarFrame.grid(row=2, column=3)
         toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
 
+        self.filename = 'no_names.csv'
+
     def save_names(self):
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
                                                 filetypes=(("text files", "*.txt"), ("all files", "*.*")))
@@ -243,6 +245,11 @@ class View(ttk.Frame):
         """
         thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
         thread.start()
+        self.filename = self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
+        with open(self.filename, 'w', newline='') as csvfile:
+            fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
         self.status_update()
 
     def stop_experiment(self):
@@ -285,7 +292,7 @@ class View(ttk.Frame):
                     else:
                         state = 'odor_2'
 
-            with open('data.csv', 'a', newline='') as csvfile:
+            with open(self.filename, 'a', newline='') as csvfile:
                 fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writerow({fieldnames[0]: timing, fieldnames[1]: state, fieldnames[2]: pins_status[0],
