@@ -4,6 +4,7 @@ from tkinter import ttk, filedialog, messagebox
 import time
 import matplotlib
 import csv
+import pandas as pd
 
 from controller import Controller
 from modes import Modes
@@ -183,11 +184,6 @@ class View(ttk.Frame):
         canvas.draw()
         canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
 
-        # navigation toolbar
-        toolbarFrame = tk.Frame(master=self)
-        toolbarFrame.grid(row=2, column=3)
-        toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
-
         self.filename = 'no_names.csv'
 
     def save_names(self):
@@ -298,6 +294,17 @@ class View(ttk.Frame):
                 writer.writerow({fieldnames[0]: timing, fieldnames[1]: state, fieldnames[2]: pins_status[0],
                                  fieldnames[3]: pins_status[1], fieldnames[4]: pins_status[2],
                                  fieldnames[5]: pins_status[3]})
+
+            df = pd.read_csv(self.filename)
+            x = df['Time'][-6:].values.tolist()
+            y = df['State'][-6:]
+            words = ['resting', 'purging', 'odor_1', 'odor_2']
+            for i in words:
+                y = y.replace(i, words.index(i))
+            y = y.values.tolist()
+
+            print(x, y)
+
             self.after(1000, self.status_update)
         else:
             print('Completed')
