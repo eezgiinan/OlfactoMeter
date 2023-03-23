@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk, filedialog, messagebox
 import time
 import matplotlib
@@ -54,7 +55,7 @@ class View(ttk.Frame):
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame5
-        self.mode = tk.Label(self.frame5, text='Informations ', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode = tk.Label(self.frame5, text='Experiment Information', bg='#B0E0E6', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
         # creates label for box
@@ -101,6 +102,10 @@ class View(ttk.Frame):
         # progress bar label
         self.pb_label = tk.Label(self.frame4, bg='#B2DF9B', font=("Arial bold", 13))
         self.pb_label.grid(row=4, column=2, columnspan=4, padx=10, pady=10)
+
+        # selected file label
+        self.file_label = ttk.Label(self, text='Please choose a file')
+        self.file_label.grid(row=1, column=1)
 
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
@@ -175,7 +180,7 @@ class View(ttk.Frame):
         fig = plt.figure(figsize=(4, 5))
         plt.bar(x=x, height=y)
 
-        # You can make your x axis labels vertical using the rotation
+        # You can make your x-axis labels vertical using the rotation
         plt.xticks(x, rotation=90)
 
         # specify the window as master
@@ -238,6 +243,7 @@ class View(ttk.Frame):
         # Change label contents
         self.update()
         self.controller.experiment_from_file(filename)
+        self.file_label["text"] = Path(filename).name
 
     def run_experiment(self):
         """
