@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk, filedialog, messagebox
 import time
 import matplotlib
@@ -39,8 +40,8 @@ class View(ttk.Frame):
         self.frame5.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
 
         # creates title for frame1
-        self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD',  font=("Arial bold",16))
-        self.mode.grid(row = 0, sticky = "ew")
+        self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame2
         self.mode = tk.Label(self.frame2, text='Excel control', bg='#E6E6FA', font=("Arial bold", 16))
@@ -55,11 +56,11 @@ class View(ttk.Frame):
         self.mode.grid(row=0, sticky="ew")
 
         # creates title for frame5
-        self.mode = tk.Label(self.frame5, text='Informations ', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode = tk.Label(self.frame5, text='Experiment Information', bg='#B0E0E6', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
         # creates label for box
-        self.mode = tk.Label(self.frame1, text='Select the duration:',bg='#DDA0DD')
+        self.mode = tk.Label(self.frame1, text='Select the duration:', bg='#DDA0DD')
         self.mode.grid(row=3, column=0)
 
         # creates a text box and saves the value of the box in duration_var
@@ -68,7 +69,7 @@ class View(ttk.Frame):
         self.duration_box.grid(row=3, column=1)
 
         # creates label for mode box
-        self.mode = tk.Label(self.frame1, text='Select the mode:',bg='#DDA0DD')
+        self.mode = tk.Label(self.frame1, text='Select the mode:', bg='#DDA0DD')
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
@@ -80,7 +81,8 @@ class View(ttk.Frame):
 
         # drop down menu for mode selection
         self.drop_var = tk.StringVar()
-        self.drop = ttk.Combobox(self.frame1, state="readonly", textvariable=self.drop_var, values=[mode.name for mode in Modes])
+        self.drop = ttk.Combobox(self.frame1, state="readonly", textvariable=self.drop_var,
+                                 values=[mode.name for mode in Modes])
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
@@ -103,6 +105,10 @@ class View(ttk.Frame):
         self.pb_label = tk.Label(self.frame4, bg='#B2DF9B', font=("Arial bold", 13))
         self.pb_label.grid(row=4, column=2, columnspan=4, padx=10, pady=10)
 
+        # selected file label
+        self.file_label = ttk.Label(self.frame2, text='Please choose a file')
+        self.file_label.grid(row=4, column=1)
+
         # draw an oval in the canvas
         self.ovals = [self.canvas.create_oval(25, 25, 65, 65), self.canvas.create_oval(25, 75, 65, 115),
                       self.canvas.create_oval(85, 25, 125, 65), self.canvas.create_oval(145, 25, 185, 65)]
@@ -110,7 +116,7 @@ class View(ttk.Frame):
             self.canvas.itemconfig(oval, fill="yellow")
 
         # create the labels for the ovals
-        self.labels= self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
@@ -121,7 +127,7 @@ class View(ttk.Frame):
         self.mode = tk.Label(self.frame4, text='SA+S1 -> odor 1 ', bg='#B2DF9B')
         self.mode.grid(row=1, column=0)
         self.mode = tk.Label(self.frame4, text='SA+S2 -> odor 2 ', bg='#B2DF9B')
-        self.mode.grid(row=1, column=0,sticky="s")
+        self.mode.grid(row=1, column=0, sticky="s")
 
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
@@ -169,7 +175,7 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        self.fig = plt.figure(figsize=(8, 4))
+        self.fig = plt.figure(figsize=(5, 2))
         self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
         self.ax = plt.axes(ylim=(-0.5, 3.5))
         self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
@@ -189,25 +195,36 @@ class View(ttk.Frame):
             file.write(self.odor2_box.get() + '\n')
             file.write(self.mouse_box.get() + '\n')
             file.write(self.protocol_box.get() + '\n')
+        plt.clf()
+        self.ax = plt.axes(ylim=(-0.5, 3.5))
+        self.ax.set_yticks(np.arange(0, len(self.labels)),
+                           labels=['Resting', 'Purging', self.odor1_box.get(), self.odor2_box.get()])
+        self.plot_canvas.draw()
 
     def browse_setup(self):
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
                                               filetypes=[("text files",
                                                           "*.txt")])
+        plt.clf()
+        self.ax = plt.axes(ylim=(-0.5, 3.5))
         with open(filename, 'r') as file:
             lines = [line.rstrip() for line in file]
             self.odor1_name.set(lines[0])
             self.odor2_name.set(lines[1])
             self.mouse_nb.set(lines[2])
             self.protocol.set(lines[3])
+            self.ax.set_yticks(np.arange(0, len(self.labels)),
+                               labels=['Resting', 'Purging', lines[0], lines[1]])
+        self.plot_canvas.draw()
 
     def drop_down_click(self):
         """
         Reads the mode and duration values in the text box and activates a thread that executes them
         """
         print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode, args=(self.drop_var.get(), self.duration_var.get(), self.stop_event, ))
+        thread = threading.Thread(target=self.controller.activate_mode,
+                                  args=(self.drop_var.get(), self.duration_var.get(), self.stop_event,))
         thread.start()
         self.status_update()
 
@@ -229,12 +246,13 @@ class View(ttk.Frame):
         # Change label contents
         self.update()
         self.controller.experiment_from_file(filename)
+        self.file_label["text"] = Path(filename).name
 
     def run_experiment(self):
         """
         Creates a thread that runs the experiment and calls the status_update method.
         """
-        thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event, ))
+        thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event,))
         thread.start()
         self.filename = self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
         with open(self.filename, 'w', newline='') as csvfile:
@@ -244,7 +262,8 @@ class View(ttk.Frame):
         self.status_update()
 
     def stop_experiment(self):
-        self.show_warn(title='Stop the experiment', message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
+        self.show_warn(title='Stop the experiment',
+                       message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
         time.sleep(1)
         thread = threading.Thread(target=self.controller.clean)
@@ -268,7 +287,8 @@ class View(ttk.Frame):
         self.pb['value'] = percent_completed
         self.pb_label['text'] = f"Elapsed {elapsed} seconds out of {total_duration} seconds"
         for i in range(len(pins_status)):
-            self.canvas.itemconfig(self.ovals[i], fill=self.color_map[pins_status[i]]) # ovals corresponding to the pins
+            self.canvas.itemconfig(self.ovals[i],
+                                   fill=self.color_map[pins_status[i]])  # ovals corresponding to the pins
 
         if is_running:
             timing = int(time.time() - self.controller.get_start_time())
@@ -324,7 +344,7 @@ class View(ttk.Frame):
             # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
             thread = threading.Thread(target=self.controller.activate_stop)
             thread.start()
- 
+
         """
         """ 
         function to use for connecting pins to ovals
