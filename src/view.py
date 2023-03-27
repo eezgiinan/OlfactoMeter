@@ -5,7 +5,7 @@ import time
 import matplotlib
 import csv
 import pandas as pd
-
+import numpy as np
 from controller import Controller
 from modes import Modes
 import matplotlib.pyplot as plt
@@ -169,20 +169,15 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        x = ['Col A', 'Col B', 'Col C']
-
-        y = [50, 20, 80]
-
-        fig = plt.figure(figsize=(4, 5))
-        plt.bar(x=x, height=y)
-
-        # You can make your x axis labels vertical using the rotation
-        plt.xticks(x, rotation=90)
+        self.fig = plt.figure(figsize=(8, 4))
+        self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
+        self.ax = plt.axes(ylim=(0, 4))
+        self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
 
         # specify the window as master
-        canvas = FigureCanvasTkAgg(fig, master=self)
-        canvas.draw()
-        canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
+        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.plot_canvas.draw()
+        self.plot_canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
 
         self.filename = 'no_names.csv'
 
@@ -304,7 +299,8 @@ class View(ttk.Frame):
             y = y.values.tolist()
 
             print(x, y)
-
+            plt.plot(x, y)
+            self.plot_canvas.draw()
             self.after(1000, self.status_update)
         else:
             print('Completed')
