@@ -171,7 +171,7 @@ class View(ttk.Frame):
 
         self.fig = plt.figure(figsize=(8, 4))
         self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
-        self.ax = plt.axes(ylim=(0, 4))
+        self.ax = plt.axes(ylim=(-0.5, 3.5))
         self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
 
         # specify the window as master
@@ -298,6 +298,9 @@ class View(ttk.Frame):
                 y = y.replace(i, words.index(i))
             y = y.values.tolist()
 
+            plt.clf()
+            self.ax = plt.axes(ylim=(-0.5, 3.5))
+            self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
             print(x, y)
             plt.plot(x, y)
             self.plot_canvas.draw()
