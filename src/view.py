@@ -5,7 +5,8 @@ from tkinter import ttk, filedialog, messagebox
 import time
 import matplotlib
 import csv
-
+import pandas as pd
+import numpy as np
 from controller import Controller
 from modes import Modes
 import matplotlib.pyplot as plt
@@ -173,25 +174,15 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        x = ['Col A', 'Col B', 'Col C']
-
-        y = [50, 20, 80]
-
-        fig = plt.figure(figsize=(4, 5))
-        plt.bar(x=x, height=y)
-
-        # You can make your x-axis labels vertical using the rotation
-        plt.xticks(x, rotation=90)
+        self.fig = plt.figure(figsize=(8, 4))
+        self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
+        self.ax = plt.axes(ylim=(-0.5, 3.5))
+        self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
 
         # specify the window as master
-        canvas = FigureCanvasTkAgg(fig, master=self)
-        canvas.draw()
-        canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
-
-        # navigation toolbar
-        toolbarFrame = tk.Frame(master=self)
-        toolbarFrame.grid(row=2, column=3)
-        toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.plot_canvas.draw()
+        self.plot_canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
 
         self.filename = 'no_names.csv'
 
@@ -304,6 +295,21 @@ class View(ttk.Frame):
                 writer.writerow({fieldnames[0]: timing, fieldnames[1]: state, fieldnames[2]: pins_status[0],
                                  fieldnames[3]: pins_status[1], fieldnames[4]: pins_status[2],
                                  fieldnames[5]: pins_status[3]})
+
+            df = pd.read_csv(self.filename)
+            x = df['Time'][-6:].values.tolist()
+            y = df['State'][-6:]
+            words = ['resting', 'purging', 'odor_1', 'odor_2']
+            for i in words:
+                y = y.replace(i, words.index(i))
+            y = y.values.tolist()
+
+            plt.clf()
+            self.ax = plt.axes(ylim=(-0.5, 3.5))
+            self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
+            print(x, y)
+            plt.plot(x, y)
+            self.plot_canvas.draw()
             self.after(1000, self.status_update)
         else:
             print('Completed')
