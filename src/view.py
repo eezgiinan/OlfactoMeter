@@ -39,6 +39,9 @@ class View(ttk.Frame):
         self.frame5 = tk.Frame(self, width=200, height=600, bg='#B0E0E6', borderwidth=2, relief="ridge")
         self.frame5.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
 
+        self.frame6 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
+        self.frame6.grid(row=3, column=2, sticky="nsw", padx=10, pady=10)
+
         # creates title for frame1
         self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD',  font=("Arial bold",16))
         self.mode.grid(row = 0, sticky = "ew")
@@ -57,6 +60,10 @@ class View(ttk.Frame):
 
         # creates title for frame5
         self.mode = tk.Label(self.frame5, text='Experiment Information', bg='#B0E0E6', font=("Arial bold", 16))
+        self.mode.grid(row=0, sticky="ew")
+
+        # creates title for frame6
+        self.mode = tk.Label(self.frame6, text='Plot Feedback', bg='#B2DF9B', font=("Arial bold", 16))
         self.mode.grid(row=0, sticky="ew")
 
         # creates label for box
@@ -174,15 +181,15 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        self.fig = plt.figure(figsize=(8, 4))
+        self.fig = plt.figure(figsize=(3, 1))
         self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
         self.ax = plt.axes(ylim=(-0.5, 3.5))
         self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
 
         # specify the window as master
-        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self.frame6)
         self.plot_canvas.draw()
-        self.plot_canvas.get_tk_widget().grid(row=1, column=3, ipadx=40, ipady=20)
+        self.plot_canvas.get_tk_widget().grid(row=3, column=2, ipadx=10, ipady=10)
 
         self.filename = 'no_names.csv'
 
