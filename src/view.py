@@ -64,7 +64,7 @@ class View(ttk.Frame):
 
         # creates title for frame6
         self.mode = tk.Label(self.frame6, text='Plot Feedback', bg='#B2DF9B', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.mode.grid(row=0, sticky="e")
 
         # creates label for box
         self.mode = tk.Label(self.frame1, text='Select the duration:',bg='#DDA0DD')
