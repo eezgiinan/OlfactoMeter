@@ -9,9 +9,9 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        self.title('Tkinter MVC Demo')
-        #self.PORT = 'COM4'
-        self.PORT = '/dev/cu.usbmodem1101'
+        self.title('Olfactometer')
+        self.PORT = 'COM3'
+        # self.PORT = '/dev/cu.usbmodem1101'
         # create a model
         model = Olfactometer(self.PORT)
 
