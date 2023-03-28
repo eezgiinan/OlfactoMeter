@@ -326,7 +326,7 @@ class View(ttk.Frame):
             for i in words:
                 y = y.replace(i, words.index(i))
             y = y.values.tolist()
-
+            self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
             plt.clf()
             self.ax = plt.axes(ylim=(-0.5, 3.5))
             self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
