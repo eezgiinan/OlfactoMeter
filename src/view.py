@@ -102,15 +102,15 @@ class View(ttk.Frame):
 
         # Creates colored circles
         self.canvas = tk.Canvas(self.frame4, width=210, height=140)
-        self.canvas.grid(row=1, column=2, padx=10)
+        self.canvas.grid(row=1, column=0, padx=10)
 
         # progress bar
         self.pb = ttk.Progressbar(self.frame4, orient='horizontal', mode='determinate', length=200)
-        self.pb.grid(row=3, column=2, columnspan=4, padx=10, pady=10)
+        self.pb.grid(row=3, column=0, columnspan=4, padx=10, pady=10)
 
         # progress bar label
         self.pb_label = tk.Label(self.frame4, bg='#B2DF9B', font=("Arial bold", 13))
-        self.pb_label.grid(row=4, column=2, columnspan=4, padx=10, pady=10)
+        self.pb_label.grid(row=4, column=0, columnspan=4, padx=10, pady=10)
 
         # selected file label
         self.file_label = ttk.Label(self.frame2, text='Please choose a file')
@@ -127,14 +127,6 @@ class View(ttk.Frame):
         self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
         self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
-
-        # creates label for explanation of the valves
-        self.mode = tk.Label(self.frame4, text='SA+SB -> Purging mode', bg='#B2DF9B')
-        self.mode.grid(row=1, column=0, sticky="n")
-        self.mode = tk.Label(self.frame4, text='SA+S1 -> odor 1 ', bg='#B2DF9B')
-        self.mode.grid(row=1, column=0)
-        self.mode = tk.Label(self.frame4, text='SA+S2 -> odor 2 ', bg='#B2DF9B')
-        self.mode.grid(row=1, column=0, sticky="s")
 
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
@@ -191,9 +183,50 @@ class View(ttk.Frame):
         # specify the window as master
         self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self.frame6)
         self.plot_canvas.draw()
-        self.plot_canvas.get_tk_widget().grid(row=3, column=2, ipadx=3, ipady=3)
+        self.plot_canvas.get_tk_widget().grid(row=1, column=0, ipadx=3, ipady=3)
 
         self.filename = 'no_names.csv'
+
+        # Create another canva for explanation of the valves
+        self.canvas2 = tk.Canvas(self.frame4, width=160, height=140)
+        self.canvas2.grid(row=1, column=1, padx=10)
+        # draw ovals in the canvas
+        self.ovals2 = [self.canvas2.create_oval(25, 25, 65, 65), self.canvas2.create_oval(25, 75, 65, 115)]
+        for oval in self.ovals2:
+            self.canvas2.itemconfig(oval, fill="green")
+
+        # create the labels for the ovals
+        self.labels = self.canvas2.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas2.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
+        self.labels = self.canvas2.create_text(80, 60,font=('freemono', 12, 'bold'), text="Purging", anchor='nw', fill="black")
+
+        # Create another canva for explanation of the valves
+        self.canvas3 = tk.Canvas(self.frame4, width=160, height=140)
+        self.canvas3.grid(row=1, column=2, padx=10)
+        # draw ovals in the canvas
+        self.ovals3 = [self.canvas3.create_oval(25, 25, 65, 65), self.canvas3.create_oval(85, 25, 125, 65)]
+        for oval in self.ovals3:
+            self.canvas3.itemconfig(oval, fill="green")
+
+        # create the labels for the ovals
+        self.labels = self.canvas3.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas3.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
+        self.labels = self.canvas3.create_text(60, 80, font=('freemono', 12, 'bold'), text="Odor 1", anchor='nw',
+                                               fill="black")
+
+        # Create another canva for explanation of the valves
+        self.canvas4 = tk.Canvas(self.frame4, width=160, height=140)
+        self.canvas4.grid(row=1, column=3, padx=10)
+        # draw ovals in the canvas
+        self.ovals4 = [self.canvas4.create_oval(25, 25, 65, 65), self.canvas4.create_oval(85, 25, 125, 65)]
+        for oval in self.ovals4:
+            self.canvas4.itemconfig(oval, fill="green")
+
+        # create the labels for the ovals
+        self.labels = self.canvas4.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.labels = self.canvas4.create_text(80, 10, text="S2 valve", anchor='nw', fill="black")
+        self.labels = self.canvas4.create_text(60, 80, font=('freemono', 12, 'bold'), text="Odor 2", anchor='nw',
+                                               fill="black")
 
 
     def save_names(self):
