@@ -146,10 +146,10 @@ class View(ttk.Frame):
         self.mode.grid(row=3, column=0)
 
         # creates a text box for odors name and saves the name in odor_name
-        self.odor1_name = tk.StringVar(value='unknown_odor1')
+        self.odor1_name = tk.StringVar(value='Odor 1')
         self.odor1_box = ttk.Entry(self.frame5, textvariable=self.odor1_name, width=30)
         self.odor1_box.grid(row=2, column=1)
-        self.odor2_name = tk.StringVar(value='unknown_odor2')
+        self.odor2_name = tk.StringVar(value='Odor 2')
         self.odor2_box = ttk.Entry(self.frame5, textvariable=self.odor2_name, width=30)
         self.odor2_box.grid(row=3, column=1)
 
@@ -182,7 +182,7 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        self.fig = plt.figure(figsize=(4, 2), dpi=100)
+        self.fig = plt.figure(figsize=(6, 2), dpi=100)
         self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
         self.ax = plt.axes(ylim=(-0.5, 3.5))
         self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
@@ -191,7 +191,7 @@ class View(ttk.Frame):
         # specify the window as master
         self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self.frame6)
         self.plot_canvas.draw()
-        self.plot_canvas.get_tk_widget().grid(row=3, column=2, ipadx=10, ipady=10)
+        self.plot_canvas.get_tk_widget().grid(row=3, column=2, ipadx=3, ipady=3)
 
         self.filename = 'no_names.csv'
 
