@@ -25,22 +25,22 @@ class View(ttk.Frame):
 
         # creates frame
         self.frame1 = tk.Frame(self, width=200, height=200, bg='#DDA0DD', borderwidth=2, relief="ridge")
-        self.frame1.grid(row=1, column=1, sticky="n", padx=10, pady=10)
+        self.frame1.grid(row=1, column=1, sticky="sew", padx=3, pady=3)
 
         self.frame2 = tk.Frame(self, width=200, height=200, bg='#E6E6FA', borderwidth=2, relief="ridge")
-        self.frame2.grid(row=2, column=1, sticky="ew", padx=10, pady=10)
+        self.frame2.grid(row=2, column=1, sticky="new", padx=3, pady=3)
 
         self.frame3 = tk.Frame(self, width=200, height=200, bg='#FFC0CB', borderwidth=2, relief="ridge")
-        self.frame3.grid(row=3, column=1, sticky="ew", padx=10, pady=10)
+        self.frame3.grid(row=2, column=1, sticky="ew", padx=3, pady=3)
 
-        self.frame4 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
-        self.frame4.grid(row=2, column=2, sticky="n", padx=10, pady=10)
+        self.frame4 = tk.Frame(self, width=300, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
+        self.frame4.grid(row=2, column=2, sticky="new", padx=3, pady=3)
 
-        self.frame5 = tk.Frame(self, width=200, height=600, bg='#B0E0E6', borderwidth=2, relief="ridge")
-        self.frame5.grid(row=1, column=2, sticky="nsw", padx=10, pady=10)
+        self.frame5 = tk.Frame(self, width=300, height=600, bg='#B0E0E6', borderwidth=2, relief="ridge")
+        self.frame5.grid(row=1, column=2, sticky="new", padx=3, pady=3)
 
         self.frame6 = tk.Frame(self, width=200, height=600, bg='#B2DF9B', borderwidth=2, relief="ridge")
-        self.frame6.grid(row=3, column=2, sticky="nsw", padx=10, pady=10)
+        self.frame6.grid(row=3, column=2, sticky="n", padx=3, pady=3)
 
         # creates title for frame1
         self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD', font=("Arial bold", 16))
@@ -182,17 +182,19 @@ class View(ttk.Frame):
         self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
         self.file_button.grid(row=2, column=1, padx=10)
 
-        self.fig = plt.figure(figsize=(5, 2))
+        self.fig = plt.figure(figsize=(4, 2), dpi=100)
         self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
         self.ax = plt.axes(ylim=(-0.5, 3.5))
         self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
 
+
         # specify the window as master
-        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self.frame6)
         self.plot_canvas.draw()
         self.plot_canvas.get_tk_widget().grid(row=3, column=2, ipadx=10, ipady=10)
 
         self.filename = 'no_names.csv'
+
 
     def save_names(self):
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
