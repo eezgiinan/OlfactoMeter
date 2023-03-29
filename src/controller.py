@@ -1,5 +1,5 @@
 import datetime
-
+import time
 import pandas as pd
 
 from model import Olfactometer
@@ -20,6 +20,9 @@ class Controller:
         # We call the setter. This is how it would look like in Java: this.model.set_experiment(experiment).
         self.model.experiment = experiment
         self.run_experiment(event)
+
+    def get_start_time(self):
+        return self.model.t0
 
     def experiment_from_file(self, filename: str):
         """

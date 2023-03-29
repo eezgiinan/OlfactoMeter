@@ -28,6 +28,8 @@ class Olfactometer:
         self.start_time = None
         self.end_time = None
 
+        self.t0 = 0
+
         # To register the input from duration widget
         self.duration = '0'
 
@@ -36,6 +38,14 @@ class Olfactometer:
 
         # Is the countdown ongoing ?
         # self.ongoing_countdown = False
+
+    @property
+    def t0(self):
+        return self.__t0
+
+    @t0.setter
+    def t0(self, value):
+        self.__t0 = value
 
     @property
     def experiment(self):
@@ -101,6 +111,7 @@ class Olfactometer:
         """
         if self.experiment is not None:
             self.start_time = datetime.datetime.now()
+            self.t0 = time.time()
             self.is_running = True
             self.total_duration = sum(self.experiment['duration']) # Added new for calculating the sum of duration, can be connected with countdown
             self.end_time = self.start_time + datetime.timedelta(seconds=self.total_duration)
