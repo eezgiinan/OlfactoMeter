@@ -300,6 +300,8 @@ class View(ttk.Frame):
             fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
+        status_thread = threading.Thread(target=self.status_update)
+        status_thread.start()
         self.status_update()
 
     def stop_experiment(self):
