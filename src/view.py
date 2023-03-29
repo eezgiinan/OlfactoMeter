@@ -43,32 +43,32 @@ class View(ttk.Frame):
         self.frame6.grid(row=3, column=2, sticky="n", padx=3, pady=3)
 
         # creates title for frame1
-        self.mode = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame1 = tk.Label(self.frame1, text='Manual control', bg='#DDA0DD', font=("Arial bold", 16))
+        self.title_frame1.grid(row=0, sticky="ew")
 
         # creates title for frame2
-        self.mode = tk.Label(self.frame2, text='Excel control', bg='#E6E6FA', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame2 = tk.Label(self.frame2, text='Excel control', bg='#E6E6FA', font=("Arial bold", 16))
+        self.title_frame2.grid(row=0, sticky="ew")
 
         # creates title for frame3
-        self.mode = tk.Label(self.frame3, text='STOP', bg='#FFC0CB', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame3 = tk.Label(self.frame3, text='STOP', bg='#FFC0CB', font=("Arial bold", 16))
+        self.title_frame3.grid(row=0, sticky="ew")
 
         # creates title for frame4
-        self.mode = tk.Label(self.frame4, text='Feedback', bg='#B2DF9B', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame4 = tk.Label(self.frame4, text='Feedback', bg='#B2DF9B', font=("Arial bold", 16))
+        self.title_frame4.grid(row=0, sticky="ew")
 
         # creates title for frame5
-        self.mode = tk.Label(self.frame5, text='Experiment Information', bg='#B0E0E6', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame5 = tk.Label(self.frame5, text='Experiment Information', bg='#B0E0E6', font=("Arial bold", 16))
+        self.title_frame5.grid(row=0, sticky="ew")
 
         # creates title for frame6
-        self.mode = tk.Label(self.frame6, text='Plot Feedback', bg='#B2DF9B', font=("Arial bold", 16))
-        self.mode.grid(row=0, sticky="ew")
+        self.title_frame6 = tk.Label(self.frame6, text='Plot Feedback', bg='#B2DF9B', font=("Arial bold", 16))
+        self.title_frame6.grid(row=0, sticky="ew")
 
         # creates label for box
-        self.mode = tk.Label(self.frame1, text='Select the duration:', bg='#DDA0DD')
-        self.mode.grid(row=3, column=0)
+        self.select_duration = tk.Label(self.frame1, text='Select the duration:', bg='#DDA0DD')
+        self.select_duration.grid(row=3, column=0)
 
         # creates a text box and saves the value of the box in duration_var
         self.duration_var = tk.StringVar()
@@ -123,19 +123,19 @@ class View(ttk.Frame):
             self.canvas.itemconfig(oval, fill="yellow")
 
         # create the labels for the ovals
-        self.labels = self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
-        self.labels = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
-        self.labels = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
-        self.labels = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
+        self.label1 = self.canvas.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
+        self.label2 = self.canvas.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
+        self.label3 = self.canvas.create_text(80, 10, text="S1 valve", anchor='nw', fill="black")
+        self.label4 = self.canvas.create_text(140, 10, text="S2 valve", anchor='nw', fill="black")
 
         # create assignment to status
         self.color_map = {0: 'green', 1: 'red'}
 
         # creates label for the odors name
-        self.mode = tk.Label(self.frame5, text='Odor 1 :', bg='#B0E0E6')
-        self.mode.grid(row=2, column=0)
-        self.mode = tk.Label(self.frame5, text='Odor 2 :', bg='#B0E0E6')
-        self.mode.grid(row=3, column=0)
+        self.mode_odor1 = tk.Label(self.frame5, text='Odor 1 :', bg='#B0E0E6')
+        self.mode_odor1.grid(row=2, column=0)
+        self.mode_odor2 = tk.Label(self.frame5, text='Odor 2 :', bg='#B0E0E6')
+        self.mode_odor2.grid(row=3, column=0)
 
         # creates a text box for odors name and saves the name in odor_name
         self.odor1_name = tk.StringVar(value='Odor 1')
@@ -146,16 +146,16 @@ class View(ttk.Frame):
         self.odor2_box.grid(row=3, column=1)
 
         # creates label for mouse number
-        self.mode = tk.Label(self.frame5, text='Mouse n°:', bg='#B0E0E6')
-        self.mode.grid(row=4, column=0)
+        self.mode_mouse = tk.Label(self.frame5, text='Mouse n°:', bg='#B0E0E6')
+        self.mode_mouse.grid(row=4, column=0)
         # creates a text box for mouse number and saves the name in mouse_nb
         self.mouse_nb = tk.StringVar(value='mouse_unknown')
         self.mouse_box = ttk.Entry(self.frame5, textvariable=self.mouse_nb, width=30)
         self.mouse_box.grid(row=4, column=1)
 
         # creates label for protocol used
-        self.mode = tk.Label(self.frame5, text='Protocol used : ', bg='#B0E0E6')
-        self.mode.grid(row=5, column=0)
+        self.mode_protocol = tk.Label(self.frame5, text='Protocol used : ', bg='#B0E0E6')
+        self.mode_protocol.grid(row=5, column=0)
 
         # creates a text box for protocol used and saves the name in protocol
         self.protocol = tk.StringVar(value='unknown_protocol')
@@ -163,22 +163,21 @@ class View(ttk.Frame):
         self.protocol_box.grid(row=5, column=1)
 
         # creates a button for saving
-        self.file_button = ttk.Button(self.frame5, text='Save', command=self.save_names)
-        self.file_button.grid(row=6, column=1)
+        self.file_button_save = ttk.Button(self.frame5, text='Save', command=self.save_names)
+        self.file_button_save.grid(row=6, column=1)
 
         # creates a button for using a previous setup
-        self.file_button = ttk.Button(self.frame5, text='Previous Setup', command=self.browse_setup)
-        self.file_button.grid(row=6, column=0)
+        self.file_button_setup = ttk.Button(self.frame5, text='Previous Setup', command=self.browse_setup)
+        self.file_button_setup.grid(row=6, column=0)
 
         # creates a button for adding an Excel file
-        self.file_button = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
-        self.file_button.grid(row=2, column=1, padx=10)
+        self.file_button_add = ttk.Button(self.frame2, text='Add file', command=self.browse_files)
+        self.file_button_add.grid(row=2, column=1, padx=10)
 
         self.fig = plt.figure(figsize=(6, 2), dpi=100)
-        self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
+        self.experiment_labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
         self.ax = plt.axes(ylim=(-0.5, 3.5))
-        self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
-
+        self.ax.set_yticks(np.arange(0, len(self.experiment_labels)), labels=self.experiment_labels)
 
         # specify the window as master
         self.plot_canvas = FigureCanvasTkAgg(self.fig, master=self.frame6)
@@ -239,7 +238,7 @@ class View(ttk.Frame):
             file.write(self.protocol_box.get() + '\n')
         plt.clf()
         self.ax = plt.axes(ylim=(-0.5, 3.5))
-        self.ax.set_yticks(np.arange(0, len(self.labels)),
+        self.ax.set_yticks(np.arange(0, len(self.experiment_labels)),
                            labels=['Resting', 'Purging', self.odor1_box.get(), self.odor2_box.get()])
         self.plot_canvas.draw()
 
@@ -256,7 +255,7 @@ class View(ttk.Frame):
             self.odor2_name.set(lines[1])
             self.mouse_nb.set(lines[2])
             self.protocol.set(lines[3])
-            self.ax.set_yticks(np.arange(0, len(self.labels)),
+            self.ax.set_yticks(np.arange(0, len(self.experiment_labels)),
                                labels=['Resting', 'Purging', lines[0], lines[1]])
         self.plot_canvas.draw()
 
@@ -359,10 +358,10 @@ class View(ttk.Frame):
             for i in words:
                 y = y.replace(i, words.index(i))
             y = y.values.tolist()
-            self.labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
+            self.experiment_labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
             plt.clf()
             self.ax = plt.axes(ylim=(-0.5, 3.5))
-            self.ax.set_yticks(np.arange(0, len(self.labels)), labels=self.labels)
+            self.ax.set_yticks(np.arange(0, len(self.experiment_labels)), labels=self.experiment_labels)
             print(x, y)
             plt.plot(x, y)
             self.plot_canvas.draw()
