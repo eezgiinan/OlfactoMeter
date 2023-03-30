@@ -80,7 +80,7 @@ class View(ttk.Frame):
         self.mode.grid(row=2, column=0, padx=10)
 
         # Run Experiment button
-        self.run_exp_button = ttk.Button(self.frame2, text='Run file', command=self.run_experiment)
+        self.run_exp_button = ttk.Button(self.frame2, text='Run file', command=self.run_file)
         self.run_exp_button.grid(row=3, column=1, padx=10)
 
         # Event thread for the stop button
@@ -93,8 +93,10 @@ class View(ttk.Frame):
         self.drop.grid(row=2, column=1, padx=10)
 
         # drop down button
-        self.drop_button = ttk.Button(self.frame1, text='Run', command=self.drop_down_click)
+        self.drop_button = ttk.Button(self.frame1, text='Run', command=self.run_manual)
         self.drop_button.grid(row=4, column=1, padx=10)
+        self.drop_button = ttk.Button(self.frame1, text='Reset history', command=self.manual_file)
+        self.drop_button.grid(row=4, column=0, padx=10)
 
         # creates a button for stop
         self.stop_button = tk.Button(self.frame3, text='Purge and Stop', fg='red', command=self.stop_experiment)
@@ -184,7 +186,8 @@ class View(ttk.Frame):
         self.plot_canvas.draw()
         self.plot_canvas.get_tk_widget().grid(row=1, column=0, ipadx=3, ipady=3)
 
-        self.filename = 'no_names.csv'
+        self.history_file = None
+        self.manual_file = None
 
         # Create another canva for explanation of the valves
         self.canvas2 = tk.Canvas(self.frame4, width=160, height=140)
@@ -197,7 +200,8 @@ class View(ttk.Frame):
         # create the labels for the ovals
         self.labels = self.canvas2.create_text(20, 10, text="SA valve", anchor='nw', fill="black")
         self.labels = self.canvas2.create_text(20, 115, text="SB valve", anchor='nw', fill="black")
-        self.labels = self.canvas2.create_text(80, 60,font=('freemono', 12, 'bold'), text="Purging", anchor='nw', fill="black")
+        self.labels = self.canvas2.create_text(80, 60, font=('freemono', 12, 'bold'), text="Purging", anchor='nw',
+                                               fill="black")
 
         # Create another canva for explanation of the valves
         self.canvas3 = tk.Canvas(self.frame4, width=160, height=140)
@@ -226,7 +230,6 @@ class View(ttk.Frame):
         self.labels = self.canvas4.create_text(80, 10, text="S2 valve", anchor='nw', fill="black")
         self.labels = self.canvas4.create_text(60, 80, font=('freemono', 12, 'bold'), text="Odor 2", anchor='nw',
                                                fill="black")
-
 
     def save_names(self):
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
@@ -259,16 +262,6 @@ class View(ttk.Frame):
                                labels=['Resting', 'Purging', lines[0], lines[1]])
         self.plot_canvas.draw()
 
-    def drop_down_click(self):
-        """
-        Reads the mode and duration values in the text box and activates a thread that executes them
-        """
-        print('Activating drop down', self.drop_var.get())
-        thread = threading.Thread(target=self.controller.activate_mode,
-                                  args=(self.drop_var.get(), self.duration_var.get(), self.stop_event,))
-        thread.start()
-        self.status_update()
-
     def set_controller(self, controller):
         """
         Sets the controller
@@ -289,20 +282,38 @@ class View(ttk.Frame):
         self.controller.experiment_from_file(filename)
         self.file_label["text"] = Path(filename).name
 
-    def run_experiment(self):
+    def run_manual(self):
+        """
+        Reads the mode and duration values in the text box and activates a thread that executes them
+        """
+        print('Activating drop down', self.drop_var.get())
+        thread = threading.Thread(target=self.controller.activate_mode,
+                                  args=(self.drop_var.get(), self.duration_var.get(), self.stop_event,))
+        thread.start()
+        self.history_file = self.manual_file
+        self.status_update()
+        self.file_label["text"] = 'Please choose a file'
+
+    def run_file(self):
         """
         Creates a thread that runs the experiment and calls the status_update method.
         """
         thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event,))
         thread.start()
-        self.filename = self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
-        with open(self.filename, 'w', newline='') as csvfile:
+        self.history_file = self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
+        self.init_history_file()
+        self.status_update()
+
+    def init_manual_file(self):
+        self.manual_file = 'manual' + '__' + self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
+        self.history_file = self.manual_file
+        self.init_history_file()
+
+    def init_history_file(self):
+        with open(self.history_file, 'w', newline='') as csvfile:
             fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
-        status_thread = threading.Thread(target=self.status_update)
-        status_thread.start()
-        self.status_update()
 
     def stop_experiment(self):
         self.show_warn(title='Stop the experiment',
@@ -312,6 +323,7 @@ class View(ttk.Frame):
         thread = threading.Thread(target=self.controller.clean)
         thread.start()
         self.status_update()
+        self.file_label["text"] = 'Please choose a file'
 
     def show_warn(self, title, message):
         messagebox.askyesnocancel(title=title, message=message)
@@ -321,149 +333,47 @@ class View(ttk.Frame):
         Reads the status from controller and assigns them to is_running and pins_status. Then it creates correspondence
         between the created ovals and pins_status using color_map. Then it repeats itself every 1 second using after().
         """
-        is_running, pins_status = self.controller.get_status()
-        percent_completed, elapsed, total_duration = self.controller.get_progress()
+
         # is_running: Whether we are currently executing an experiment (binary) or not
         # pins_status: List of binary values indicating the state of each pin on the board (Open or Closed) eg [1,0,0,1]
-        print('Running', is_running)
-        print('Status', pins_status)
+        is_running, pins_status = self.controller.get_status()
+        percent_completed, elapsed, total_duration = self.controller.get_progress()
+
         self.pb['value'] = percent_completed
         self.pb_label['text'] = f"Elapsed {elapsed} seconds out of {total_duration} seconds"
         for i in range(len(pins_status)):
             self.canvas.itemconfig(self.ovals[i],
                                    fill=self.color_map[pins_status[i]])  # ovals corresponding to the pins
 
+        self.plot_history(elapsed, pins_status)
         if is_running:
-            timing = int(time.time() - self.controller.get_start_time())
-            if pins_status[0] == 1:
-                state = 'resting'
-            else:
-                if pins_status[1] == 0:
-                    state = 'purging'
-                else:
-                    if pins_status[2] == 0:
-                        state = 'odor_1'
-                    else:
-                        state = 'odor_2'
-
-            with open(self.filename, 'a', newline='') as csvfile:
-                fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writerow({fieldnames[0]: timing, fieldnames[1]: state, fieldnames[2]: pins_status[0],
-                                 fieldnames[3]: pins_status[1], fieldnames[4]: pins_status[2],
-                                 fieldnames[5]: pins_status[3]})
-
-            df = pd.read_csv(self.filename)
-            x = df['Time'][-6:].values.tolist()
-            y = df['State'][-6:]
-            words = ['resting', 'purging', 'odor_1', 'odor_2']
-            for i in words:
-                y = y.replace(i, words.index(i))
-            y = y.values.tolist()
-            self.experiment_labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
-            plt.clf()
-            self.ax = plt.axes(ylim=(-0.5, 3.5))
-            self.ax.set_yticks(np.arange(0, len(self.experiment_labels)), labels=self.experiment_labels)
-            print(x, y)
-            plt.plot(x, y)
-            self.plot_canvas.draw()
             self.after(1000, self.status_update)
         else:
             print('Completed')
 
-        """
-        def add_file_clicked(self):
-            print('Add an Excel file')
-            # Create a new thread (executing unit that can be run in parallel). This in required as the python
-            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-            thread = threading.Thread(target=self.controller.experiment_from_file)
-            thread.start()
-        """
+    def plot_history(self, elapsed, pins_status):
+        state = None
+        for mode in Modes:
+            if tuple(pins_status) == mode.value:
+                state = mode.name
 
-        """
-        def purge_stop_clicked(self):
-            print('Activating Purge and Stop')
-            # Create a new thread (executing unit that can be run in parallel). This in required as the python
-            # code can only execute 1 part of the code at a time. Either the UI, or the long-running method we call
-            thread = threading.Thread(target=self.controller.activate_stop)
-            thread.start()
+        if not state:
+            raise ValueError('Unknown pin status configuration', pins_status)
 
-        """
-        """ 
-        function to use for connecting pins to ovals
+        with open(self.history_file, 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            row = [elapsed, state] + pins_status
+            writer.writerow(row)
 
-            def run_command(self)
-                mode = # read mode from dialog
-                status = Modes[mode].value
-                for st, canv in zip(sta, canva)
-                    canv.color(red-green)
-        """
-        # adds the menu
-        # self.bar = self.menubar()
-        # parent.config(menu=self.bar)
-        """
-           def menubar(self):
-
-               Creates the menubar for file selection.
-
-               menubar = tk.Menu(self)
-               filemenu = tk.Menu(menubar, tearoff=0)
-               filemenu.add_command(label="New", command=donothing)
-               filemenu.add_command(label="Open", command=self.browse_files)
-               filemenu.add_command(label="Save", command=donothing)
-               filemenu.add_separator()
-               filemenu.add_command(label="Exit", command=self.quit)
-               menubar.add_cascade(label="File", menu=filemenu)
-
-               helpmenu = tk.Menu(menubar, tearoff=0)
-               helpmenu.add_command(label="Help Index", command=donothing)
-               helpmenu.add_command(label="About...", command=donothing)
-               menubar.add_cascade(label="Help", menu=helpmenu)
-               return menubar
-           """
-
-        """
-        def show_error(self, message):
-
-            self.message_label['text'] = message
-            self.message_label['foreground'] = 'red'
-            self.message_label.after(3000, self.hide_message)
-
-        def show_success(self, message):
-
-            self.message_label['text'] = message
-            self.message_label['foreground'] = 'green'
-            self.message_label.after(3000, self.hide_message)
-
-        def hide_message(self):
-
-            self.message_label['text'] = ''
-
-        def set_duration(self):
-            if self.controller:
-                self.controller.set_duration(self.duration_var.get())
-                self.countdown_label.configure(text=self.time_string())
-
-        def time_string(self):
-            if self.controller:
-                return time.strftime('%M:%S', time.gmtime(self.controller.get_time()))
-            else:
-                return time.strftime('%M:%S', time.gmtime(0))
-
-        def countdown_update(self):
-            if self.controller:
-                self.controller.time_update()
-
-            self.countdown_label.configure(text=self.time_string())
-
-            # schedule another timer
-            self.countdown_label.after(1000, self.countdown_update)
-
-        def start_countdown(self):
-            if self.controller:
-                self.controller.start_countdown()
-
-        """
-        # create separations in  the window
-        # self.separator = ttk.Separator(self, orient='vertical')
-        # self.separator.place(relx=0.47, rely=0, relwidth=0.2, relheight=1)
+        df = pd.read_csv(self.history_file)
+        x = df['Time'][-6:].values.tolist()
+        y = df['State'][-6:]
+        words = [mode.name for mode in Modes]
+        y = [words.index(i) for i in y]
+        self.experiment_labels = ['Resting', 'Purging', self.odor1_name.get(), self.odor2_name.get()]
+        plt.clf()
+        self.ax = plt.axes(ylim=(-0.5, 3.5))
+        self.ax.set_yticks(np.arange(0, len(self.experiment_labels)), labels=self.experiment_labels)
+        print(x, y)
+        plt.plot(x, y)
+        self.plot_canvas.draw()

@@ -1,6 +1,4 @@
-import time
 import datetime
-from threading import Event
 
 import pyfirmata
 from pandas import DataFrame
@@ -24,28 +22,9 @@ class Olfactometer:
         self.stop_event = None
         self.experiment: DataFrame = None
         self.total_duration = 0
-
         self.start_time = None
-        self.end_time = None
 
-        self.t0 = 0
 
-        # To register the input from duration widget
-        self.duration = '0'
-
-        # Countdown Time Left
-        # self.time_left = 0
-
-        # Is the countdown ongoing ?
-        # self.ongoing_countdown = False
-
-    @property
-    def t0(self):
-        return self.__t0
-
-    @t0.setter
-    def t0(self, value):
-        self.__t0 = value
 
     @property
     def experiment(self):
@@ -65,43 +44,6 @@ class Olfactometer:
         else:
             self.__experiment = value
 
-    # self.__experiment = value
-    @property
-    def duration(self):
-        return self.__duration
-
-    @duration.setter
-    def duration(self, value):
-        if value.isdigit():
-            self.__duration = int(value)
-        else:
-            raise ValueError(f'Invalid duration {value}')
-
-    """
-    @property
-    def time_left(self):
-        return self.__time_left
-
-    @time_left.setter
-    def time_left(self, value):
-        self.__time_left = value
-
-    @property
-    def ongoing_countdown(self):
-        return self.__ongoing_countdown
-
-    @ongoing_countdown.setter
-    def ongoing_countdown(self, value):
-        self.__ongoing_countdown = value
-
-    def time_update(self):
-        if self.ongoing_countdown is True:
-            if self.time_left == 0:
-                self.ongoing_countdown = False
-            else:
-                self.time_left -= 1            
-    """
-
     def run_experiment(self):
         """
         Method that executes the instruction in the experiment (both manual and from file).
@@ -111,16 +53,16 @@ class Olfactometer:
         """
         if self.experiment is not None:
             self.start_time = datetime.datetime.now()
-            self.t0 = time.time()
             self.is_running = True
-            self.total_duration = sum(self.experiment['duration']) # Added new for calculating the sum of duration, can be connected with countdown
-            self.end_time = self.start_time + datetime.timedelta(seconds=self.total_duration)
+            self.total_duration = sum(self.experiment['duration'])
+
             for mode, duration in zip(self.experiment['mode'], self.experiment['duration']):
                 print('Running', mode, duration)
                 self.set_mode(Modes[mode.title()], duration)
                 if self.stop_event.is_set():
                     self.is_running = False
                     break
+
             self.is_running = False
         print('completed')
 

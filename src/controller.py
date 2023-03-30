@@ -21,9 +21,6 @@ class Controller:
         self.model.experiment = experiment
         self.run_experiment(event)
 
-    def get_start_time(self):
-        return self.model.t0
-
     def experiment_from_file(self, filename: str):
         """
         Reads an experiment file (.csv or .xlsx) as a DataFrame and saves it in the model.
@@ -38,26 +35,6 @@ class Controller:
         print('Loaded', df.head())
         self.model.experiment = df
 
-    def set_duration(self, duration):
-        try:
-            self.model.duration = duration
-            self.view.show_success(f'Duration set to {duration}s')
-            self.model.time_left = int(duration)
-            self.model.ongoing_countdown = False
-        except ValueError as error:
-            self.view.show_error(error)
-
-    """
-    def get_time(self):
-        return self.model.time_left
-
-    def time_update(self):
-        self.model.time_update()
-
-    def start_countdown(self):
-        self.model.ongoing_countdown = True
-    """
-
     def run_experiment(self, event):
         """
         Checks if the model is running, if it doesn't it runs the experiment.
@@ -66,7 +43,8 @@ class Controller:
             self.model.stop_event = event
             self.model.run_experiment()
         else:
-            self.view.show_warn('Ongoing experiment', 'Unable to run, already running! Stop and purge before running again')
+            self.view.show_warn('Ongoing experiment',
+                                'Unable to run, already running! Stop and purge before running again')
 
     def get_status(self):
         """
