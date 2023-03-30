@@ -22,8 +22,6 @@ class Olfactometer:
         self.total_duration = 0
         self.start_time = None
 
-
-
     @property
     def experiment(self):
         """
@@ -68,23 +66,23 @@ class Olfactometer:
         """
         Given a mode and a duration, activates the pin on Arduino specific to the mode passed as input.
         """
-        # Check if the mode is valid
+        # Checks if the mode is valid
         if mode not in Modes:
             print(f"Invalid mode: {mode}")
             return
-        # Check if the duration is valid
+        # Checks if the duration is valid
         if duration <= 0:
             print(f"Invalid duration: {duration}")
             return
-        # Get the pin values for the selected mode
+        # Gets the pin values for the selected mode
         valves = mode.value
-        # Activate the corresponding pins for the selected mode
+        # Activates the corresponding pins for the selected mode
         for i, valve in enumerate(self.PINS):
             valve.mode = pyfirmata.OUTPUT
             valve.write(valves[i])
-        # Wait for the specified duration
+        # Waits for the specified duration
         self.stop_event.wait(duration)  # equivalent to time.sleep but able to be stopped when the stop_event is set.
-        # Deactivate all pins
+        # Deactivates all pins
         for pin in self.PINS:
             pin.write(CLOSE)
 

@@ -10,18 +10,18 @@ class App(tk.Tk):
 
         self.title('Olfactometer')
         self.PORT = 'COM3'
-        # self.PORT = '/dev/cu.usbmodem1101'
-        # create a model
+        # self.PORT = '/dev/cu.usbmodem1101' was used as an input for Mac.
+        # creates a model
         model = Olfactometer(self.PORT)
 
-        # create a view and place it on the root window
+        # creates a view and place it on the root window
         view = View(self)
         view.grid(row=0, column=0, padx=10, pady=10)
 
-        # create a controller
+        # creates a controller
         controller = Controller(model, view)
 
-        # set the controller to view
+        # sets the controller to view
         view.set_controller(controller)
 
 
