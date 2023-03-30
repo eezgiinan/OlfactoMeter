@@ -95,7 +95,7 @@ class View(ttk.Frame):
         # drop down button
         self.drop_button = ttk.Button(self.frame1, text='Run', command=self.run_manual)
         self.drop_button.grid(row=4, column=1, padx=10)
-        self.drop_button = ttk.Button(self.frame1, text='Reset history', command=self.manual_file)
+        self.drop_button = ttk.Button(self.frame1, text='Reset history', command=self.init_manual_file)
         self.drop_button.grid(row=4, column=0, padx=10)
 
         # creates a button for stop
