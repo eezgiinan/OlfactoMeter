@@ -3,7 +3,6 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import ttk, filedialog, messagebox
 import time
-import matplotlib
 import csv
 import pandas as pd
 import numpy as np
@@ -150,6 +149,7 @@ class View(ttk.Frame):
         # creates label for mouse number
         self.mode_mouse = tk.Label(self.frame5, text='Mouse n°:', bg='#B0E0E6')
         self.mode_mouse.grid(row=4, column=0)
+
         # creates a text box for mouse number and saves the name in mouse_nb
         self.mouse_nb = tk.StringVar(value='mouse_unknown')
         self.mouse_box = ttk.Entry(self.frame5, textvariable=self.mouse_nb, width=30)
@@ -232,6 +232,9 @@ class View(ttk.Frame):
                                                fill="black")
 
     def save_names(self):
+        """
+
+        """
         filename = filedialog.asksaveasfilename(initialdir="/", title="Select file",
                                                 filetypes=(("text files", "*.txt"), ("all files", "*.*")))
         with open(filename, 'w') as file:
@@ -246,6 +249,9 @@ class View(ttk.Frame):
         self.plot_canvas.draw()
 
     def browse_setup(self):
+        """
+
+        """
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
                                               filetypes=[("text files",
@@ -269,6 +275,9 @@ class View(ttk.Frame):
         self.controller = controller
 
     def browse_files(self):
+        """
+
+        """
         filename = filedialog.askopenfilename(initialdir="/",
                                               title="Select a File",
                                               filetypes=[("excel files",
@@ -296,7 +305,7 @@ class View(ttk.Frame):
 
     def run_file(self):
         """
-        Creates a thread that runs the experiment and calls the status_update method.
+        Creates a thread that runs the experiment from a file and calls the status_update method.
         """
         thread = threading.Thread(target=self.controller.run_experiment, args=(self.stop_event,))
         thread.start()
@@ -305,17 +314,26 @@ class View(ttk.Frame):
         self.status_update()
 
     def init_manual_file(self):
+        """
+
+        """
         self.manual_file = 'manual' + '__' + self.protocol.get() + '__' + strftime("%a-%d-%b-%Y__%H-%M-%S") + '.csv'
         self.history_file = self.manual_file
         self.init_history_file()
 
     def init_history_file(self):
+        """
+
+        """
         with open(self.history_file, 'w', newline='') as csvfile:
             fieldnames = ['Time', 'State', 'SA', 'SB', 'S1', 'S2']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
 
     def stop_experiment(self):
+        """
+
+        """
         self.show_warn(title='Stop the experiment',
                        message='Purging will be activated and the experiment will be stopped. Do you wish to proceed?')
         self.stop_event.set()
@@ -326,6 +344,9 @@ class View(ttk.Frame):
         self.file_label["text"] = 'Please choose a file'
 
     def show_warn(self, title, message):
+        """
+
+        """
         messagebox.askyesnocancel(title=title, message=message)
 
     def status_update(self):
@@ -352,6 +373,9 @@ class View(ttk.Frame):
             print('Completed')
 
     def plot_history(self, elapsed, pins_status):
+        """
+
+        """
         state = None
         for mode in Modes:
             if tuple(pins_status) == mode.value:

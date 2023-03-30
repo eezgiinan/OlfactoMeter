@@ -1,5 +1,4 @@
 import tkinter as tk
-
 from controller import Controller
 from model import Olfactometer
 from view import View

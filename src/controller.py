@@ -1,7 +1,5 @@
 import datetime
-import time
 import pandas as pd
-
 from model import Olfactometer
 from modes import Modes
 

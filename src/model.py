@@ -1,8 +1,6 @@
 import datetime
-
 import pyfirmata
 from pandas import DataFrame
-
 from modes import *
 
 
