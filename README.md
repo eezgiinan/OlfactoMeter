@@ -41,4 +41,4 @@ The application is constructed using model-view-controller (MVC) system. This de
 ## Acknowledgements
 
 This project is created by BME Paris students in Universite Paris Cité as a part of the Master's program, in collaboration with Vetere Lab at ESPCI in Paris, France.
-We would like to thank Gisella Vetere, Clement Pouget and Maelle Christaens for their help and insights during the entire project.
+We would like to thank Gisella Vetere, Clement Pouget and Maelle Christiaens for their help and insights during the entire project.
